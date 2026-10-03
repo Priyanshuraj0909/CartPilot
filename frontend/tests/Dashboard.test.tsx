@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { App } from "../src/App";
 import { fetchStore } from "./fixtures";
@@ -15,6 +15,14 @@ describe("Dashboard Component", () => {
     expect(screen.queryByText("$124,500")).not.toBeInTheDocument();
   });
   it("renders the health badge status", async () => { render(<App />); expect(await screen.findByText("API Connected")).toBeInTheDocument(); });
+  it("makes merchant management discoverable from the dashboard", async () => {
+    render(<App />);
+    expect(screen.getByRole("button", { name: "Import sales & view insights" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "View stock notifications" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Add or edit products" }));
+    expect(window.location.pathname).toBe("/store-management");
+    await waitFor(() => expect(screen.getByText("Sign in or create a merchant account to manage your own products, import sales and view alerts.")).toBeInTheDocument());
+  });
   it("renders infrastructure diagnostics from the health endpoint", async () => {
     render(<App />); expect(await screen.findByText("Database: connected")).toBeInTheDocument();
     expect(screen.getByText("Redis: connected")).toBeInTheDocument();

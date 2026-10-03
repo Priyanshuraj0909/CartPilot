@@ -59,3 +59,9 @@ sales CSV, displayed 40.00 recorded revenue and checked notifications/mobile lay
 The configured Neon DB was read-only checked at revision 15_accounts. This does not
 prove the Vercel backend uses that same database. Requests to the supplied public frontend
 URL timed out from the execution environment; live deployment has not been certified.
+# Dashboard shortcuts
+
+The dashboard now exposes product management, sales import/insights and stock
+notifications directly in a merchant workspace panel. New accounts start with an
+empty store; add products and import sales before expecting populated revenue or
+product recommendations. These pages are also available from the sidebar.
