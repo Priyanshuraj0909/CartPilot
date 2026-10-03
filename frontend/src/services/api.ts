@@ -2,6 +2,8 @@ import type { ShopifyStatus, ShopifySync, GuardedAction, ActionCreate, ActionAud
 
 const base = (import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "" : "http://localhost:8000")).replace(/\/$/, "");
 export class ApiError extends Error { constructor(message: string, public status: number) { super(message); } }
+export const SHOPIFY_PRODUCTION_MESSAGE = "Shopify connections and synchronization are disabled in this hosted advisory demo. Local/demo data remains available.";
+const LOCAL_ONLY_DETAIL = "Phase 9 local actions are available only in development/test environments.";
 export async function request<T>(path: string, signal?: AbortSignal, body?: unknown, method?: string): Promise<T> {
   let response: Response;
   try {
@@ -15,12 +17,24 @@ export async function request<T>(path: string, signal?: AbortSignal, body?: unkn
     const messages: Record<number, string> = {
       401: "Sign in to continue.",
       404: "The merchant or product could not be found. Refresh your store data.",
-      403: "This product does not belong to the selected merchant.",
+      403: "This request is not permitted for the selected merchant or deployment.",
       409: "This action changed or is not approved for execution. Refresh the action list.",
       503: "CartPilot could not complete this request. Store data is temporarily unavailable. Please try again.",
       422: "The analysis could not be validated. Check product inventory and your selection.",
     };
-    throw new ApiError(messages[response.status] || "CartPilot could not complete this request. Please try again.", response.status);
+    let message = messages[response.status] || "CartPilot could not complete this request. Please try again.";
+    if (response.status === 403) {
+      // Recognize only known safe reasons; never display arbitrary server error bodies.
+      const payload: unknown = await response.json().catch(() => null);
+      const detail = payload && typeof payload === "object" && "detail" in payload ? payload.detail : null;
+      if (detail === LOCAL_ONLY_DETAIL) {
+        message = path.startsWith("/api/v1/integrations/shopify/") ? SHOPIFY_PRODUCTION_MESSAGE
+          : "Action creation, approval and execution are disabled in this hosted advisory demo.";
+      } else if (detail === "Product does not belong to the selected merchant.") {
+        message = "This product does not belong to the selected merchant.";
+      }
+    }
+    throw new ApiError(message, response.status);
   }
   try { return await response.json() as T; }
   catch { throw new ApiError("CartPilot returned an unreadable response. Please try again.", response.status); }

@@ -20,6 +20,16 @@ describe("Shopify integrations",()=>{
   expect(await screen.findByText("Not configured")).toBeInTheDocument();expect(screen.getByRole("button",{name:"Sync Now"})).toBeDisabled();
   fireEvent.click(screen.getByRole("link",{name:"Products"}));expect(await screen.findByText("Wireless Mouse")).toBeInTheDocument();
  });
+ it("explains the production restriction and disables unavailable Shopify controls",async()=>{
+  global.fetch=vi.fn((input:RequestInfo|URL)=>String(input).includes("shopify/status")
+   ?Promise.resolve(mockResponse({detail:"Phase 9 local actions are available only in development/test environments."},403)):fetchStore(input));
+  render(<App/>);
+  expect(await screen.findByText(/Shopify connections and synchronization are disabled in this hosted advisory demo/)).toBeInTheDocument();
+  expect(screen.getByRole("button",{name:"Test Connection"})).toBeDisabled();
+  expect(screen.getByRole("button",{name:"Sync Now"})).toBeDisabled();
+  expect(screen.queryByText(/does not belong/)).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("link",{name:"Products"}));expect(await screen.findByText("Wireless Mouse")).toBeInTheDocument();
+ });
  it("shows a safe authentication failure and allows connection retest",async()=>{
   mock({...connected,connected:false,store:null,message:"Check store domain and Admin API token."});render(<App/>);
   expect(await screen.findByText("Connection failed")).toBeInTheDocument();fireEvent.click(screen.getByRole("button",{name:"Test Connection"}));
