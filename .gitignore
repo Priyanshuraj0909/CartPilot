@@ -1,5 +1,7 @@
 # Environment & Secrets
 .env
+.env.*
+!.env.example
 .env.local
 .env.*.local
 *.env
@@ -72,3 +74,26 @@ frontend/.cache/
 # Docker / Logs
 *.log
 docker-data/
+
+# Local databases / release scratch artifacts
+*.sqlite
+*.sqlite3
+*.db
+
+coverage/
+*.sql
+*.dump
+*.bak
+
+# Generated academic submission archive
+/submission/*.zip
+
+# Provider project links and downloaded environment credentials
+.vercel/
+
+# Local task prompts and temporary files
+/prompt.txt
+*.tmp
+*.temp
+*.orig
+*.rej

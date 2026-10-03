@@ -1,0 +1,5 @@
+# Academic deliverables and screenshots are binary artifacts.
+*.pdf binary
+*.docx binary
+*.pptx binary
+*.png binary

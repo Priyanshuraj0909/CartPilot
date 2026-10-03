@@ -1,0 +1,15 @@
+{
+  "unreachable_database_and_redis": {
+    "status": "degraded",
+    "app": "CartPilot",
+    "environment": "production",
+    "database": "disconnected",
+    "redis": "disconnected",
+    "version": "1.0.0"
+  },
+  "api_failure": {
+    "status": 503,
+    "detail": "Store data is temporarily unavailable; try again."
+  },
+  "liveness": "ok"
+}

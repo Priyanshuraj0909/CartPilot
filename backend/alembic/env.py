@@ -20,7 +20,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Overwrite sqlalchemy.url with the application configuration
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL.replace("%", "%%"))
 
 # add your model's MetaData object here
 # for 'autogenerate' support

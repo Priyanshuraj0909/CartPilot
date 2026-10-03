@@ -1,0 +1,196 @@
+{
+  "request": {
+    "product_id": 1,
+    "merchant_id": 1
+  },
+  "response": {
+    "product_id": 1,
+    "current_title": "Wireless Noise-Canceling Headphones",
+    "recommended_title": "Wireless Noise-Canceling Headphones",
+    "current_description": "Premium over-ear headphones with 40h battery.",
+    "recommended_description": "Premium over-ear headphones with 40h battery.",
+    "issues": [
+      "Description is too short",
+      "Useful product attributes are not mentioned"
+    ],
+    "suggestions": [
+      "Provide clear factual details and verified usage benefits; do not invent claims.",
+      "Verify and add compatibility details if applicable.",
+      "Verify and add dimensions details if applicable."
+    ],
+    "missing_attributes": [
+      "compatibility",
+      "dimensions"
+    ],
+    "quality_score": 0.79,
+    "recommended_keywords": [
+      "electronics",
+      "headphones",
+      "noise-canceling",
+      "wireless"
+    ],
+    "category_consistency": "consistent",
+    "confidence": 0.9,
+    "risk_level": "low",
+    "reason": "Review listing completeness and verify missing details before considering content changes."
+  },
+  "combined_request": {
+    "merchant_id": 1,
+    "goal": "improve product performance",
+    "product_ids": [
+      8
+    ]
+  },
+  "combined_response": {
+    "merchant_id": 1,
+    "goal": "improve product performance",
+    "summary": "Reviewed 1 products; 3 advisory recommendations. Compatible proposals are explained separately; monitor inventory health.",
+    "selected_agents": [
+      "pricing",
+      "promotion",
+      "listing"
+    ],
+    "selection_reason": "Goal 'improve product performance' maps to pricing, promotion, listing by the supported-goal routing table.",
+    "recommendations": [
+      {
+        "agent": "listing",
+        "product_id": 8,
+        "priority": "low",
+        "action": "review_listing",
+        "recommended_price": null,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "Review listing completeness and verify missing details before considering content changes."
+      },
+      {
+        "agent": "pricing",
+        "product_id": 8,
+        "priority": "low",
+        "action": "hold_price",
+        "recommended_price": 26,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "Hold current price based on the agent's available evidence."
+      },
+      {
+        "agent": "promotion",
+        "product_id": 8,
+        "priority": "low",
+        "action": "review_promotion",
+        "recommended_price": 23.4,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through."
+      }
+    ],
+    "agent_results": [
+      {
+        "agent_name": "pricing",
+        "product_id": 8,
+        "success": true,
+        "recommendation": {
+          "product_id": 8,
+          "current_price": 26,
+          "recommended_price": 26,
+          "reason": "Sales velocity and inventory levels are balanced at current price point. No price adjustment recommended.",
+          "confidence": 0.9,
+          "risk_level": "low",
+          "price_change_percent": 0,
+          "sales_velocity": 0.8571428571428571,
+          "inventory_quantity": 225,
+          "cost_price": 8.5
+        },
+        "risk_level": "low",
+        "confidence": 0.9,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 8,
+        "success": true,
+        "recommendation": {
+          "product_id": 8,
+          "current_price": 26,
+          "cost_price": 8.5,
+          "promotion_recommended": true,
+          "promotion_type": "discount",
+          "discount_percentage": 10,
+          "promotional_price": 23.4,
+          "reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through.",
+          "confidence": 0.75,
+          "risk_level": "medium",
+          "available_inventory": 225,
+          "sales_velocity": 0.8571428571428571,
+          "sales_trend": "declining",
+          "gross_margin_percent": 67.3076923076923,
+          "retained_margin_percent": 63.675213675213676,
+          "days_of_inventory": 262.5,
+          "recent_units": 5,
+          "previous_units": 7,
+          "expected_effect": "May improve sell-through of excess inventory while preserving margin; revenue lift is not guaranteed."
+        },
+        "risk_level": "medium",
+        "confidence": 0.75,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 8,
+        "success": true,
+        "recommendation": {
+          "product_id": 8,
+          "current_title": "Organic Cotton Everyday Tee",
+          "recommended_title": "Organic Cotton Everyday Tee",
+          "current_description": null,
+          "recommended_description": "Organic Cotton Everyday Tee. Category: Apparel. SKU: SKU-AP-003.",
+          "issues": [
+            "Description is missing",
+            "Useful product attributes are not mentioned"
+          ],
+          "suggestions": [
+            "Provide clear factual details and verified usage benefits; do not invent claims.",
+            "Verify and add size details if applicable.",
+            "Verify and add care details if applicable."
+          ],
+          "missing_attributes": [
+            "size",
+            "care"
+          ],
+          "quality_score": 0.48,
+          "recommended_keywords": [
+            "apparel",
+            "cotton",
+            "everyday",
+            "organic",
+            "tee"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.7,
+          "risk_level": "medium",
+          "reason": "Review listing completeness and verify missing details before considering content changes."
+        },
+        "risk_level": "medium",
+        "confidence": 0.7,
+        "error": null
+      }
+    ],
+    "conflicts": [],
+    "relationships": [
+      {
+        "type": "synergy",
+        "product_id": 8,
+        "message": "Improve the incomplete listing before or alongside a controlled promotion; reassess demand before relying on discounts."
+      },
+      {
+        "type": "synergy",
+        "product_id": 8,
+        "message": "Holding the base price is compatible with separately reviewing a controlled temporary promotion for excess inventory."
+      }
+    ],
+    "overall_risk": "medium",
+    "overall_confidence": 0.7,
+    "approval_required": true,
+    "complete": true,
+    "created_at": "2026-10-02T20:01:34.954718Z"
+  }
+}

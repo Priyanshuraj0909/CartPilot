@@ -28,7 +28,7 @@ Build a working MVP of CartPilot that can:
 6. Require approval before risky actions.
 7. Execute approved simulated actions.
 8. Record the outcome.
-9. Use previous outcomes for future decisions.
+9. Record outcomes for audit and future human review; no automatic learning is implemented.
 
 ---
 
@@ -116,7 +116,7 @@ The Master Orchestrator is responsible for:
 8. Applying business rules.
 9. Producing an action plan.
 10. Requesting human approval where required.
-11. Executing approved actions.
+11. Producing candidates for separately approved local/simulated actions.
 12. Recording results.
 
 The orchestrator must NOT blindly execute an agent recommendation.
@@ -265,6 +265,14 @@ Do not:
 
 Read:
 
-phases/PHASE_01_FOUNDATION.md
+phases/PHASE_14.md
 
 Do not move to the next phase until the current phase passes verification.
+
+## Final submission boundary
+
+Phase 14 packages the verified MVP. Product specialists are deterministic; SENSE/DECIDE
+are implemented, ACT is guarded local/simulated, and LEARN currently records history
+without training. FINAL_STATUS.md is authoritative for implemented/simulated/read-only
+classifications. After Phase 14, stop feature development unless a real defect or
+explicit project-guide request justifies further work.

@@ -36,9 +36,11 @@ class Product(Base, TimestampMixin):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     category: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
-    cost_price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    cost_price: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
     selling_price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     status: Mapped[str] = mapped_column(String(50), default="active", nullable=False, index=True)
+
+    source: Mapped[str] = mapped_column(String(16), default="local", server_default="local", nullable=False)
 
     # Relationships
     merchant: Mapped["Merchant"] = relationship("Merchant", back_populates="products")

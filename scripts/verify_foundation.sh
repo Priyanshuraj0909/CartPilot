@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
+cd "$(dirname "$0")/.."
 
 echo "=========================================="
-echo "CartPilot Phase 1 Foundation Verification"
+echo "CartPilot Final Regression Verification"
 echo "=========================================="
 
 echo ""
@@ -11,7 +12,7 @@ python3 -c "import sys; print(f'Python version: {sys.version}')"
 
 echo ""
 echo "2. Running Backend Tests..."
-./backend/venv/bin/pytest backend/tests -v
+(cd backend && venv/bin/python -m pytest -q)
 
 echo ""
 echo "3. Running Frontend Tests..."
@@ -23,5 +24,5 @@ npm --prefix frontend run build
 
 echo ""
 echo "=========================================="
-echo "All Phase 1 Foundation Tests Passed!"
+echo "Backend, frontend tests and build passed!"
 echo "=========================================="

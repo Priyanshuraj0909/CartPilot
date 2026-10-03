@@ -33,3 +33,5 @@ __all__ = [
     "ApprovalStatus",
     "AuditLog",
 ]
+
+from app.models.shopify import ShopifyConnection, ExternalProductMapping, ExternalOrderMapping

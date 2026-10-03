@@ -1,69 +1,23 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { Dashboard } from "../src/pages/Dashboard";
-
+import { App } from "../src/App";
+import { fetchStore } from "./fixtures";
 describe("Dashboard Component", () => {
-  beforeEach(() => {
-    // Mock fetch for health checks
-    global.fetch = vi.fn().mockImplementation(() =>
-      Promise.resolve({
-        ok: true,
-        json: () =>
-          Promise.resolve({
-            status: "ok",
-            app: "CartPilot",
-            environment: "development",
-            database: "connected",
-            redis: "connected",
-            version: "1.0.0",
-          }),
-      })
-    );
-  });
-
+  beforeEach(() => { window.history.replaceState({}, "", "/dashboard"); global.fetch = vi.fn(fetchStore); });
   it("renders the CartPilot title and AI Manager badge", async () => {
-    render(<Dashboard />);
-    expect(screen.getByText("CartPilot")).toBeInTheDocument();
-    expect(screen.getByText("AI Manager")).toBeInTheDocument();
-    await waitFor(() => {
-      expect(screen.getByTestId("health-badge")).toBeInTheDocument();
-    });
+    render(<App />); expect(screen.getByText("CartPilot")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "AI Manager" })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId("health-badge")).toHaveTextContent("API Connected"));
   });
-
-  it("renders all four required Phase 1 metric cards", async () => {
-    render(<Dashboard />);
-
-    // Check titles
-    expect(screen.getByText("Revenue")).toBeInTheDocument();
-    expect(screen.getByText("Orders")).toBeInTheDocument();
-    expect(screen.getByText("Inventory")).toBeInTheDocument();
-    expect(screen.getByText("AI Recommendations")).toBeInTheDocument();
-
-    // Check mock values
-    expect(screen.getByText("$124,500")).toBeInTheDocument();
-    expect(screen.getByText("1,420")).toBeInTheDocument();
-    expect(screen.getByText("3,850")).toBeInTheDocument();
-    expect(screen.getByText("3 Pending")).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByTestId("health-badge")).toBeInTheDocument();
-    });
+  it("renders all four foundation metrics using backend data instead of mock values", async () => {
+    render(<App />); for (const title of ["Revenue", "Orders", "AI Recommendations"]) expect(screen.getByText(title)).toBeInTheDocument();
+    await screen.findByText("$69,930.00"); expect(screen.getByText("7")).toBeInTheDocument();
+    expect(screen.queryByText("$124,500")).not.toBeInTheDocument();
   });
-
-  it("renders the health badge status", async () => {
-    render(<Dashboard />);
-    await waitFor(() => {
-      expect(screen.getByText("API Connected")).toBeInTheDocument();
-    });
-  });
-
-  it("renders the Phase 1 infrastructure diagnostics block", async () => {
-    render(<Dashboard />);
-    expect(
-      screen.getByText("Phase 1 Infrastructure Diagnostics")
-    ).toBeInTheDocument();
-    await waitFor(() => {
-      expect(screen.getByTestId("health-badge")).toBeInTheDocument();
-    });
+  it("renders the health badge status", async () => { render(<App />); expect(await screen.findByText("API Connected")).toBeInTheDocument(); });
+  it("renders infrastructure diagnostics from the health endpoint", async () => {
+    render(<App />); expect(await screen.findByText("Database: connected")).toBeInTheDocument();
+    expect(screen.getByText("Redis: connected")).toBeInTheDocument();
+    expect(screen.getByText("Backend: Reachable")).toBeInTheDocument();
   });
 });

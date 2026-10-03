@@ -21,8 +21,25 @@ from app.schemas.recommendation import (
 )
 from app.schemas.agent_run import AgentRunBase, AgentRunResponse
 from app.schemas.audit_log import AuditLogResponse
+from app.schemas.pricing import PricingRecommendation, PricingRequest, RiskLevel
+from app.schemas.restock import RestockRecommendation, RestockRequest, RestockPolicy
+
+from app.schemas.orchestration import ActionPlan, AgentResult, OrchestrationRequest
+
+from app.schemas.promotion import PromotionRecommendation, PromotionRequest, PromotionPolicy
+
+from app.schemas.listing import ListingRecommendation, ListingRequest, ListingPolicy
 
 __all__ = [
+    "ListingRecommendation",
+    "ListingRequest",
+    "ListingPolicy",
+    "PromotionRecommendation",
+    "PromotionRequest",
+    "PromotionPolicy",
+    "ActionPlan",
+    "AgentResult",
+    "OrchestrationRequest",
     "HealthResponse",
     "DetailedHealthResponse",
     "MerchantBase",
@@ -51,4 +68,10 @@ __all__ = [
     "AgentRunBase",
     "AgentRunResponse",
     "AuditLogResponse",
+    "RestockRecommendation",
+    "RestockRequest",
+    "RestockPolicy",
+    "PricingRecommendation",
+    "PricingRequest",
+    "RiskLevel",
 ]

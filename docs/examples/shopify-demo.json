@@ -1,0 +1,598 @@
+{
+  "demo": "offline mocked Shopify HTTP; no real store accessed",
+  "mode": "read_only",
+  "first_sync": {
+    "mode": "read_only",
+    "status": "completed",
+    "started_at": "2026-10-02T21:17:44.917309Z",
+    "completed_at": "2026-10-02T21:17:44.937129Z",
+    "products_created": 3,
+    "products_updated": 0,
+    "inventory_updated": 3,
+    "orders_created": 1,
+    "orders_updated": 0,
+    "orders_skipped": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "repeat_sync": {
+    "mode": "read_only",
+    "status": "completed",
+    "started_at": "2026-10-02T21:17:44.937979Z",
+    "completed_at": "2026-10-02T21:17:44.951287Z",
+    "products_created": 0,
+    "products_updated": 3,
+    "inventory_updated": 3,
+    "orders_created": 0,
+    "orders_updated": 1,
+    "orders_skipped": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "products": [
+    {
+      "id": 1,
+      "sku": "SHIRT",
+      "name": "Cotton Shirt \u2014 Small",
+      "source": "shopify"
+    },
+    {
+      "id": 2,
+      "sku": "SHOPIFY-2",
+      "name": "Cotton Shirt \u2014 Medium",
+      "source": "shopify"
+    },
+    {
+      "id": 3,
+      "sku": "SHOPIFY-3",
+      "name": "Cotton Shirt \u2014 Large",
+      "source": "shopify"
+    }
+  ],
+  "balanced_growth": {
+    "merchant_id": 1,
+    "goal": "balanced_growth",
+    "summary": "3 products analyzed for balanced_growth: 0 inventory risks, 3 excess/slow movers, 1 pricing opportunities, 3 listing issues. Review 1 priority actions; 0 proposals are blocked. First: pricing for Cotton Shirt \u2014 Small (medium).",
+    "selected_agents": [
+      "pricing",
+      "restock",
+      "promotion",
+      "listing"
+    ],
+    "selection_reason": "Specialists are selected per product from fresh opportunities and goal strategy; inventory safety overrides optimization.",
+    "recommendations": [
+      {
+        "agent": "pricing",
+        "product_id": 1,
+        "priority": "medium",
+        "action": "review_price_change",
+        "recommended_price": 95.0,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "High inventory levels combined with slow sales velocity. Recommending a promotional price reduction to stimulate turnover. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2500)."
+      }
+    ],
+    "agent_results": [
+      {
+        "agent_name": "pricing",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_price": 100.0,
+          "recommended_price": 95.0,
+          "reason": "High inventory levels combined with slow sales velocity. Recommending a promotional price reduction to stimulate turnover.",
+          "confidence": 0.5,
+          "risk_level": "medium",
+          "price_change_percent": -5.0,
+          "sales_velocity": 0.21428571428571427,
+          "inventory_quantity": 25,
+          "cost_price": 40.0
+        },
+        "risk_level": "medium",
+        "confidence": 0.5,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_inventory": 31,
+          "available_inventory": 25,
+          "sales_velocity": 0.21428571428571427,
+          "estimated_days_remaining": 116.67,
+          "recommended_quantity": 0,
+          "reason": "Current inventory sufficiently covers projected demand and reorder thresholds.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "reorder_point": 10,
+          "lead_time_days": 5.0,
+          "safety_stock": 1,
+          "projected_demand_during_lead_time": 1.0714285714285714,
+          "stockout_risk": false,
+          "estimated_daily_sales": 0.21428571428571427
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_price": 100.0,
+          "cost_price": 40.0,
+          "promotion_recommended": false,
+          "promotion_type": "none",
+          "discount_percentage": 0.0,
+          "promotional_price": 100.0,
+          "reason": "Insufficient observation history; collect a complete sales window before recommending a promotion.",
+          "confidence": 0.3,
+          "risk_level": "high",
+          "available_inventory": 25,
+          "sales_velocity": 0.21428571428571427,
+          "sales_trend": "insufficient_data",
+          "gross_margin_percent": 60.0,
+          "retained_margin_percent": 60.0,
+          "days_of_inventory": 116.66666666666667,
+          "recent_units": 3,
+          "previous_units": 0,
+          "expected_effect": "Preserve current price; review the evidence before stimulating demand."
+        },
+        "risk_level": "high",
+        "confidence": 0.3,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_title": "Cotton Shirt \u2014 Small",
+          "recommended_title": "Cotton Shirt \u2014 Small",
+          "current_description": "A cotton shirt for everyday wear.",
+          "recommended_description": "A cotton shirt for everyday wear.",
+          "issues": [
+            "Description is too short",
+            "Useful product attributes are not mentioned"
+          ],
+          "suggestions": [
+            "Provide clear factual details and verified usage benefits; do not invent claims.",
+            "Verify and add care details if applicable."
+          ],
+          "missing_attributes": [
+            "care"
+          ],
+          "quality_score": 0.83,
+          "recommended_keywords": [
+            "clothing",
+            "cotton",
+            "shirt",
+            "small"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.9,
+          "risk_level": "low",
+          "reason": "Review listing completeness and verify missing details before considering content changes."
+        },
+        "risk_level": "low",
+        "confidence": 0.9,
+        "error": null
+      },
+      {
+        "agent_name": "pricing",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_price": 100.0,
+          "recommended_price": 100.0,
+          "reason": "Insufficient historical sales data for a reliable pricing adjustment. Maintaining current price to avoid uncalibrated merchant risk.",
+          "confidence": 0.2,
+          "risk_level": "high",
+          "price_change_percent": 0.0,
+          "sales_velocity": 0.0,
+          "inventory_quantity": 25,
+          "cost_price": 40.0
+        },
+        "risk_level": "high",
+        "confidence": 0.2,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_inventory": 31,
+          "available_inventory": 25,
+          "sales_velocity": 0.0,
+          "estimated_days_remaining": null,
+          "recommended_quantity": 0,
+          "reason": "No recent sales demand. No additional inventory recommended solely from reorder thresholds.",
+          "confidence": 0.2,
+          "risk_level": "low",
+          "reorder_point": 10,
+          "lead_time_days": 5.0,
+          "safety_stock": 0,
+          "projected_demand_during_lead_time": 0.0,
+          "stockout_risk": false,
+          "estimated_daily_sales": 0.0
+        },
+        "risk_level": "low",
+        "confidence": 0.2,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_price": 100.0,
+          "cost_price": 40.0,
+          "promotion_recommended": false,
+          "promotion_type": "none",
+          "discount_percentage": 0.0,
+          "promotional_price": 100.0,
+          "reason": "Insufficient observation history; collect a complete sales window before recommending a promotion.",
+          "confidence": 0.2,
+          "risk_level": "high",
+          "available_inventory": 25,
+          "sales_velocity": 0.0,
+          "sales_trend": "insufficient_data",
+          "gross_margin_percent": 60.0,
+          "retained_margin_percent": 60.0,
+          "days_of_inventory": null,
+          "recent_units": 0,
+          "previous_units": 0,
+          "expected_effect": "Preserve current price; review the evidence before stimulating demand."
+        },
+        "risk_level": "high",
+        "confidence": 0.2,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_title": "Cotton Shirt \u2014 Medium",
+          "recommended_title": "Cotton Shirt \u2014 Medium",
+          "current_description": "A cotton shirt for everyday wear.",
+          "recommended_description": "A cotton shirt for everyday wear.",
+          "issues": [
+            "Description is too short",
+            "Useful product attributes are not mentioned"
+          ],
+          "suggestions": [
+            "Provide clear factual details and verified usage benefits; do not invent claims.",
+            "Verify and add care details if applicable."
+          ],
+          "missing_attributes": [
+            "care"
+          ],
+          "quality_score": 0.83,
+          "recommended_keywords": [
+            "clothing",
+            "cotton",
+            "medium",
+            "shirt"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.9,
+          "risk_level": "low",
+          "reason": "Review listing completeness and verify missing details before considering content changes."
+        },
+        "risk_level": "low",
+        "confidence": 0.9,
+        "error": null
+      },
+      {
+        "agent_name": "pricing",
+        "product_id": 3,
+        "success": true,
+        "recommendation": {
+          "product_id": 3,
+          "current_price": 100.0,
+          "recommended_price": 100.0,
+          "reason": "Insufficient historical sales data for a reliable pricing adjustment. Maintaining current price to avoid uncalibrated merchant risk.",
+          "confidence": 0.2,
+          "risk_level": "high",
+          "price_change_percent": 0.0,
+          "sales_velocity": 0.0,
+          "inventory_quantity": 25,
+          "cost_price": 40.0
+        },
+        "risk_level": "high",
+        "confidence": 0.2,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 3,
+        "success": true,
+        "recommendation": {
+          "product_id": 3,
+          "current_inventory": 31,
+          "available_inventory": 25,
+          "sales_velocity": 0.0,
+          "estimated_days_remaining": null,
+          "recommended_quantity": 0,
+          "reason": "No recent sales demand. No additional inventory recommended solely from reorder thresholds.",
+          "confidence": 0.2,
+          "risk_level": "low",
+          "reorder_point": 10,
+          "lead_time_days": 5.0,
+          "safety_stock": 0,
+          "projected_demand_during_lead_time": 0.0,
+          "stockout_risk": false,
+          "estimated_daily_sales": 0.0
+        },
+        "risk_level": "low",
+        "confidence": 0.2,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 3,
+        "success": true,
+        "recommendation": {
+          "product_id": 3,
+          "current_price": 100.0,
+          "cost_price": 40.0,
+          "promotion_recommended": false,
+          "promotion_type": "none",
+          "discount_percentage": 0.0,
+          "promotional_price": 100.0,
+          "reason": "Insufficient observation history; collect a complete sales window before recommending a promotion.",
+          "confidence": 0.2,
+          "risk_level": "high",
+          "available_inventory": 25,
+          "sales_velocity": 0.0,
+          "sales_trend": "insufficient_data",
+          "gross_margin_percent": 60.0,
+          "retained_margin_percent": 60.0,
+          "days_of_inventory": null,
+          "recent_units": 0,
+          "previous_units": 0,
+          "expected_effect": "Preserve current price; review the evidence before stimulating demand."
+        },
+        "risk_level": "high",
+        "confidence": 0.2,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 3,
+        "success": true,
+        "recommendation": {
+          "product_id": 3,
+          "current_title": "Cotton Shirt \u2014 Large",
+          "recommended_title": "Cotton Shirt \u2014 Large",
+          "current_description": "A cotton shirt for everyday wear.",
+          "recommended_description": "A cotton shirt for everyday wear.",
+          "issues": [
+            "Description is too short",
+            "Useful product attributes are not mentioned"
+          ],
+          "suggestions": [
+            "Provide clear factual details and verified usage benefits; do not invent claims.",
+            "Verify and add care details if applicable."
+          ],
+          "missing_attributes": [
+            "care"
+          ],
+          "quality_score": 0.83,
+          "recommended_keywords": [
+            "clothing",
+            "cotton",
+            "large",
+            "shirt"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.9,
+          "risk_level": "low",
+          "reason": "Review listing completeness and verify missing details before considering content changes."
+        },
+        "risk_level": "low",
+        "confidence": 0.9,
+        "error": null
+      }
+    ],
+    "conflicts": [],
+    "relationships": [],
+    "overall_risk": "high",
+    "overall_confidence": 0.2,
+    "approval_required": true,
+    "complete": true,
+    "created_at": "2026-10-02T21:17:44.952241Z",
+    "products_analyzed": 3,
+    "opportunities": [
+      {
+        "product_id": 1,
+        "product_name": "Cotton Shirt \u2014 Small",
+        "pricing_opportunity": true,
+        "stockout_risk": false,
+        "excess_inventory": true,
+        "listing_issue": true,
+        "listing_quality": 0.83,
+        "inventory_known": true,
+        "active": true,
+        "selected_agents": [
+          "pricing",
+          "restock",
+          "promotion",
+          "listing"
+        ],
+        "selection_reasons": {
+          "pricing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "restock": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "promotion": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "listing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality."
+        }
+      },
+      {
+        "product_id": 2,
+        "product_name": "Cotton Shirt \u2014 Medium",
+        "pricing_opportunity": false,
+        "stockout_risk": false,
+        "excess_inventory": true,
+        "listing_issue": true,
+        "listing_quality": 0.83,
+        "inventory_known": true,
+        "active": true,
+        "selected_agents": [
+          "pricing",
+          "restock",
+          "promotion",
+          "listing"
+        ],
+        "selection_reasons": {
+          "pricing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "restock": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "promotion": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "listing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality."
+        }
+      },
+      {
+        "product_id": 3,
+        "product_name": "Cotton Shirt \u2014 Large",
+        "pricing_opportunity": false,
+        "stockout_risk": false,
+        "excess_inventory": true,
+        "listing_issue": true,
+        "listing_quality": 0.83,
+        "inventory_known": true,
+        "active": true,
+        "selected_agents": [
+          "pricing",
+          "restock",
+          "promotion",
+          "listing"
+        ],
+        "selection_reasons": {
+          "pricing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "restock": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "promotion": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "listing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality."
+        }
+      }
+    ],
+    "opportunity_summary": {
+      "pricing_opportunities": [
+        1
+      ],
+      "restock_risks": [],
+      "promotion_opportunities": [
+        1,
+        2,
+        3
+      ],
+      "listing_issues": [
+        1,
+        2,
+        3
+      ]
+    },
+    "recommendation_relationships": [
+      {
+        "product_id": 1,
+        "agent_a": "restock",
+        "agent_b": "listing",
+        "relationship_type": "independent",
+        "severity": "low",
+        "explanation": "Factual listing review and replenishment address separate issues.",
+        "recommended_resolution": "Review independently; inventory safety remains first."
+      },
+      {
+        "product_id": 2,
+        "agent_a": "restock",
+        "agent_b": "listing",
+        "relationship_type": "independent",
+        "severity": "low",
+        "explanation": "Factual listing review and replenishment address separate issues.",
+        "recommended_resolution": "Review independently; inventory safety remains first."
+      },
+      {
+        "product_id": 3,
+        "agent_a": "restock",
+        "agent_b": "listing",
+        "relationship_type": "independent",
+        "severity": "low",
+        "explanation": "Factual listing review and replenishment address separate issues.",
+        "recommended_resolution": "Review independently; inventory safety remains first."
+      }
+    ],
+    "prioritized_actions": [
+      {
+        "id": "1:pricing",
+        "rank": 1,
+        "product_id": 1,
+        "product_name": "Cotton Shirt \u2014 Small",
+        "agent": "pricing",
+        "action_type": "price_change",
+        "priority": "medium",
+        "priority_score": 0.25,
+        "reason": "High inventory levels combined with slow sales velocity. Recommending a promotional price reduction to stimulate turnover. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2500).",
+        "confidence": 0.5,
+        "risk": "medium",
+        "blocked": false,
+        "blocked_reason": null,
+        "depends_on": [],
+        "approval_candidate": true
+      }
+    ],
+    "blocked_actions": [],
+    "omitted_actions": [],
+    "warnings": [],
+    "scope_has_more": false
+  },
+  "partial_failure": {
+    "mode": "read_only",
+    "status": "partial",
+    "started_at": "2026-10-02T21:17:44.966032Z",
+    "completed_at": "2026-10-02T21:17:44.978920Z",
+    "products_created": 0,
+    "products_updated": 3,
+    "inventory_updated": 0,
+    "orders_created": 0,
+    "orders_updated": 1,
+    "orders_skipped": 0,
+    "errors": [
+      {
+        "stage": "inventory",
+        "code": "retry_exhausted",
+        "message": "Shopify retry limit reached; retry synchronization later.",
+        "external_id": "gid://shopify/InventoryItem/1"
+      },
+      {
+        "stage": "inventory",
+        "code": "retry_exhausted",
+        "message": "Shopify retry limit reached; retry synchronization later.",
+        "external_id": "gid://shopify/InventoryItem/2"
+      },
+      {
+        "stage": "inventory",
+        "code": "retry_exhausted",
+        "message": "Shopify retry limit reached; retry synchronization later.",
+        "external_id": "gid://shopify/InventoryItem/3"
+      }
+    ],
+    "warnings": []
+  },
+  "external_operations": [
+    "query CartPilotInventory",
+    "query CartPilotOrders",
+    "query CartPilotShop",
+    "query CartPilotVariants"
+  ],
+  "shopify_mutations": 0
+}

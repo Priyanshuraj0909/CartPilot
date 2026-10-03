@@ -1,0 +1,48 @@
+{
+  "environment": "isolated in-memory SQLite; ASGI; 3 samples; not a load test",
+  "seed_counts": {
+    "merchants": 1,
+    "products": 25,
+    "inventory": 25,
+    "orders": 110,
+    "price_history": 25
+  },
+  "performance": {
+    "products_25": {
+      "median_ms": 31.0,
+      "max_ms": 43.21,
+      "query_counts": [
+        80,
+        80,
+        80
+      ]
+    },
+    "inventory_25": {
+      "median_ms": 38.45,
+      "max_ms": 40.98,
+      "query_counts": [
+        80,
+        80,
+        80
+      ]
+    },
+    "pricing_single": {
+      "median_ms": 2.84,
+      "max_ms": 4.47,
+      "query_counts": [
+        5,
+        5,
+        5
+      ]
+    },
+    "balanced_growth_25": {
+      "median_ms": 58.36,
+      "max_ms": 63.04,
+      "query_counts": [
+        177,
+        177,
+        177
+      ]
+    }
+  }
+}

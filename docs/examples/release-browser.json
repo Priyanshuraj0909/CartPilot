@@ -1,0 +1,80 @@
+{
+  "pages": [
+    {
+      "path": "/dashboard",
+      "title": "Storefront overview"
+    },
+    {
+      "path": "/products",
+      "title": "Products"
+    },
+    {
+      "path": "/inventory",
+      "title": "Inventory"
+    },
+    {
+      "path": "/ai-manager",
+      "title": "AI Manager"
+    },
+    {
+      "path": "/recommendations",
+      "title": "Recommendations"
+    },
+    {
+      "path": "/agent-activity",
+      "title": "Agent Activity"
+    },
+    {
+      "path": "/approvals",
+      "title": "Approvals"
+    },
+    {
+      "path": "/action-history",
+      "title": "Action History"
+    },
+    {
+      "path": "/integrations",
+      "title": "Integrations"
+    }
+  ],
+  "analyses": [
+    {
+      "agent": "Pricing",
+      "result": "PRICING AGENTWireless MouseCurrent price$999.00→Recommended price$1,048.95+5%Critically low inventory paired with strong sales velocity. Recommending a moderate price increase to capture margin and reduce stockout risk.Risk: highConfidence: 80%Recommendation Only"
+    },
+    {
+      "agent": "Restock",
+      "result": "RESTOCK AGENTWireless MouseAvailable inventory8 unitsSales velocity5.00/dayDays remaining1.6 daysRecommended quantity67 unitsInventory coverage1.6 days of stockSupplier lead time: 5 days · Safety stock: 10 unitsAvailable inventory reached the reorder point or does not cover lead-time demand plus safety stock. Stock may be exhausted before or when replenishment arrives.Risk: highConfidence: 75%Recommendation Only"
+    },
+    {
+      "agent": "Promotion",
+      "result": "PROMOTION AGENTBluetooth Speaker Desktop Audio10% DiscountCurrent price$1,499.00→Promotional price$1,349.10Available inventory120 unitsSales velocity1.21/daySales trenddecliningRetained gross margin37.0%High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through.May improve sell-through of excess inventory while preserving margin; revenue lift is not guaranteed.Risk: mediumConfidence: 75%Recommendation Only"
+    },
+    {
+      "agent": "Listing",
+      "result": "LISTING AGENTHeadphonesListing quality32%Category alignmentconsistentCurrent titleHeadphonesCurrent descriptionNo description recordedRecommended titleHeadphonesRecommended descriptionHeadphones. Category: Electronics. SKU: PH10-2.IssuesTitle lacks descriptive detailDescription is missingUseful product attributes are not mentionedSuggestionsUse a concise title based only on verified product information.Provide clear factual details and verified usage benefits; do not invent claims.Verify and add connectivity details if applicable.Verify and add power details if applicable.Verify and add compatibility details if applicable.Verify and add dimensions details if applicable.Details to verify: connectivity, power, compatibility, dimensionsExisting search terms: electronics, headphonesReview listing completeness and verify missing details before considering content changes.Risk: mediumConfidence: 70%Recommendation Only"
+    }
+  ],
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    }
+  ],
+  "balancedGrowth": "GOAL-BASED MERCHANT PLANCartPilot Store SummaryBalanced Growth4 products analyzed for balanced_growth: 1 inventory risks, 2 excess/slow movers, 2 pricing opportunities, 2 listing issues. Review 4 priority actions; 3 proposals are blocked. First: restock for Wireless Mouse (critical).Inventory risks1Excess / slow movers2Pricing opportunities2Listing issues2Overall risk: high · Confidence: 32%Human approval required · No actions executedSpecialists are selected per product from fresh opportunities and goal strategy; inventory safety overrides optimization.",
+  "confirmation": "Execute this approved action?Action #1 · Wireless MouseThis action will modify local/mock product data after policy revalidation.Execution mode: local mutation. No external commerce APIs are called.Local/Simulated · Not synchronized to Shopify.CancelExecute",
+  "execution": "{\n  \"outcome\": \"executed\",\n  \"mode\": \"local_mutation\",\n  \"before\": {\n    \"selling_price\": \"999.00\"\n  },\n  \"after\": {\n    \"selling_price\": \"1048.95\"\n  }\n}",
+  "auditVisible": true,
+  "shopify": "STORE CONNECTIONSIntegrationsImport store data for analysis. Shopify remains the source of truth.ShopifyREAD ONLYConnectedConnected. Shopify is the source; CartPilot is a local analysis cache.Store: fixture-store.myshopify.comAPI version: 2026-10 · Currency: USDCredentials are configured in the backend environment. The access token is never shown here. Local/demo data works independently.Test ConnectionSync NowSynchronization completedLast Sync: 03 Oct 2026, 03:05Products: 3 · Inventory records: 3 · Orders: 1 · Skipped orders: 0 · Errors: 0Local/Simulated actions are not synchronized to Shopify. Sync imports Shopify values into the cache.",
+  "backendUnavailableHandled": true,
+  "consoleErrors": [],
+  "networkFailures": []
+}

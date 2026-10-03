@@ -1,0 +1,102 @@
+[
+  {
+    "scenario": "safe_price",
+    "action_id": 1,
+    "created_status": "awaiting_approval",
+    "policy_valid": true,
+    "review_status": "approved",
+    "price_after_review": "999.00",
+    "execution_http": 200,
+    "execution_status": "executed",
+    "execution_result": {
+      "outcome": "executed",
+      "mode": "local_mutation",
+      "before": {
+        "selling_price": "999.00"
+      },
+      "after": {
+        "selling_price": "1048.95"
+      }
+    },
+    "duplicate_status": "executed",
+    "final_price": "1048.95",
+    "price_history_count": 1,
+    "audit_events": [
+      "recommendation_created",
+      "action_created",
+      "policy_validated",
+      "action_validated",
+      "action_awaiting_approval",
+      "action_approved",
+      "policy_validated",
+      "execution_started",
+      "execution_completed"
+    ]
+  },
+  {
+    "scenario": "unsafe_price",
+    "action_id": 1,
+    "created_status": "failed",
+    "policy_valid": false,
+    "violations": [
+      "Price change exceeds configured maximum change."
+    ],
+    "final_price": "999.00",
+    "price_history_count": 0,
+    "audit_events": [
+      "recommendation_created",
+      "action_created",
+      "policy_validated",
+      "execution_blocked"
+    ]
+  },
+  {
+    "scenario": "rejection",
+    "action_id": 1,
+    "created_status": "awaiting_approval",
+    "policy_valid": true,
+    "review_status": "rejected",
+    "price_after_review": "999.00",
+    "execution_http": 409,
+    "final_price": "999.00",
+    "price_history_count": 0,
+    "audit_events": [
+      "recommendation_created",
+      "action_created",
+      "policy_validated",
+      "action_validated",
+      "action_awaiting_approval",
+      "action_rejected",
+      "execution_blocked"
+    ]
+  },
+  {
+    "scenario": "stale_approval",
+    "action_id": 1,
+    "created_status": "awaiting_approval",
+    "policy_valid": true,
+    "review_status": "approved",
+    "price_after_review": "1499.00",
+    "execution_http": 200,
+    "execution_status": "approved",
+    "execution_result": {
+      "outcome": "blocked",
+      "violations": [
+        "Current stockout risk or low inventory blocks promotion.",
+        "Promotion is no longer relevant under current demand and inventory signals."
+      ]
+    },
+    "final_price": "1499.00",
+    "price_history_count": 0,
+    "audit_events": [
+      "recommendation_created",
+      "action_created",
+      "policy_validated",
+      "action_validated",
+      "action_awaiting_approval",
+      "action_approved",
+      "policy_validated",
+      "execution_blocked"
+    ]
+  }
+]

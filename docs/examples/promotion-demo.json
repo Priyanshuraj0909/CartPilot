@@ -1,0 +1,276 @@
+{
+  "request": {
+    "product_id": 2,
+    "merchant_id": 1
+  },
+  "response": {
+    "product_id": 2,
+    "current_price": 1499,
+    "cost_price": 850,
+    "promotion_recommended": true,
+    "promotion_type": "discount",
+    "discount_percentage": 10,
+    "promotional_price": 1349.1,
+    "reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through.",
+    "confidence": 0.75,
+    "risk_level": "medium",
+    "available_inventory": 120,
+    "sales_velocity": 1.2142857142857142,
+    "sales_trend": "declining",
+    "gross_margin_percent": 43.29553035356905,
+    "retained_margin_percent": 36.99503372618783,
+    "days_of_inventory": 98.82352941176471,
+    "recent_units": 1,
+    "previous_units": 16,
+    "expected_effect": "May improve sell-through of excess inventory while preserving margin; revenue lift is not guaranteed."
+  },
+  "combined_request": {
+    "merchant_id": 1,
+    "goal": "increase revenue while maintaining healthy inventory",
+    "product_ids": [
+      1,
+      2
+    ]
+  },
+  "combined_response": {
+    "merchant_id": 1,
+    "goal": "increase revenue while maintaining healthy inventory",
+    "summary": "Reviewed 2 products; 6 advisory recommendations. Inventory replenishment or verification is the highest priority because stock may run out by supplier arrival. Compatible proposals are explained separately; monitor inventory health.",
+    "selected_agents": [
+      "pricing",
+      "restock",
+      "promotion"
+    ],
+    "selection_reason": "Goal 'increase revenue while maintaining healthy inventory' maps to pricing, restock, promotion by the supported-goal routing table.",
+    "recommendations": [
+      {
+        "agent": "restock",
+        "product_id": 1,
+        "priority": "critical",
+        "action": "restock",
+        "recommended_price": null,
+        "recommended_quantity": 67,
+        "deferred": false,
+        "coordination_reason": "Prioritize inventory review before pricing changes."
+      },
+      {
+        "agent": "pricing",
+        "product_id": 1,
+        "priority": "medium",
+        "action": "review_price_change",
+        "recommended_price": 1048.95,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "Review the bounded pricing proposal; monitor inventory sensitivity."
+      },
+      {
+        "agent": "promotion",
+        "product_id": 1,
+        "priority": "low",
+        "action": "no_promotion",
+        "recommended_price": 999,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "Promotion could worsen existing stockout risk or low available inventory; replenish or verify inventory first."
+      },
+      {
+        "agent": "pricing",
+        "product_id": 2,
+        "priority": "low",
+        "action": "hold_price",
+        "recommended_price": 1499,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "Hold current price based on the agent's available evidence."
+      },
+      {
+        "agent": "promotion",
+        "product_id": 2,
+        "priority": "low",
+        "action": "review_promotion",
+        "recommended_price": 1349.1,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through."
+      },
+      {
+        "agent": "restock",
+        "product_id": 2,
+        "priority": "low",
+        "action": "monitor_inventory",
+        "recommended_price": null,
+        "recommended_quantity": 0,
+        "deferred": false,
+        "coordination_reason": "Inventory urgency follows stockout exposure and replenishment need."
+      }
+    ],
+    "agent_results": [
+      {
+        "agent_name": "pricing",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_price": 999,
+          "recommended_price": 1048.95,
+          "reason": "Critically low inventory paired with strong sales velocity. Recommending a moderate price increase to capture margin and reduce stockout risk.",
+          "confidence": 0.8,
+          "risk_level": "high",
+          "price_change_percent": 5,
+          "sales_velocity": 5,
+          "inventory_quantity": 8,
+          "cost_price": 500
+        },
+        "risk_level": "high",
+        "confidence": 0.8,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_inventory": 12,
+          "available_inventory": 8,
+          "sales_velocity": 5,
+          "estimated_days_remaining": 1.6,
+          "recommended_quantity": 67,
+          "reason": "Available inventory reached the reorder point or does not cover lead-time demand plus safety stock. Stock may be exhausted before or when replenishment arrives.",
+          "confidence": 0.75,
+          "risk_level": "high",
+          "reorder_point": 10,
+          "lead_time_days": 5,
+          "safety_stock": 10,
+          "projected_demand_during_lead_time": 25,
+          "stockout_risk": true,
+          "estimated_daily_sales": 5
+        },
+        "risk_level": "high",
+        "confidence": 0.75,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_price": 999,
+          "cost_price": 500,
+          "promotion_recommended": false,
+          "promotion_type": "none",
+          "discount_percentage": 0,
+          "promotional_price": 999,
+          "reason": "Promotion could worsen existing stockout risk or low available inventory; replenish or verify inventory first.",
+          "confidence": 0.4,
+          "risk_level": "high",
+          "available_inventory": 8,
+          "sales_velocity": 5,
+          "sales_trend": "insufficient_data",
+          "gross_margin_percent": 49.949949949949946,
+          "retained_margin_percent": 49.949949949949946,
+          "days_of_inventory": 1.6,
+          "recent_units": 60,
+          "previous_units": 10,
+          "expected_effect": "Preserve current price; review the evidence before stimulating demand."
+        },
+        "risk_level": "high",
+        "confidence": 0.4,
+        "error": null
+      },
+      {
+        "agent_name": "pricing",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_price": 1499,
+          "recommended_price": 1499,
+          "reason": "Sales velocity and inventory levels are balanced at current price point. No price adjustment recommended.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "price_change_percent": 0,
+          "sales_velocity": 1.2142857142857142,
+          "inventory_quantity": 120,
+          "cost_price": 850
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_inventory": 120,
+          "available_inventory": 120,
+          "sales_velocity": 1.2142857142857142,
+          "estimated_days_remaining": 98.82,
+          "recommended_quantity": 0,
+          "reason": "Current inventory sufficiently covers projected demand and reorder thresholds.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "reorder_point": 10,
+          "lead_time_days": 5,
+          "safety_stock": 3,
+          "projected_demand_during_lead_time": 6.071428571428571,
+          "stockout_risk": false,
+          "estimated_daily_sales": 1.2142857142857142
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_price": 1499,
+          "cost_price": 850,
+          "promotion_recommended": true,
+          "promotion_type": "discount",
+          "discount_percentage": 10,
+          "promotional_price": 1349.1,
+          "reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through.",
+          "confidence": 0.75,
+          "risk_level": "medium",
+          "available_inventory": 120,
+          "sales_velocity": 1.2142857142857142,
+          "sales_trend": "declining",
+          "gross_margin_percent": 43.29553035356905,
+          "retained_margin_percent": 36.99503372618783,
+          "days_of_inventory": 98.82352941176471,
+          "recent_units": 1,
+          "previous_units": 16,
+          "expected_effect": "May improve sell-through of excess inventory while preserving margin; revenue lift is not guaranteed."
+        },
+        "risk_level": "medium",
+        "confidence": 0.75,
+        "error": null
+      }
+    ],
+    "conflicts": [],
+    "relationships": [
+      {
+        "type": "synergy",
+        "product_id": 1,
+        "message": "A moderate price increase is compatible with constrained inventory; prioritize replenishment and monitor demand."
+      },
+      {
+        "type": "synergy",
+        "product_id": 2,
+        "message": "Holding the base price is compatible with separately reviewing a controlled temporary promotion for excess inventory."
+      }
+    ],
+    "overall_risk": "high",
+    "overall_confidence": 0.4,
+    "approval_required": true,
+    "complete": true,
+    "created_at": "2026-10-02T19:43:08.861771Z"
+  }
+}

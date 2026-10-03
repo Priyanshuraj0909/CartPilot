@@ -1,0 +1,902 @@
+{
+  "request": {
+    "merchant_id": 1,
+    "goal": "balanced_growth",
+    "product_ids": [
+      1,
+      2,
+      4,
+      5
+    ]
+  },
+  "response": {
+    "merchant_id": 1,
+    "goal": "balanced_growth",
+    "summary": "4 products analyzed for balanced_growth: 1 inventory risks, 2 excess/slow movers, 2 pricing opportunities, 2 listing issues. Review 4 priority actions; 3 proposals are blocked. First: restock for Wireless Mouse (critical).",
+    "selected_agents": [
+      "pricing",
+      "restock",
+      "promotion",
+      "listing"
+    ],
+    "selection_reason": "Specialists are selected per product from fresh opportunities and goal strategy; inventory safety overrides optimization.",
+    "recommendations": [
+      {
+        "agent": "restock",
+        "product_id": 1,
+        "priority": "critical",
+        "action": "restock",
+        "recommended_price": null,
+        "recommended_quantity": 67,
+        "deferred": false,
+        "coordination_reason": "Available inventory reached the reorder point or does not cover lead-time demand plus safety stock. Stock may be exhausted before or when replenishment arrives. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2250)."
+      },
+      {
+        "agent": "listing",
+        "product_id": 4,
+        "priority": "high",
+        "action": "review_listing",
+        "recommended_price": null,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "Review listing completeness and verify missing details before considering content changes. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2450)."
+      },
+      {
+        "agent": "promotion",
+        "product_id": 2,
+        "priority": "high",
+        "action": "review_promotion",
+        "recommended_price": 1349.1,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2250)."
+      },
+      {
+        "agent": "pricing",
+        "product_id": 1,
+        "priority": "medium",
+        "action": "review_price_change",
+        "recommended_price": 1048.95,
+        "recommended_quantity": null,
+        "deferred": false,
+        "coordination_reason": "Critically low inventory paired with strong sales velocity. Recommending a moderate price increase to capture margin and reduce stockout risk. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.4000)."
+      },
+      {
+        "agent": "promotion",
+        "product_id": 4,
+        "priority": "high",
+        "action": "review_promotion",
+        "recommended_price": 949.05,
+        "recommended_quantity": null,
+        "deferred": true,
+        "coordination_reason": "Review the poor listing and reassess demand before promotion."
+      },
+      {
+        "agent": "pricing",
+        "product_id": 4,
+        "priority": "medium",
+        "action": "review_price_change",
+        "recommended_price": 949.05,
+        "recommended_quantity": null,
+        "deferred": true,
+        "coordination_reason": "Review listing quality and reassess demand before assuming price is the problem."
+      },
+      {
+        "agent": "promotion",
+        "product_id": 1,
+        "priority": "low",
+        "action": "review_promotion",
+        "recommended_price": 999.0,
+        "recommended_quantity": null,
+        "deferred": true,
+        "coordination_reason": "Inventory is constrained or unverified; resolve replenishment and reanalyze before stimulating demand."
+      }
+    ],
+    "agent_results": [
+      {
+        "agent_name": "pricing",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_price": 999.0,
+          "recommended_price": 1048.95,
+          "reason": "Critically low inventory paired with strong sales velocity. Recommending a moderate price increase to capture margin and reduce stockout risk.",
+          "confidence": 0.8,
+          "risk_level": "high",
+          "price_change_percent": 5.0,
+          "sales_velocity": 5.0,
+          "inventory_quantity": 8,
+          "cost_price": 500.0
+        },
+        "risk_level": "high",
+        "confidence": 0.8,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_inventory": 12,
+          "available_inventory": 8,
+          "sales_velocity": 5.0,
+          "estimated_days_remaining": 1.6,
+          "recommended_quantity": 67,
+          "reason": "Available inventory reached the reorder point or does not cover lead-time demand plus safety stock. Stock may be exhausted before or when replenishment arrives.",
+          "confidence": 0.75,
+          "risk_level": "high",
+          "reorder_point": 10,
+          "lead_time_days": 5.0,
+          "safety_stock": 10,
+          "projected_demand_during_lead_time": 25.0,
+          "stockout_risk": true,
+          "estimated_daily_sales": 5.0
+        },
+        "risk_level": "high",
+        "confidence": 0.75,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_price": 999.0,
+          "cost_price": 500.0,
+          "promotion_recommended": false,
+          "promotion_type": "none",
+          "discount_percentage": 0.0,
+          "promotional_price": 999.0,
+          "reason": "Promotion could worsen existing stockout risk or low available inventory; replenish or verify inventory first.",
+          "confidence": 0.4,
+          "risk_level": "high",
+          "available_inventory": 8,
+          "sales_velocity": 5.0,
+          "sales_trend": "insufficient_data",
+          "gross_margin_percent": 49.949949949949946,
+          "retained_margin_percent": 49.949949949949946,
+          "days_of_inventory": 1.6,
+          "recent_units": 60,
+          "previous_units": 10,
+          "expected_effect": "Preserve current price; review the evidence before stimulating demand."
+        },
+        "risk_level": "high",
+        "confidence": 0.4,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 1,
+        "success": true,
+        "recommendation": {
+          "product_id": 1,
+          "current_title": "Wireless Mouse",
+          "recommended_title": "Wireless Mouse",
+          "current_description": "Wireless USB connectivity with battery power, compatible with Windows and macOS. Dimensions: 12 cm. Verified product details supplied by the merchant.",
+          "recommended_description": "Wireless USB connectivity with battery power, compatible with Windows and macOS. Dimensions: 12 cm. Verified product details supplied by the merchant.",
+          "issues": [
+            "Title lacks descriptive detail"
+          ],
+          "suggestions": [
+            "Use a concise title based only on verified product information."
+          ],
+          "missing_attributes": [],
+          "quality_score": 0.92,
+          "recommended_keywords": [
+            "electronics",
+            "mouse",
+            "wireless"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.9,
+          "risk_level": "low",
+          "reason": "Review listing completeness and verify missing details before considering content changes."
+        },
+        "risk_level": "low",
+        "confidence": 0.9,
+        "error": null
+      },
+      {
+        "agent_name": "pricing",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_price": 1499.0,
+          "recommended_price": 1499.0,
+          "reason": "Sales velocity and inventory levels are balanced at current price point. No price adjustment recommended.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "price_change_percent": 0.0,
+          "sales_velocity": 1.2142857142857142,
+          "inventory_quantity": 120,
+          "cost_price": 850.0
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_inventory": 120,
+          "available_inventory": 120,
+          "sales_velocity": 1.2142857142857142,
+          "estimated_days_remaining": 98.82,
+          "recommended_quantity": 0,
+          "reason": "Current inventory sufficiently covers projected demand and reorder thresholds.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "reorder_point": 10,
+          "lead_time_days": 5.0,
+          "safety_stock": 3,
+          "projected_demand_during_lead_time": 6.071428571428571,
+          "stockout_risk": false,
+          "estimated_daily_sales": 1.2142857142857142
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_price": 1499.0,
+          "cost_price": 850.0,
+          "promotion_recommended": true,
+          "promotion_type": "discount",
+          "discount_percentage": 10.0,
+          "promotional_price": 1349.1,
+          "reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through.",
+          "confidence": 0.75,
+          "risk_level": "medium",
+          "available_inventory": 120,
+          "sales_velocity": 1.2142857142857142,
+          "sales_trend": "declining",
+          "gross_margin_percent": 43.29553035356905,
+          "retained_margin_percent": 36.99503372618783,
+          "days_of_inventory": 98.82352941176471,
+          "recent_units": 1,
+          "previous_units": 16,
+          "expected_effect": "May improve sell-through of excess inventory while preserving margin; revenue lift is not guaranteed."
+        },
+        "risk_level": "medium",
+        "confidence": 0.75,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 2,
+        "success": true,
+        "recommendation": {
+          "product_id": 2,
+          "current_title": "Bluetooth Speaker Desktop Audio",
+          "recommended_title": "Bluetooth Speaker Desktop Audio",
+          "current_description": "Wireless USB connectivity with battery power, compatible with Windows and macOS. Dimensions: 12 cm. Verified product details supplied by the merchant.",
+          "recommended_description": "Wireless USB connectivity with battery power, compatible with Windows and macOS. Dimensions: 12 cm. Verified product details supplied by the merchant.",
+          "issues": [],
+          "suggestions": [],
+          "missing_attributes": [],
+          "quality_score": 1.0,
+          "recommended_keywords": [
+            "audio",
+            "bluetooth",
+            "desktop",
+            "electronics",
+            "speaker"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.9,
+          "risk_level": "low",
+          "reason": "Listing meets the available quality checks; preserve existing factual content."
+        },
+        "risk_level": "low",
+        "confidence": 0.9,
+        "error": null
+      },
+      {
+        "agent_name": "pricing",
+        "product_id": 4,
+        "success": true,
+        "recommendation": {
+          "product_id": 4,
+          "current_price": 999.0,
+          "recommended_price": 949.05,
+          "reason": "High inventory levels combined with slow sales velocity. Recommending a promotional price reduction to stimulate turnover.",
+          "confidence": 0.5,
+          "risk_level": "medium",
+          "price_change_percent": -5.0,
+          "sales_velocity": 0.07142857142857142,
+          "inventory_quantity": 50,
+          "cost_price": 500.0
+        },
+        "risk_level": "medium",
+        "confidence": 0.5,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 4,
+        "success": true,
+        "recommendation": {
+          "product_id": 4,
+          "current_inventory": 50,
+          "available_inventory": 50,
+          "sales_velocity": 0.07142857142857142,
+          "estimated_days_remaining": 700.0,
+          "recommended_quantity": 0,
+          "reason": "Current inventory sufficiently covers projected demand and reorder thresholds.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "reorder_point": 10,
+          "lead_time_days": 5.0,
+          "safety_stock": 1,
+          "projected_demand_during_lead_time": 0.3571428571428571,
+          "stockout_risk": false,
+          "estimated_daily_sales": 0.07142857142857142
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 4,
+        "success": true,
+        "recommendation": {
+          "product_id": 4,
+          "current_price": 999.0,
+          "cost_price": 500.0,
+          "promotion_recommended": true,
+          "promotion_type": "discount",
+          "discount_percentage": 5.0,
+          "promotional_price": 949.05,
+          "reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through.",
+          "confidence": 0.6,
+          "risk_level": "low",
+          "available_inventory": 50,
+          "sales_velocity": 0.07142857142857142,
+          "sales_trend": "increasing",
+          "gross_margin_percent": 49.949949949949946,
+          "retained_margin_percent": 47.315736789421,
+          "days_of_inventory": 700.0,
+          "recent_units": 1,
+          "previous_units": 0,
+          "expected_effect": "May improve sell-through of excess inventory while preserving margin; revenue lift is not guaranteed."
+        },
+        "risk_level": "low",
+        "confidence": 0.6,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 4,
+        "success": true,
+        "recommendation": {
+          "product_id": 4,
+          "current_title": "Headphones",
+          "recommended_title": "Headphones",
+          "current_description": null,
+          "recommended_description": "Headphones. Category: Electronics. SKU: PH10-2.",
+          "issues": [
+            "Title lacks descriptive detail",
+            "Description is missing",
+            "Useful product attributes are not mentioned"
+          ],
+          "suggestions": [
+            "Use a concise title based only on verified product information.",
+            "Provide clear factual details and verified usage benefits; do not invent claims.",
+            "Verify and add connectivity details if applicable.",
+            "Verify and add power details if applicable.",
+            "Verify and add compatibility details if applicable.",
+            "Verify and add dimensions details if applicable."
+          ],
+          "missing_attributes": [
+            "connectivity",
+            "power",
+            "compatibility",
+            "dimensions"
+          ],
+          "quality_score": 0.32,
+          "recommended_keywords": [
+            "electronics",
+            "headphones"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.7,
+          "risk_level": "medium",
+          "reason": "Review listing completeness and verify missing details before considering content changes."
+        },
+        "risk_level": "medium",
+        "confidence": 0.7,
+        "error": null
+      },
+      {
+        "agent_name": "pricing",
+        "product_id": 5,
+        "success": true,
+        "recommendation": {
+          "product_id": 5,
+          "current_price": 999.0,
+          "recommended_price": 999.0,
+          "reason": "Sales velocity and inventory levels are balanced at current price point. No price adjustment recommended.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "price_change_percent": 0.0,
+          "sales_velocity": 0.5,
+          "inventory_quantity": 20,
+          "cost_price": 500.0
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "restock",
+        "product_id": 5,
+        "success": true,
+        "recommendation": {
+          "product_id": 5,
+          "current_inventory": 20,
+          "available_inventory": 20,
+          "sales_velocity": 0.5,
+          "estimated_days_remaining": 40.0,
+          "recommended_quantity": 0,
+          "reason": "Current inventory sufficiently covers projected demand and reorder thresholds.",
+          "confidence": 0.65,
+          "risk_level": "low",
+          "reorder_point": 10,
+          "lead_time_days": 5.0,
+          "safety_stock": 1,
+          "projected_demand_during_lead_time": 2.5,
+          "stockout_risk": false,
+          "estimated_daily_sales": 0.5
+        },
+        "risk_level": "low",
+        "confidence": 0.65,
+        "error": null
+      },
+      {
+        "agent_name": "promotion",
+        "product_id": 5,
+        "success": true,
+        "recommendation": {
+          "product_id": 5,
+          "current_price": 999.0,
+          "cost_price": 500.0,
+          "promotion_recommended": false,
+          "promotion_type": "none",
+          "discount_percentage": 0.0,
+          "promotional_price": 999.0,
+          "reason": "Inventory is not excessive relative to demand; no promotion recommended.",
+          "confidence": 0.6,
+          "risk_level": "low",
+          "available_inventory": 20,
+          "sales_velocity": 0.5,
+          "sales_trend": "increasing",
+          "gross_margin_percent": 49.949949949949946,
+          "retained_margin_percent": 49.949949949949946,
+          "days_of_inventory": 40.0,
+          "recent_units": 7,
+          "previous_units": 0,
+          "expected_effect": "Preserve current price; review the evidence before stimulating demand."
+        },
+        "risk_level": "low",
+        "confidence": 0.6,
+        "error": null
+      },
+      {
+        "agent_name": "listing",
+        "product_id": 5,
+        "success": true,
+        "recommendation": {
+          "product_id": 5,
+          "current_title": "Keyboard Desktop USB Wired",
+          "recommended_title": "Keyboard Desktop USB Wired",
+          "current_description": "Wireless USB connectivity with battery power, compatible with Windows and macOS. Dimensions: 12 cm. Verified product details supplied by the merchant.",
+          "recommended_description": "Wireless USB connectivity with battery power, compatible with Windows and macOS. Dimensions: 12 cm. Verified product details supplied by the merchant.",
+          "issues": [],
+          "suggestions": [],
+          "missing_attributes": [],
+          "quality_score": 1.0,
+          "recommended_keywords": [
+            "desktop",
+            "electronics",
+            "keyboard",
+            "usb",
+            "wired"
+          ],
+          "category_consistency": "consistent",
+          "confidence": 0.9,
+          "risk_level": "low",
+          "reason": "Listing meets the available quality checks; preserve existing factual content."
+        },
+        "risk_level": "low",
+        "confidence": 0.9,
+        "error": null
+      }
+    ],
+    "conflicts": [
+      {
+        "type": "promotion_inventory_conflict",
+        "severity": "high",
+        "product_id": 1,
+        "message": "Inventory is constrained or unverified; resolve replenishment and reanalyze before stimulating demand.",
+        "resolution": "Restock or verify physical inventory first."
+      },
+      {
+        "type": "pricing_promotion_conflict",
+        "severity": "medium",
+        "product_id": 4,
+        "message": "Base-price changes and temporary discounts must not overlap or stack.",
+        "resolution": "Review promotion first; defer the alternative and reanalyze."
+      }
+    ],
+    "relationships": [],
+    "overall_risk": "high",
+    "overall_confidence": 0.32,
+    "approval_required": true,
+    "complete": true,
+    "created_at": "2026-10-02T20:52:28.015274Z",
+    "products_analyzed": 4,
+    "opportunities": [
+      {
+        "product_id": 1,
+        "product_name": "Wireless Mouse",
+        "pricing_opportunity": true,
+        "stockout_risk": true,
+        "excess_inventory": false,
+        "listing_issue": true,
+        "listing_quality": 0.92,
+        "inventory_known": true,
+        "active": true,
+        "selected_agents": [
+          "pricing",
+          "restock",
+          "promotion",
+          "listing"
+        ],
+        "selection_reasons": {
+          "pricing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "restock": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "promotion": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "listing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality."
+        }
+      },
+      {
+        "product_id": 2,
+        "product_name": "Bluetooth Speaker Desktop Audio",
+        "pricing_opportunity": false,
+        "stockout_risk": false,
+        "excess_inventory": true,
+        "listing_issue": false,
+        "listing_quality": 1.0,
+        "inventory_known": true,
+        "active": true,
+        "selected_agents": [
+          "pricing",
+          "restock",
+          "promotion",
+          "listing"
+        ],
+        "selection_reasons": {
+          "pricing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "restock": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "promotion": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "listing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality."
+        }
+      },
+      {
+        "product_id": 4,
+        "product_name": "Headphones",
+        "pricing_opportunity": true,
+        "stockout_risk": false,
+        "excess_inventory": true,
+        "listing_issue": true,
+        "listing_quality": 0.32,
+        "inventory_known": true,
+        "active": true,
+        "selected_agents": [
+          "pricing",
+          "restock",
+          "promotion",
+          "listing"
+        ],
+        "selection_reasons": {
+          "pricing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "restock": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "promotion": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "listing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality."
+        }
+      },
+      {
+        "product_id": 5,
+        "product_name": "Keyboard Desktop USB Wired",
+        "pricing_opportunity": false,
+        "stockout_risk": false,
+        "excess_inventory": false,
+        "listing_issue": false,
+        "listing_quality": 1.0,
+        "inventory_known": true,
+        "active": true,
+        "selected_agents": [
+          "pricing",
+          "restock",
+          "promotion",
+          "listing"
+        ],
+        "selection_reasons": {
+          "pricing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "restock": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "promotion": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality.",
+          "listing": "Balanced growth requests broad analysis of revenue, inventory, margin and catalog quality."
+        }
+      }
+    ],
+    "opportunity_summary": {
+      "pricing_opportunities": [
+        1,
+        4
+      ],
+      "restock_risks": [
+        1
+      ],
+      "promotion_opportunities": [
+        2,
+        4
+      ],
+      "listing_issues": [
+        1,
+        4
+      ]
+    },
+    "recommendation_relationships": [
+      {
+        "product_id": 1,
+        "agent_a": "promotion",
+        "agent_b": "restock",
+        "relationship_type": "conflict",
+        "severity": "high",
+        "explanation": "Inventory is constrained or unverified; resolve replenishment and reanalyze before stimulating demand.",
+        "recommended_resolution": "Restock or verify physical inventory first."
+      },
+      {
+        "product_id": 1,
+        "agent_a": "promotion",
+        "agent_b": "restock",
+        "relationship_type": "dependency",
+        "severity": "high",
+        "explanation": "Promotion requires healthy verified inventory.",
+        "recommended_resolution": "Reanalyze after actual replenishment; a simulated restock does not satisfy this dependency."
+      },
+      {
+        "product_id": 1,
+        "agent_a": "pricing",
+        "agent_b": "restock",
+        "relationship_type": "synergy",
+        "severity": "medium",
+        "explanation": "A bounded increase can coexist with replenishment planning.",
+        "recommended_resolution": "Prioritize replenishment and monitor demand."
+      },
+      {
+        "product_id": 1,
+        "agent_a": "restock",
+        "agent_b": "listing",
+        "relationship_type": "independent",
+        "severity": "low",
+        "explanation": "Factual listing review and replenishment address separate issues.",
+        "recommended_resolution": "Review independently; inventory safety remains first."
+      },
+      {
+        "product_id": 2,
+        "agent_a": "restock",
+        "agent_b": "listing",
+        "relationship_type": "independent",
+        "severity": "low",
+        "explanation": "Factual listing review and replenishment address separate issues.",
+        "recommended_resolution": "Review independently; inventory safety remains first."
+      },
+      {
+        "product_id": 4,
+        "agent_a": "pricing",
+        "agent_b": "promotion",
+        "relationship_type": "conflict",
+        "severity": "medium",
+        "explanation": "Base-price changes and temporary discounts must not overlap or stack.",
+        "recommended_resolution": "Review promotion first; defer the alternative and reanalyze."
+      },
+      {
+        "product_id": 4,
+        "agent_a": "promotion",
+        "agent_b": "listing",
+        "relationship_type": "dependency",
+        "severity": "low",
+        "explanation": "Listing quality should be reviewed before relying on discounts.",
+        "recommended_resolution": "Review verified listing information, then reanalyze promotion."
+      },
+      {
+        "product_id": 4,
+        "agent_a": "listing",
+        "agent_b": "promotion",
+        "relationship_type": "synergy",
+        "severity": "low",
+        "explanation": "Poor listing information may contribute to weak demand; listing improvements support promotion review.",
+        "recommended_resolution": "Review factual listing content before or alongside a controlled promotion."
+      },
+      {
+        "product_id": 4,
+        "agent_a": "pricing",
+        "agent_b": "listing",
+        "relationship_type": "dependency",
+        "severity": "medium",
+        "explanation": "Poor listing quality makes price reduction a secondary remedy.",
+        "recommended_resolution": "Improve or verify factual content, then reanalyze pricing."
+      },
+      {
+        "product_id": 4,
+        "agent_a": "restock",
+        "agent_b": "listing",
+        "relationship_type": "independent",
+        "severity": "low",
+        "explanation": "Factual listing review and replenishment address separate issues.",
+        "recommended_resolution": "Review independently; inventory safety remains first."
+      },
+      {
+        "product_id": 5,
+        "agent_a": "restock",
+        "agent_b": "listing",
+        "relationship_type": "independent",
+        "severity": "low",
+        "explanation": "Factual listing review and replenishment address separate issues.",
+        "recommended_resolution": "Review independently; inventory safety remains first."
+      }
+    ],
+    "prioritized_actions": [
+      {
+        "id": "1:restock",
+        "rank": 1,
+        "product_id": 1,
+        "product_name": "Wireless Mouse",
+        "agent": "restock",
+        "action_type": "restock",
+        "priority": "critical",
+        "priority_score": 0.225,
+        "reason": "Available inventory reached the reorder point or does not cover lead-time demand plus safety stock. Stock may be exhausted before or when replenishment arrives. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2250).",
+        "confidence": 0.75,
+        "risk": "high",
+        "blocked": false,
+        "blocked_reason": null,
+        "depends_on": [],
+        "approval_candidate": true
+      },
+      {
+        "id": "4:listing",
+        "rank": 2,
+        "product_id": 4,
+        "product_name": "Headphones",
+        "agent": "listing",
+        "action_type": "listing_update",
+        "priority": "high",
+        "priority_score": 0.245,
+        "reason": "Review listing completeness and verify missing details before considering content changes. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2450).",
+        "confidence": 0.7,
+        "risk": "medium",
+        "blocked": false,
+        "blocked_reason": null,
+        "depends_on": [],
+        "approval_candidate": true
+      },
+      {
+        "id": "2:promotion",
+        "rank": 3,
+        "product_id": 2,
+        "product_name": "Bluetooth Speaker Desktop Audio",
+        "agent": "promotion",
+        "action_type": "promotion",
+        "priority": "high",
+        "priority_score": 0.225,
+        "reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2250).",
+        "confidence": 0.75,
+        "risk": "medium",
+        "blocked": false,
+        "blocked_reason": null,
+        "depends_on": [],
+        "approval_candidate": true
+      },
+      {
+        "id": "1:pricing",
+        "rank": 4,
+        "product_id": 1,
+        "product_name": "Wireless Mouse",
+        "agent": "pricing",
+        "action_type": "price_change",
+        "priority": "medium",
+        "priority_score": 0.4,
+        "reason": "Critically low inventory paired with strong sales velocity. Recommending a moderate price increase to capture margin and reduce stockout risk. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.4000).",
+        "confidence": 0.8,
+        "risk": "high",
+        "blocked": false,
+        "blocked_reason": null,
+        "depends_on": [],
+        "approval_candidate": true
+      }
+    ],
+    "blocked_actions": [
+      {
+        "id": "4:promotion",
+        "rank": 4,
+        "product_id": 4,
+        "product_name": "Headphones",
+        "agent": "promotion",
+        "action_type": "promotion",
+        "priority": "high",
+        "priority_score": 0.18,
+        "reason": "High available inventory combined with weak or declining sales suggests a controlled discount to improve sell-through. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.1800).",
+        "confidence": 0.6,
+        "risk": "low",
+        "blocked": true,
+        "blocked_reason": "Review the poor listing and reassess demand before promotion.",
+        "depends_on": [
+          "4:listing"
+        ],
+        "approval_candidate": false
+      },
+      {
+        "id": "4:pricing",
+        "rank": 6,
+        "product_id": 4,
+        "product_name": "Headphones",
+        "agent": "pricing",
+        "action_type": "price_change",
+        "priority": "medium",
+        "priority_score": 0.25,
+        "reason": "High inventory levels combined with slow sales velocity. Recommending a promotional price reduction to stimulate turnover. Goal strategy: balanced_growth; score = goal weight \u00d7 signal strength \u00d7 confidence (0.2500).",
+        "confidence": 0.5,
+        "risk": "medium",
+        "blocked": true,
+        "blocked_reason": "Review listing quality and reassess demand before assuming price is the problem.",
+        "depends_on": [
+          "4:listing"
+        ],
+        "approval_candidate": false
+      },
+      {
+        "id": "1:promotion",
+        "rank": 7,
+        "product_id": 1,
+        "product_name": "Wireless Mouse",
+        "agent": "promotion",
+        "action_type": "promotion",
+        "priority": "low",
+        "priority_score": 0.0,
+        "reason": "Demand stimulation is suppressed by the inventory safety override.",
+        "confidence": 0.0,
+        "risk": "high",
+        "blocked": true,
+        "blocked_reason": "Inventory is constrained or unverified; resolve replenishment and reanalyze before stimulating demand.",
+        "depends_on": [
+          "1:restock"
+        ],
+        "approval_candidate": false
+      }
+    ],
+    "omitted_actions": [],
+    "warnings": [],
+    "scope_has_more": false
+  },
+  "verification": {
+    "operational_data_unchanged": true,
+    "actions_created_by_analysis": 0,
+    "approvals_created_by_analysis": 0,
+    "recommendations_persisted_by_analysis": 0
+  }
+}

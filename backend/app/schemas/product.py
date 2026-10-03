@@ -2,7 +2,8 @@
 
 from datetime import datetime
 from decimal import Decimal
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from app.schemas._time import utc_timestamp
 from app.schemas.inventory import InventoryResponse
 from app.schemas.price_history import PriceHistoryResponse
 
@@ -13,7 +14,7 @@ class ProductBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=255, description="Product catalog title")
     description: str | None = Field(None, description="Detailed product description")
     category: str = Field(..., min_length=1, max_length=100, description="Product taxonomy category")
-    cost_price: Decimal = Field(..., ge=0, description="Unit acquisition / production cost")
+    cost_price: Decimal | None = Field(..., ge=0, description="Unit acquisition / production cost")
     selling_price: Decimal = Field(..., ge=0, description="Storefront retail price")
     status: str = Field(default="active", max_length=50, description="Listing status: active, draft, archived")
 
@@ -38,10 +39,16 @@ class ProductUpdate(BaseModel):
 
 class ProductResponse(ProductBase):
     """Product summary response."""
+    source: str = "local"
     id: int
     merchant_id: int
     created_at: datetime
     updated_at: datetime
+
+    @field_validator("created_at", "updated_at")
+    @classmethod
+    def utc_dates(cls, value: datetime) -> datetime:
+        return utc_timestamp(value)
 
     model_config = ConfigDict(from_attributes=True)
 

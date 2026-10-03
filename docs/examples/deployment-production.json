@@ -1,0 +1,19 @@
+{
+  "health": {
+    "status": "ok",
+    "app": "CartPilot",
+    "environment": "production",
+    "database": "connected",
+    "redis": "disabled",
+    "version": "1.0.0"
+  },
+  "products": 25,
+  "agents": [
+    "pricing",
+    "restock",
+    "promotion",
+    "listing"
+  ],
+  "production_write_and_integration_gates": "preserved",
+  "cors": "known origin allowed; unknown origin not trusted"
+}

@@ -1,0 +1,1 @@
+"""Deterministic advisory promotion services."""

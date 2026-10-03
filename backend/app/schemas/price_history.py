@@ -2,7 +2,8 @@
 
 from datetime import datetime
 from decimal import Decimal
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from app.schemas._time import utc_timestamp
 
 
 class PriceHistoryResponse(BaseModel):
@@ -13,5 +14,10 @@ class PriceHistoryResponse(BaseModel):
     new_price: Decimal = Field(..., ge=0)
     changed_at: datetime
     reason: str | None = None
+
+    @field_validator("changed_at")
+    @classmethod
+    def utc_dates(cls, value: datetime) -> datetime:
+        return utc_timestamp(value)
 
     model_config = ConfigDict(from_attributes=True)

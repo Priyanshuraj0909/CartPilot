@@ -1,0 +1,26 @@
+import { useState } from "react";
+import { useStore } from "../hooks/useStore";
+import { useTask } from "../hooks/useTask";
+import { api } from "../services/api";
+import { goals, goalStrategies, type ActionPlan } from "../types";
+import { Badge, EmptyState, ErrorAlert, Loading, PageTitle } from "../components/common";
+import { ActionPlanCard } from "../components/recommendations/RecommendationCards";
+import { IntelligentPlan } from "../components/IntelligentPlan";
+import { PlanActions } from "../components/ActionCreation";
+export function AIManager() {
+  const store = useStore(); const task = useTask<ActionPlan>(store.merchantId ?? 0);
+  const [goal, setGoal] = useState<typeof goals[number]>("balanced_growth");
+  const [selected, setSelected] = useState<number[]>([]); const [search, setSearch] = useState("");
+  const products = store.catalog?.products ?? [];
+  function analyze(all: boolean) {
+    if (!store.merchantId || (!all && !validIds.length)) return;
+    const merchantId = store.merchantId;
+    task.run(signal => api.runOrchestrator({ merchant_id: merchantId, goal, ...(all ? { product_ids: null } : { product_ids: validIds }) }, signal), data => store.addAnalysis({ kind: "orchestrator", data, merchant_id: merchantId, created_at: data.created_at }));
+  }
+  const intelligent = goalStrategies.some(strategy => strategy.value === goal);
+  const validIds = selected.filter(id => products.some(product => product.id === id));
+  return <><PageTitle title="AI Manager" description="One goal. A coordinated plan. Every decision stays with you." />{store.loading && <Loading />}{store.error && <ErrorAlert message={store.error} retry={store.refresh} />}
+    <form className="panel manager-form" onSubmit={event => { event.preventDefault(); analyze(false); }}><div className="form-step"><span className="step">1</span><div><label htmlFor="business-goal">Choose a business goal</label><p className="muted">CartPilot selects the relevant agents for this objective.</p><select id="business-goal" value={goal} onChange={event => setGoal(event.target.value as typeof goals[number])} disabled={task.loading}>{goals.filter(value => !goalStrategies.some(strategy => strategy.label.toLowerCase() === value)).map(value => <option key={value} value={value}>{goalStrategies.find(strategy => strategy.value === value)?.label ?? value[0].toUpperCase() + value.slice(1)}</option>)}</select><div className="goal-cards">{goalStrategies.map(strategy => <button key={strategy.value} type="button" className="goal-card" aria-pressed={goal === strategy.value} disabled={task.loading} onClick={() => setGoal(strategy.value)}>{strategy.label}</button>)}</div></div></div>
+    <div className="form-step"><span className="step">2</span><div><label htmlFor="product-search">Select products <span className="muted">({validIds.length}/100)</span></label><input id="product-search" placeholder="Search products…" value={search} onChange={event => setSearch(event.target.value)} /><div className="product-picker">{products.filter(product => `${product.name} ${product.sku}`.toLowerCase().includes(search.toLowerCase())).map(product => <label key={product.id}><input type="checkbox" checked={validIds.includes(product.id)} disabled={task.loading || (!validIds.includes(product.id) && validIds.length >= 100)} onChange={event => setSelected(current => event.target.checked ? [...current, product.id] : current.filter(id => id !== product.id))} /><span><strong>{product.name}</strong><small>{product.sku} · {product.inventory?.available_quantity ?? "Unknown"} available</small></span><Badge tone={product.inventory_status}>{product.inventory_status}</Badge></label>)}{!products.length && !store.loading && <EmptyState>No products available for analysis.</EmptyState>}</div>{store.catalog?.has_more && <button type="button" className="text-btn" disabled={store.moreLoading} onClick={store.loadMore}>Load more products</button>}</div></div><div className="form-footer"><p>Recommendation only. No prices, inventory, or orders will change.</p><button type="button" className="btn secondary" disabled={task.loading || !store.merchantId || !intelligent} onClick={() => analyze(true)}>Analyze Store</button><button className="btn" disabled={task.loading || !validIds.length || !store.merchantId}>{task.loading ? "Analyzing…" : "Analyze with CartPilot"}</button></div></form>
+    {task.loading && <Loading text="Analyzing store context and coordinating recommendations…" />}{task.error && <ErrorAlert message={task.error} />}{task.data ? <>{(task.data.opportunities?.length || task.data.goal.includes("_")) ? <IntelligentPlan plan={task.data} /> : <ActionPlanCard data={task.data} productName={id => products.find(product => product.id === id)?.name ?? `Product ${id}`} />}{!task.data.opportunities?.length && !task.data.goal.includes("_") && <PlanActions plan={task.data} />}</> : !task.loading && <EmptyState>Your coordinated plan will appear here after analysis.</EmptyState>}</>;
+}

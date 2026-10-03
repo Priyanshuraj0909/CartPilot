@@ -16,6 +16,7 @@ class Inventory(Base):
 
     __tablename__ = "inventory"
     __table_args__ = (
+        CheckConstraint("unavailable_quantity >= 0", name="chk_inventory_unavailable_non_negative"),
         CheckConstraint("quantity >= 0", name="chk_inventory_quantity_non_negative"),
         CheckConstraint("reserved_quantity >= 0", name="chk_inventory_reserved_non_negative"),
         CheckConstraint("reorder_point >= 0", name="chk_inventory_reorder_point_non_negative"),
@@ -32,6 +33,7 @@ class Inventory(Base):
     )
     quantity: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     reserved_quantity: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    unavailable_quantity: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
     reorder_point: Mapped[int] = mapped_column(Integer, default=10, nullable=False)
     reorder_quantity: Mapped[int] = mapped_column(Integer, default=50, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
@@ -47,7 +49,7 @@ class Inventory(Base):
     @property
     def available_quantity(self) -> int:
         """Calculate unreserved stock available for immediate fulfillment."""
-        return max(0, self.quantity - self.reserved_quantity)
+        return max(0, self.quantity - self.reserved_quantity - (self.unavailable_quantity or 0))
 
     @property
     def is_low_stock(self) -> bool:

@@ -1,0 +1,18 @@
+{
+  "database": "isolated PostgreSQL 17.11",
+  "environment": "development (private demo)",
+  "entrypoint": "sh scripts/start.sh",
+  "products": 4,
+  "agents": [
+    "pricing",
+    "restock",
+    "promotion",
+    "listing"
+  ],
+  "orchestrator": "balanced_growth",
+  "unapproved_execution": "blocked (409)",
+  "approval": "approved",
+  "execution": "executed",
+  "repeated_execution": "idempotent",
+  "audit": "execution_completed visible"
+}
