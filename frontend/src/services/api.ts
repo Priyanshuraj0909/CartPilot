@@ -2,16 +2,18 @@ import type { ShopifyStatus, ShopifySync, GuardedAction, ActionCreate, ActionAud
 
 const base = (import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "" : "http://localhost:8000")).replace(/\/$/, "");
 export class ApiError extends Error { constructor(message: string, public status: number) { super(message); } }
-async function request<T>(path: string, signal?: AbortSignal, body?: unknown): Promise<T> {
+export async function request<T>(path: string, signal?: AbortSignal, body?: unknown, method?: string): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(`${base}${path}`, { signal, ...(body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }) });
+    response = await fetch(`${base}${path}`, { signal, headers: { "Content-Type": "application/json", ...(sessionStorage.getItem("cartpilot-token") ? { Authorization: `Bearer ${sessionStorage.getItem("cartpilot-token")}` } : {}) }, ...(body === undefined ? {} : { method: method || "POST", body: JSON.stringify(body) }) });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") throw error;
     throw new ApiError("Unable to reach CartPilot. Check that the backend is running and try again.", 0);
   }
   if (!response.ok) {
+    if (response.status === 401 && sessionStorage.getItem("cartpilot-token")) { sessionStorage.removeItem("cartpilot-token"); window.dispatchEvent(new Event("cartpilot-session-expired")); }
     const messages: Record<number, string> = {
+      401: "Sign in to continue.",
       404: "The merchant or product could not be found. Refresh your store data.",
       403: "This product does not belong to the selected merchant.",
       409: "This action changed or is not approved for execution. Refresh the action list.",

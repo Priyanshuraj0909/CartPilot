@@ -108,3 +108,13 @@ data for subsequent analysis, not a trained learning loop.
 [Algorithms](docs/ALGORITHMS.md), [API/entities/security](docs/API_DATABASE_SECURITY.md),
 [final status](FINAL_STATUS.md) and [test evidence](TEST_SUMMARY.md) are the submission
 references. Confidence scores are heuristic; no measured business uplift is claimed.
+
+## User-authorized account/store continuation
+
+The new account boundary uses scrypt password hashes and hashed, revocable opaque
+sessions. Production business routers require authentication and compare caller scope
+to the session's merchant; merchants are filtered to the account's store. New management
+APIs always require an account. Product archive preserves history, manual prices create
+PriceHistory, sales reference import is bounded/idempotent and creates scoped orders.
+These additions do not enable external agent execution or production guarded action writes.
+See docs/ACCOUNT_STORE_MANAGEMENT.md for remaining identity and notification limitations.

@@ -3,6 +3,9 @@
 import os
 # Set safe process configuration before importing the application; no developer services.
 os.environ["ENVIRONMENT"] = "test"
+os.environ["REQUIRE_AUTH"] = "false"
+os.environ["CORS_ORIGINS"] = "http://localhost:5173,http://127.0.0.1:5173"
+os.environ["DATABASE_POOL_MODE"] = "pooled"
 os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
 os.environ["REDIS_URL"] = "redis://127.0.0.1:1/0"
 os.environ["SHOPIFY_STORE_DOMAIN"] = ""

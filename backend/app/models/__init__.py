@@ -35,3 +35,4 @@ __all__ = [
 ]
 
 from app.models.shopify import ShopifyConnection, ExternalProductMapping, ExternalOrderMapping
+from app.models.account import Account, AccountSession

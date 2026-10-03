@@ -48,9 +48,12 @@ async def test_disabled_redis_never_connects_and_database_health_remains_ok(asyn
 
 async def test_production_preserves_write_and_integration_gates(async_client, monkeypatch):
     monkeypatch.setattr(settings, "ENVIRONMENT", "production")
+    from app.api.v1.accounts import business_access
+    app.dependency_overrides[business_access] = lambda: None
     for path, body in [("/api/v1/actions", {}), ("/api/v1/integrations/shopify/sync", {"merchant_id": 1})]:
         assert (await async_client.post(path, json=body)).status_code == 403
     assert (await async_client.get("/api/v1/integrations/shopify/status?merchant_id=1")).status_code == 403
+    app.dependency_overrides.pop(business_access, None)
 
 
 def test_optional_shopify_merchant_can_be_unset_in_host_environment():

@@ -276,3 +276,9 @@ are implemented, ACT is guarded local/simulated, and LEARN currently records his
 without training. FINAL_STATUS.md is authoritative for implemented/simulated/read-only
 classifications. After Phase 14, stop feature development unless a real defect or
 explicit project-guide request justifies further work.
+
+## User-authorized continuation
+
+The user explicitly requested missing account/store functionality after the audit.
+Current continuation: phases/PHASE_15.md; account/store workflows may be developed
+within that scope. Preserve specialist guardrails and external execution limitations.

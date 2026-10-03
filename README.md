@@ -288,3 +288,12 @@ verification and the information needed for actual hosting.
 [Setup and account steps](docs/VERCEL_NEON.md) cover two Vercel projects and a Neon database.
 Local preparation passed 564 backend tests, 76 frontend tests and the production build.
 Actual cloud deployment remains pending account connections; production writes remain gated.
+
+### Account and store management continuation
+
+[Setup and current limits](docs/ACCOUNT_STORE_MANAGEMENT.md): signup/login/logout,
+production account authorization, product create/edit/archive, sales CSV import,
+recorded-sales ranking and stock alerts. Apply `python -m alembic upgrade head` before
+using accounts. For authenticated local use set REQUIRE_AUTH=true in the backend and
+VITE_REQUIRE_AUTH=true in the frontend, then restart/rebuild. Production always requires
+accounts. Historical academic artifacts describe the earlier MVP snapshot.

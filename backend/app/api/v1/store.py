@@ -1,5 +1,5 @@
 """Minimal read-only catalogue, inventory, and saved recommendation endpoints."""
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.deps import get_database_session
@@ -12,9 +12,12 @@ router = APIRouter(tags=["Merchant data"])
 
 
 @router.get("/merchants", response_model=list[MerchantSummary])
-async def merchants(session: AsyncSession = Depends(get_database_session)):
+async def merchants(request: Request, session: AsyncSession = Depends(get_database_session)):
     with session.no_autoflush:
-        return (await session.execute(select(Merchant).order_by(Merchant.id).limit(100))).scalars().all()
+        statement = select(Merchant)
+        if getattr(request.state,"account",None):
+            statement = statement.where(Merchant.id == request.state.account.merchant_id)
+        return (await session.execute(statement.order_by(Merchant.id).limit(100))).scalars().all()
 
 
 @router.get("/products", response_model=CatalogSnapshot)

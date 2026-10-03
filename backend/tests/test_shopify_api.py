@@ -57,8 +57,8 @@ async def test_remote_auth_failure_is_saved(async_client,configured,monkeypatch)
 
 async def test_production_blocked(async_client,configured,monkeypatch):
     monkeypatch.setattr(settings,'ENVIRONMENT','production')
-    assert (await async_client.get('/api/v1/integrations/shopify/status?merchant_id=1')).status_code==403
-    assert (await async_client.post('/api/v1/integrations/shopify/sync',json={'merchant_id':1})).status_code==403
+    assert (await async_client.get('/api/v1/integrations/shopify/status?merchant_id=1')).status_code==401
+    assert (await async_client.post('/api/v1/integrations/shopify/sync',json={'merchant_id':1})).status_code==401
     assert not configured.calls
 
 async def test_not_configured_preserves_demo(async_client,configured,monkeypatch):

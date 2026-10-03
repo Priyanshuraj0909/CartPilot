@@ -4,6 +4,7 @@ Usage: python scripts/deployment_smoke.py --url http://127.0.0.1:8013
 No credentials, migrations, seeding or action execution are performed.
 """
 import argparse
+import os
 import json
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError
@@ -21,6 +22,8 @@ def main() -> None:
 
     def request(path: str, body: dict | None = None, origin: str | None = None) -> tuple[int, object, object]:
         headers = {"Content-Type": "application/json"}
+        if os.environ.get("CARTPILOT_SMOKE_TOKEN"):
+            headers["Authorization"] = "Bearer " + os.environ["CARTPILOT_SMOKE_TOKEN"]
         if origin:
             headers["Origin"] = origin
         req = Request(base + path, data=json.dumps(body).encode() if body is not None else None, headers=headers)

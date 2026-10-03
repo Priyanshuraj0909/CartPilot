@@ -65,7 +65,7 @@ async def test_invalid_creation(async_client,body):
 async def test_production_disabled(async_client,monkeypatch):
     monkeypatch.setattr(settings,'ENVIRONMENT','production')
     r=await async_client.post('/api/v1/actions/1/approve',json={'merchant_id':1})
-    assert r.status_code==403
+    assert r.status_code==401
 
 async def test_concurrent_execution(tmp_path,async_client):
     engine=create_async_engine(f'sqlite+aiosqlite:///{tmp_path}/concurrent.sqlite')

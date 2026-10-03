@@ -269,3 +269,12 @@ adds documentation/test utilities only and does not change production permission
 [Vercel + Neon instructions](docs/VERCEL_NEON.md) configure separate frontend/backend
 projects and hosted PostgreSQL. Provider files are checked in locally; account connections
 and actual cloud builds remain pending. Production approval/Shopify gates remain intact.
+
+### Account migration and authenticated reads
+
+The merchant-workflow continuation adds revision `15_accounts`. Apply migrations before
+deploying. Production business APIs now require a registered account and bearer session;
+new signup creates an independent empty store rather than claiming seeded merchants.
+Production approval/execution/Shopify restrictions still apply after login. See
+[account setup](docs/ACCOUNT_STORE_MANAGEMENT.md). Old anonymous smoke commands are
+historical and cannot verify authenticated store reads without updated credentials.

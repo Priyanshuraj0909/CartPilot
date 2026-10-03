@@ -283,3 +283,9 @@ final 560/76 tests/build/bootstrap/browser verification and secret-safe source a
 No product feature or new API/agent/integration is added. See
 [Phase 14](phases/PHASE_14.md) and [Final status](FINAL_STATUS.md).
 Stop development after this phase unless a real defect or guide request requires it.
+
+### Phase 15 — explicitly requested merchant workflow improvements
+
+Account/session authorization, catalog CRUD/archive, sales import, observed-sales
+summaries and in-app stock alerts. See phases/PHASE_15.md and
+[setup/limits](docs/ACCOUNT_STORE_MANAGEMENT.md). Historical Phase 14 evidence is retained.

@@ -3,10 +3,12 @@
 import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.v1.management import router as management_router
+from app.api.v1.accounts import router as accounts_router, business_access
 from app.api.v1.shopify import router as shopify_router
 from app.api.v1.health import router as health_router
 from app.api.v1.pricing import router as pricing_router
@@ -71,15 +73,17 @@ async def root_health() -> HealthResponse:
 
 
 # Mount API routers
-app.include_router(shopify_router, prefix="/api/v1")
+app.include_router(accounts_router, prefix="/api/v1")
+app.include_router(management_router, prefix="/api/v1")
+app.include_router(shopify_router, prefix="/api/v1", dependencies=[Depends(business_access)])
 app.include_router(health_router, prefix="/api/v1")
-app.include_router(pricing_router, prefix="/api/v1")
-app.include_router(restock_router, prefix="/api/v1")
-app.include_router(orchestration_router, prefix="/api/v1")
-app.include_router(store_router, prefix="/api/v1")
-app.include_router(promotion_router, prefix="/api/v1")
-app.include_router(listing_router, prefix="/api/v1")
-app.include_router(actions_router, prefix="/api/v1")
+app.include_router(pricing_router, prefix="/api/v1", dependencies=[Depends(business_access)])
+app.include_router(restock_router, prefix="/api/v1", dependencies=[Depends(business_access)])
+app.include_router(orchestration_router, prefix="/api/v1", dependencies=[Depends(business_access)])
+app.include_router(store_router, prefix="/api/v1", dependencies=[Depends(business_access)])
+app.include_router(promotion_router, prefix="/api/v1", dependencies=[Depends(business_access)])
+app.include_router(listing_router, prefix="/api/v1", dependencies=[Depends(business_access)])
+app.include_router(actions_router, prefix="/api/v1", dependencies=[Depends(business_access)])
 
 
 @app.get("/", tags=["Root"])

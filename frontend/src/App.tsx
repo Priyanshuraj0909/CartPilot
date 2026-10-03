@@ -1,3 +1,4 @@
+import { AccountGate } from "./components/AccountGate";
 import { useEffect, useState } from "react";
 import { StoreProvider, useStore } from "./hooks/useStore";
 import { Shell } from "./components/layout/Shell";
@@ -22,5 +23,5 @@ function Workspace() {
   const product = store.catalog?.products.find(item => item.id === selected);
   return <Shell path={path} navigate={navigate}><div key={store.merchantId ?? "no-store"}>{path === "/integrations" ? <Integrations /> : path === "/dashboard" ? <Dashboard onDetails={setSelected} navigate={navigate} /> : path === "/products" ? <Products onDetails={setSelected} /> : path === "/inventory" ? <InventoryPage onDetails={setSelected} /> : path === "/ai-manager" ? <AIManager /> : path === "/recommendations" ? <Recommendations /> : path === "/agent-activity" ? <AgentActivity /> : path === "/approvals" ? <Approvals /> : path === "/action-history" ? <ActionHistory /> : <EmptyState>Page not found. <button className="text-btn" onClick={() => navigate("/dashboard")}>Return to Dashboard</button></EmptyState>}{product && <ProductDrawer product={product} close={() => setSelected(null)} />}</div></Shell>;
 }
-export function App() { return <StoreProvider><Workspace /></StoreProvider>; }
+export function App() { return <AccountGate><StoreProvider><Workspace /></StoreProvider></AccountGate>; }
 export default App;

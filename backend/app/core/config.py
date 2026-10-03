@@ -13,6 +13,7 @@ class Settings(BaseSettings):
 
     APP_NAME: str = "CartPilot"
     ENVIRONMENT: Literal["development", "test", "production"] = "development"
+    REQUIRE_AUTH: bool = False
     LOG_LEVEL: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     HOST: str = "0.0.0.0"
     PORT: int = Field(8000, ge=1, le=65535)
