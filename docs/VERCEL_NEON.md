@@ -4,6 +4,9 @@ Use this runbook for two projects from the same Git repository. The hosted servi
 an **advisory-only synthetic-data demo**. Application authentication is absent.
 `ENVIRONMENT=production` keeps action creation/review/execution and all Shopify routes
 blocked. The full workflow stays local/private. Do not change environment to bypass gates.
+The Integrations page explains this restriction and disables its Shopify controls when
+the backend reports the production gate. A hosted Shopify 403 does not indicate a wrong
+merchant or missing credentials. Adding a Shopify token does not enable these routes.
 
 ## 1. Select the code and free accounts
 
