@@ -78,7 +78,7 @@ async def current_account(request: Request, session: AsyncSession = Depends(get_
     return account
 
 async def business_access(request: Request, session: AsyncSession = Depends(get_database_session)) -> None:
-    if not auth_required():
+    if not auth_required() and not request.headers.get("authorization"):
         return
     account = await current_account(request,session)
     try:

@@ -16,9 +16,11 @@ it('signs in and revokes the session on logout',async()=>{
  await waitFor(()=>expect(sessionStorage.getItem('cartpilot-token')).toBeNull());
  expect(await screen.findByRole('button',{name:'Sign in'})).toBeInTheDocument();
 });
-it('does not show management controls to anonymous demo visitors',async()=>{
+it('shows a visible account entry point without exposing anonymous edit controls',async()=>{
  global.fetch=vi.fn().mockResolvedValue({ok:true,json:async()=>[]});
  render(<StoreProvider><StoreManagement/></StoreProvider>);
  await waitFor(()=>expect(global.fetch).toHaveBeenCalledTimes(2));
- expect(screen.queryByText('Manage your store')).not.toBeInTheDocument();
+ expect(screen.getByText('Manage your store')).toBeInTheDocument();
+ expect(screen.getByRole('button',{name:'Sign in / Create account'})).toBeInTheDocument();
+ expect(screen.queryByRole('button',{name:'Add product'})).not.toBeInTheDocument();
 });

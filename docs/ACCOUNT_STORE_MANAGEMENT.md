@@ -45,3 +45,17 @@ managed PostgreSQL migration was performed; changes remain local and unpushed.
 Deployment smoke accepts an optional CARTPILOT_SMOKE_TOKEN process environment variable.
 Use a fresh account session and at least one owned product; do not put tokens in command
 arguments or checked-in files. The smoke keeps its authenticated production 403 checks.
+
+## Visible workspace update — 4 October 2026
+
+Navigation now includes Manage Store, Sales & Insights and Notifications. Account entry
+is visible in anonymous demo workspaces; production builds always present account access.
+Sales ranking and stock alerts load on page entry; CSV sample download and product IDs
+are visible. Footer version marker: `Merchant workspace v15.1`.
+
+Verification: 583 backend tests and 87 frontend tests passed; production build passed.
+A fresh isolated real-browser walkthrough created an account and product, uploaded a
+sales CSV, displayed 40.00 recorded revenue and checked notifications/mobile layout.
+The configured Neon DB was read-only checked at revision 15_accounts. This does not
+prove the Vercel backend uses that same database. Requests to the supplied public frontend
+URL timed out from the execution environment; live deployment has not been certified.

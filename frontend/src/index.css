@@ -1319,3 +1319,18 @@ footer span {
 .relationship.synergy { border-left: 4px solid #29a27c; }
 .relationship.dependency { border-left: 4px solid #5b8ce8; }
 @media(max-width: 600px) { .goal-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.account-banner { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 24px; background:#eef5ff; color:#17355a; }
+.merchant-tools label { display:flex; flex-direction:column; gap:8px; font-weight:600; margin-bottom:16px; }
+.management-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:20px; }
+.management-form .wide { grid-column:1 / -1; }
+.merchant-tools input,.merchant-tools select,.merchant-tools textarea { width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px; font:inherit; background:white; color:#0f172a; }
+.merchant-tools textarea { min-height:110px; }
+.management-error { color:#b91c1c; }
+.management-table { overflow-x:auto; }
+.management-table table { width:100%; }
+@media(max-width:640px) { .management-form { grid-template-columns:1fr; } .account-banner { flex-direction:column; align-items:flex-start; } }
+.sidebar { overflow-y:auto; }
+.management-table table { min-width:0; table-layout:auto; }
+.management-table th,.management-table td { display:table-cell; padding:10px; white-space:normal; }
+@media(max-width:800px) { .sidebar nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); overflow-x:visible; } .sidebar nav a { white-space:normal; } }
