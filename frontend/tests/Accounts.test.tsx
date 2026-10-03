@@ -4,6 +4,23 @@ import { StoreManagement } from '../src/components/StoreManagement';
 import { StoreProvider } from '../src/hooks/useStore';
 import { vi,it,expect,afterEach } from 'vitest';
 afterEach(()=>{vi.unstubAllEnvs();sessionStorage.clear();});
+it('labels signup fields and lets merchants reveal their password',async()=>{
+ vi.stubEnv('VITE_REQUIRE_AUTH','true');
+ global.fetch=vi.fn().mockResolvedValue({ok:true,json:async()=>({required:true})});
+ render(<AccountGate><p>Private workspace</p></AccountGate>);
+ fireEvent.click(await screen.findByRole('button',{name:'Create account'}));
+ const store=screen.getByLabelText('Store name');
+ fireEvent.change(store,{target:{value:'My merchant store'}});
+ expect(store).toHaveValue('My merchant store');
+ expect(store).toHaveAttribute('aria-describedby','auth-store-help');
+ const password=screen.getByLabelText('Password');
+ expect(password).toHaveAttribute('type','password');
+ fireEvent.click(screen.getByRole('button',{name:'Show password'}));
+ expect(password).toHaveAttribute('type','text');
+ fireEvent.click(screen.getByRole('button',{name:'Hide password'}));
+ expect(password).toHaveAttribute('type','password');
+ expect(screen.getByRole('heading',{name:'Start your next chapter.'})).toBeInTheDocument();
+});
 it('signs in and revokes the session on logout',async()=>{
  vi.stubEnv('VITE_REQUIRE_AUTH','true');
  global.fetch=vi.fn().mockResolvedValueOnce({ok:true,json:async()=>({required:true})}).mockResolvedValueOnce({ok:true,json:async()=>({token:'opaque-test-token'})}).mockResolvedValueOnce({ok:true,json:async()=>({logged_out:true})});

@@ -65,3 +65,11 @@ The dashboard now exposes product management, sales import/insights and stock
 notifications directly in a merchant workspace panel. New accounts start with an
 empty store; add products and import sales before expecting populated revenue or
 product recommendations. These pages are also available from the sidebar.
+
+## Account screen design
+
+Login and signup use a responsive CartPilot brand panel and a dedicated vertical
+form. Store name has its own labeled input and helper text. Inputs include autofill
+hints; password visibility uses a named toggle; submission disables the fieldset;
+errors use an alert; keyboard focus is visible. Desktop and 390px mobile layouts
+were inspected in a real browser (no horizontal overflow or browser errors).
