@@ -7,6 +7,7 @@ type Alert = { product: string; message: string };
 export function StoreManagement({ mode = 'products' }: { mode?: 'products' | 'sales' | 'notifications' }) {
   const store = useStore();
   const [id, setId] = useState('');
+  const [productSearch, setProductSearch] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -14,6 +15,9 @@ export function StoreManagement({ mode = 'products' }: { mode?: 'products' | 'sa
   const [alerts, setAlerts] = useState<Alert[] | null>(null);
   const authenticated = Boolean(sessionStorage.getItem('cartpilot-token'));
   const product = store.catalog?.products.find(p => String(p.id) === id);
+  const query = productSearch.trim().toLowerCase();
+  const editableProducts = store.catalog?.products.filter(p => p.source !== 'shopify') ?? [];
+  const matchingProducts = editableProducts.filter(p => `${p.name} ${p.sku} ${p.category}`.toLowerCase().includes(query));
   const title = mode === 'products' ? 'Manage your store' : mode === 'sales' ? 'Sales & Insights' : 'Notifications';
 
   useEffect(() => {
@@ -61,7 +65,8 @@ export function StoreManagement({ mode = 'products' }: { mode?: 'products' | 'sa
     {!authenticated ? <><p>Sign in or create a merchant account to manage your own products, import sales and view alerts.</p><button className="btn" onClick={() => window.dispatchEvent(new Event('cartpilot-open-login'))}>Sign in / Create account</button></> : <>
       {error && <p role="alert" className="management-error">{error}</p>}{message && <p role="status">{message}</p>}
       {mode === 'products' && <><p>Add your first products here, then open AI Manager to analyze your store.</p>
-        <label>Select a product<select value={id} onChange={e => setId(e.target.value)}><option value="">Add new product</option>{store.catalog?.products.filter(p => p.source !== 'shopify').map(p => <option key={p.id} value={p.id}>{p.name}{p.status === 'archived' ? ' (archived)' : ''}</option>)}</select></label>
+        <div className="catalog-search management-search"><label>Find a product to edit<input type="search" placeholder="Enter product name, SKU or category" value={productSearch} onChange={e => setProductSearch(e.target.value)} /></label>{productSearch && <button className="btn secondary" onClick={() => setProductSearch('')}>Clear product search</button>}<small aria-live="polite">{matchingProducts.length} matching products{store.catalog?.has_more ? ' in the loaded catalogue; load more on Products to search more items.' : ''}</small></div>
+        <label>Select a product<select value={id} onChange={e => setId(e.target.value)}><option value="">Add new product</option>{editableProducts.filter(p => matchingProducts.includes(p) || String(p.id) === id).map(p => <option key={p.id} value={p.id}>{p.name}{p.status === 'archived' ? ' (archived)' : ''}</option>)}</select></label>
         <form key={id} className="management-form" onSubmit={save}>
           <label>SKU<input name="sku" required maxLength={100} defaultValue={product?.sku} placeholder="MOUSE-001" /></label>
           <label>Product name<input name="name" required maxLength={255} defaultValue={product?.name} /></label>

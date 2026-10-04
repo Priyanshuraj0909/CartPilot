@@ -29,3 +29,18 @@ it('loads current stock notifications on page entry',async()=>{
  expect(await screen.findByText('Mouse')).toBeInTheDocument();
  expect(screen.getByRole('button',{name:'Refresh alerts'})).toBeInTheDocument();
 });
+
+it('finds editable products by name, SKU and category and can clear search',()=>{
+ render(<StoreManagement/>);
+ const search=screen.getByRole('searchbox',{name:'Find a product to edit'});
+ for(const value of [' mouse ', 'm-1', 'ELECTRONICS']){
+  fireEvent.change(search,{target:{value}});
+  expect(screen.getByRole('option',{name:'Mouse'})).toBeInTheDocument();
+ }
+ fireEvent.change(search,{target:{value:'not-found'}});
+ expect(screen.queryByRole('option',{name:'Mouse'})).not.toBeInTheDocument();
+ expect(screen.getByText('0 matching products')).toBeInTheDocument();
+ fireEvent.click(screen.getByRole('button',{name:'Clear product search'}));
+ expect(search).toHaveValue('');
+ expect(screen.getByRole('option',{name:'Mouse'})).toBeInTheDocument();
+});

@@ -302,3 +302,13 @@ to run tests/build on pushes and pull requests; local results are separate from 
 
 Earlier phase documents and academic artifacts record earlier versions. Use the
 current testing review and account/store guide when discussing the present project.
+
+
+## Finding products
+
+Open **Products** from the sidebar. The catalogue and labelled **Search products** field
+appear above the editing form. Search by product name, SKU or category; case and outside
+spaces are ignored. **Clear search** restores the table. Counts describe loaded products;
+use **Load more products** when available to include later pages. Dashboard search covers
+its six-product preview. **Manage Store** has a separate **Find a product to edit** search
+that filters the editable product selector without losing the current selection.

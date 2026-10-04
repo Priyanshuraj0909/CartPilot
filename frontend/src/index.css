@@ -1395,3 +1395,10 @@ footer span {
   .auth-form-wrap h1 { font-size: 30px; }
 }
 main.auth-page { padding: 0; margin: 0; max-width: none; width: 100%; }
+
+/* Keep product search visible and usable above the catalogue and edit form. */
+.catalog-search { display:flex; flex-wrap:wrap; align-items:flex-end; gap:10px; }
+.catalog-search label { display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:600; }
+.catalog-search small { flex-basis:100%; color:var(--muted); font-size:12px; }
+.management-search { margin:18px 0; }
+@media(max-width:640px) { .catalog-search label { width:100%; } .catalog-search input { width:100%; } }
