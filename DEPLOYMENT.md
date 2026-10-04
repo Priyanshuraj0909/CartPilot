@@ -297,3 +297,15 @@ while the same host returned HTTP 200 via an alternative Vercel edge address. Th
 network reachability observation, separate from deployment readiness. If Chrome still
 cannot connect, try another network and inspect DNS/ISP routing; code changes cannot
 repair an unreachable ISP route.
+
+### CartPilot Vercel API proxy
+
+The `cart-pilot` frontend deployment forwards `/api/:path*` to
+`https://backend-cartpilot.vercel.app/api/:path*` before applying the SPA fallback.
+Vercel builds explicitly clear `VITE_API_URL`, so an older project environment value
+cannot make browsers connect directly to the backend domain. Local/non-Vercel builds
+continue to support `VITE_API_URL`. Changing the hosted backend requires updating
+`frontend/vercel.json`. API responses use no-store headers for browser and both CDN
+cache layers; request methods, JSON bodies, bearer authorization and query strings
+must be verified after deployment. This avoids browser CORS preflights and dependence
+on a separate backend-domain connection from the merchant's network.

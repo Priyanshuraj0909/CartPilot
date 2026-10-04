@@ -61,3 +61,20 @@ failed-login retry and slow response-body timeout. Read-only hosted probes confi
 backend status/health, configured CORS and an expected 401 for nonexistent credentials.
 The historical screenshot does not establish the original provider outage cause;
 these repairs prevent the confirmed client recovery defects from persisting.
+
+### Hosted transport correction — 2026-10-05
+
+The user reproduced a login network error after the recovery repair. Direct HTTPS
+probes to the backend domain timed out while the frontend domain loaded; the Vercel
+connector fetched backend health successfully. Backend runtime logs contained no
+corresponding login request. This identifies a connection-path failure before FastAPI,
+not evidence of invalid credentials or a database failure. The frontend now proxies
+all API requests through its own origin, with API routing before SPA fallback,
+build-time override of stale direct-backend configuration and no-store API headers.
+Provider/network outages may still occur; this removes the confirmed separate browser
+connection dependency rather than treating an error-message change as an outage fix.
+
+Verification before release: 137 frontend tests and the production TypeScript/Vite
+build passed. New checks cover API precedence, clearing stale cross-origin build
+configuration and disabling authenticated-response caching. Backend application code
+is unchanged; its 587-test regression passed in the preceding repair.
