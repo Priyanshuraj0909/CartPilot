@@ -6,12 +6,21 @@ export const SHOPIFY_PRODUCTION_MESSAGE = "Shopify connections and synchronizati
 const LOCAL_ONLY_DETAIL = "Phase 9 local actions are available only in development/test environments.";
 export async function request<T>(path: string, signal?: AbortSignal, body?: unknown, method?: string): Promise<T> {
   let response: Response;
+  const controller = new AbortController();
+  const cancel = () => controller.abort();
+  signal?.addEventListener("abort", cancel, { once: true });
+  if (signal?.aborted) cancel();
+  let timedOut = false;
+  const timer = setTimeout(() => { timedOut = true; controller.abort(); }, body === undefined ? 15000 : 60000);
+  const token = sessionStorage.getItem("cartpilot-token");
   try {
-    response = await fetch(`${base}${path}`, { signal, headers: { "Content-Type": "application/json", ...(sessionStorage.getItem("cartpilot-token") ? { Authorization: `Bearer ${sessionStorage.getItem("cartpilot-token")}` } : {}) }, ...(body === undefined ? {} : { method: method || "POST", body: JSON.stringify(body) }) });
+    response = await fetch(`${base}${path}`, { signal: controller.signal, headers: { ...(body === undefined ? {} : { "Content-Type": "application/json" }), ...(token ? { Authorization: `Bearer ${token}` } : {}) }, ...(body === undefined ? {} : { method: method || "POST", body: JSON.stringify(body) }) });
   } catch (error) {
+    if (timedOut) throw new ApiError("CartPilot took too long to respond. Please try again.", 0);
     if (error instanceof DOMException && error.name === "AbortError") throw error;
     throw new ApiError("Unable to reach CartPilot. Check that the backend is running and try again.", 0);
   }
+  finally { clearTimeout(timer); signal?.removeEventListener("abort", cancel); }
   if (!response.ok) {
     if (response.status === 401 && sessionStorage.getItem("cartpilot-token")) { sessionStorage.removeItem("cartpilot-token"); window.dispatchEvent(new Event("cartpilot-session-expired")); }
     const messages: Record<number, string> = {

@@ -3,13 +3,12 @@ import { request } from '../services/api';
 import { Compass, ArrowUpRight, Eye, EyeOff, Package, Sparkles, ShieldCheck, TrendingUp } from 'lucide-react';
 export function AccountGate({children}:{children:ReactNode}) {
  const enabled=import.meta.env.PROD || import.meta.env.VITE_REQUIRE_AUTH === "true";
- const [required,setRequired]=useState<boolean|null>(enabled?null:false),[signed,setSigned]=useState(false),[signup,setSignup]=useState(false),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ const [required,setRequired]=useState<boolean>(enabled),[signed,setSigned]=useState(false),[signup,setSignup]=useState(false),[error,setError]=useState(''),[busy,setBusy]=useState(false);
  const [showPassword,setShowPassword]=useState(false);
  useEffect(()=>{let active=true;(enabled?request<{required:boolean}>('/api/v1/auth/status'):Promise.resolve({required:false})).then(async s=>{if(!active)return;setRequired(enabled ? true : s.required);if(sessionStorage.getItem('cartpilot-token')){try{await request('/api/v1/auth/me');if(active)setSigned(true);}catch{sessionStorage.removeItem('cartpilot-token');}}}).catch(()=>{if(active){setRequired(true);setError('Backend unavailable. Reload to retry.');}});const expired=()=>{setRequired(true);setSigned(false);setError('Session expired. Sign in again.');};
  const openLogin=()=>setRequired(true);window.addEventListener('cartpilot-open-login',openLogin);window.addEventListener('cartpilot-session-expired',expired);return()=>{active=false;window.removeEventListener('cartpilot-session-expired',expired);window.removeEventListener('cartpilot-open-login',openLogin);};},[]);
  async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();setBusy(true);setError('');const f=new FormData(e.currentTarget);try{const r=await request<{token:string}>(`/api/v1/auth/${signup?'signup':'login'}`,undefined,{email:f.get('email'),password:f.get('password'),...(signup?{name:f.get('name'),store_name:f.get('store_name')}:{})});sessionStorage.setItem('cartpilot-token',r.token);setSigned(true);}catch(e){setError(e instanceof Error?e.message:'Sign in failed.');}finally{setBusy(false);}}
  async function logout(){try{await request('/api/v1/auth/logout',undefined,{});sessionStorage.removeItem('cartpilot-token');setSigned(false);}catch(e){setError(e instanceof Error?e.message:'Logout failed.');}}
- if(required===null)return <p role="status">Checking account access…</p>;
  if(!required||signed)return <>{!signed&&<div className="account-banner"><span>Merchant accounts unlock product editing, sales import and stock alerts.</span><button className="btn secondary" onClick={()=>setRequired(true)}>Sign in / Create account</button></div>}{signed&&<div className="card"><button className="btn secondary" onClick={logout}>Sign out</button>{error&&<p role="alert">{error}</p>}</div>}{children}</>;
  return <main className="auth-page">
    <section className="auth-story" aria-label="About CartPilot">

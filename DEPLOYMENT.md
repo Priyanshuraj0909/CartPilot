@@ -278,3 +278,22 @@ new signup creates an independent empty store rather than claiming seeded mercha
 Production approval/execution/Shopify restrictions still apply after login. See
 [account setup](docs/ACCOUNT_STORE_MANAGEMENT.md). Old anonymous smoke commands are
 historical and cannot verify authenticated store reads without updated credentials.
+
+
+## Hosted startup/performance repair (2026-10-04)
+
+The login form renders immediately even when `/auth/status` is slow. API reads have a
+15-second response timeout and writes/analysis a 60-second timeout; caller cancellation
+is preserved. Bodyless reads no longer send a JSON Content-Type, avoiding unnecessary
+anonymous CORS preflights. Catalog uses two batch aggregate queries per page and refresh
+retains the current merchant snapshot while replacement data loads.
+
+The backend function region is Singapore (`sin1`) to reduce round-trip distance to the
+configured Singapore database. Keep the function near the database if its location changes.
+Verification before publication: 587 backend tests, 96 frontend tests and Vite build pass.
+
+The production domain also timed out from the local network on DNS-resolved edge IPs,
+while the same host returned HTTP 200 via an alternative Vercel edge address. This is a
+network reachability observation, separate from deployment readiness. If Chrome still
+cannot connect, try another network and inspect DNS/ISP routing; code changes cannot
+repair an unreachable ISP route.

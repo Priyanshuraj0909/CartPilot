@@ -41,3 +41,13 @@ it('shows a visible account entry point without exposing anonymous edit controls
  expect(screen.getByRole('button',{name:'Sign in / Create account'})).toBeInTheDocument();
  expect(screen.queryByRole('button',{name:'Add product'})).not.toBeInTheDocument();
 });
+
+it('shows the sign-in form immediately even when the status API hangs',()=>{
+ vi.stubEnv('PROD',true);
+ global.fetch=vi.fn().mockImplementation(()=>new Promise(()=>{}));
+ render(<AccountGate><p>Private workspace</p></AccountGate>);
+ expect(screen.getByRole('heading',{name:'Welcome back.'})).toBeVisible();
+ expect(screen.getByLabelText('Email')).toBeVisible();
+ expect(screen.queryByText('Checking account access…')).not.toBeInTheDocument();
+ expect(screen.queryByText('Private workspace')).not.toBeInTheDocument();
+});

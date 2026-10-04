@@ -165,6 +165,27 @@ phases/              Historical implementation records
 .github/workflows/   Automated tests and build checks
 ```
 
+## Quick local launch (Mac)
+
+Double-click `Start CartPilot.command`, or run:
+
+```bash
+cd /Users/priyanshuraj/Projects/cartpilot
+bash scripts/dev.sh
+```
+
+This starts both services, opens the browser, and enables pooled database connections
+for local development. Keep the Terminal window open. It uses your configured database;
+it does not migrate, seed, or replace existing data. Account/store management still
+requires sign-in. Production configuration is unchanged. If a service is already
+running, the launcher reuses it. Set `VITE_API_URL=http://localhost:8000` in the root
+`.env` for the local frontend. A URL belongs in the browser address bar; Terminal can
+open it with `open http://127.0.0.1:5173/dashboard`.
+
+Catalog sales/history are aggregated in two batch queries per page instead of three
+queries per product. Refresh keeps existing same-merchant data visible until the
+new snapshot arrives; changing merchants clears it immediately.
+
 ## Local setup
 
 From repository root:

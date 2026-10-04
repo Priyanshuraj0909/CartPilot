@@ -14,6 +14,7 @@ function useStoreState() {
   const [savedLoading, setSavedLoading] = useState(true);
   const [revision, setRevision] = useState(0);
   const [moreLoading, setMoreLoading] = useState(false);
+  const loadedMerchant = useRef<number | null>(null);
   const idRef = useRef(merchantId); idRef.current = merchantId;
   const pageController = useRef<AbortController>();
   useEffect(() => {
@@ -27,7 +28,9 @@ function useStoreState() {
     if (!merchantId) return;
     const controller = new AbortController();
     pageController.current?.abort();
-    setCatalog(null); setSaved([]); setError(""); setSavedError(""); setLoading(true); setSavedLoading(true); setMoreLoading(false);
+    if (loadedMerchant.current !== merchantId) { setCatalog(null); setSaved([]); }
+    loadedMerchant.current = merchantId;
+    setError(""); setSavedError(""); setLoading(true); setSavedLoading(true); setMoreLoading(false);
     api.getProducts(merchantId, controller.signal).then(data => { if (!controller.signal.aborted) setCatalog(data); })
       .catch(error => { if (!controller.signal.aborted) setError(error.message); })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });

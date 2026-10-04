@@ -20,3 +20,26 @@ Local verification: 569 backend tests, 78 frontend tests, TypeScript/Vite build,
 fresh SQLite migrations and whitespace check passed. This is an implemented local
 continuation, not a cloud release. Provider migration, visual browser verification,
 load testing and email/provider work remain outstanding.
+
+
+## Local connection and performance repair — 2026-10-04
+
+User-requested repair: the frontend was running without a backend. The backend's
+provider environment additionally selected production authentication/CORS and NullPool.
+`scripts/dev.sh` and `Start CartPilot.command` now start the local services with explicit
+development mode, local CORS and pooled connections, using the configured database.
+They perform no migrations/seeding; existing services are reused, production env files
+are preserved, and account management retains its authentication requirement.
+
+Catalog aggregates recent/lifetime orders and price-history counts in two batch queries
+per page, with merchant/status/time bounds retained. Same-merchant refresh retains visible
+data while loading; switching merchants clears it. Regression coverage verifies bounded
+query count, no-sales/empty pages, invalid lookback, merchant isolation and refresh failures.
+
+Verification: 587 backend tests, 92 frontend tests and TypeScript/Vite build passed.
+Agent-browser verified dashboard and Products (25 rows), API Connected, backend reachable,
+no browser errors or Vite overlay. Read-only comparison of the previous catalog/signals
+code against the new implementation on the configured database measured 8.325 s versus
+0.801 s for 25 products with identical product metrics/revenue. This single local sample
+includes connection warmup and is not a load-test or a universal latency guarantee.
+Launcher syntax and already-running-service reuse passed. No cloud deployment occurred.

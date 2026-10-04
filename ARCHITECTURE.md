@@ -80,7 +80,9 @@ Catalog pages max out at 100 products; saved recommendations at 200. Intelligent
 store analysis uses at most 100 active products and exposes truncation, failures and
 omitted queue items. MAX_ACTIONS_PER_PLAN bounds priority candidates; unsafe work
 stays visibly blocked. Shared lookbacks reuse snapshots. Catalog reuses preloaded
-products/inventory/history, but sales aggregates still scale linearly with products.
+products/inventory/history and batches sales/history aggregates in two queries per page.
+Single-product analysis combines recent/lifetime sales in one query; store orchestration
+still gathers specialist context per product.
 
 See [Phase 12 matrix and evidence](phases/PHASE_12.md) for regression, failure injection,
 clean bootstrap, browser walkthrough, performance and unverified deployment limits.

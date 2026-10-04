@@ -15,7 +15,7 @@ from app.schemas.pricing import PricingRecommendation
 from app.schemas.listing import ListingRecommendation
 from app.schemas.promotion import PromotionRecommendation
 from app.schemas.restock import RestockRecommendation
-from app.services.pricing.signals import extract_pricing_signals
+from app.services.pricing.signals import aggregate_sales_snapshots, extract_pricing_signals
 from app.services.restock.signals import restock_signals_from_snapshot
 from app.services.restock.calculator import calculate_restock_recommendation
 from app.services.orchestration.context import ContextError
@@ -34,9 +34,12 @@ async def get_catalog(session: AsyncSession, merchant_id: int, offset: int = 0, 
         rows = (await session.execute(select(Product).where(Product.merchant_id == merchant_id)
             .options(selectinload(Product.inventory), selectinload(Product.price_history))
             .order_by(Product.id).offset(offset).limit(limit))).scalars().all()
+        snapshots = await aggregate_sales_snapshots(
+            session, merchant_id, [product.id for product in rows], settings.RESTOCK_LOOKBACK_DAYS, now
+        )
         products = []
         for product in rows:
-            signals = await extract_pricing_signals(product.id, session, settings.RESTOCK_LOOKBACK_DAYS, now, preloaded_product=product)
+            signals = await extract_pricing_signals(product.id, session, settings.RESTOCK_LOOKBACK_DAYS, now, preloaded_product=product, preloaded_sales=snapshots[product.id])
             if signals is None:
                 continue
             status = "Missing"

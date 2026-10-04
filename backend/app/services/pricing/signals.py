@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Optional
-from sqlalchemy import func, select
+from sqlalchemy import case, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -84,12 +84,59 @@ class ProductPricingSignals:
         return self.available_quantity > surplus_threshold or self.days_of_inventory > MAX_HEALTHY_INVENTORY_DAYS
 
 
+@dataclass(frozen=True)
+class SalesSnapshot:
+    units: int = 0
+    orders: int = 0
+    revenue: Decimal = Decimal("0.00")
+    lifetime_orders: int = 0
+    price_changes: int = 0
+
+
+async def aggregate_sales_snapshots(
+    session: AsyncSession, merchant_id: int, product_ids: list[int],
+    lookback_days: int, as_of: datetime,
+) -> dict[int, SalesSnapshot]:
+    """Read one page's sales and history in two queries, scoped to its merchant."""
+    if lookback_days <= 0:
+        raise ValueError("Lookback days must be positive.")
+    if not product_ids:
+        return {}
+    recent = Order.ordered_at >= as_of - timedelta(days=lookback_days)
+    with session.no_autoflush:
+        sales = (await session.execute(
+            select(OrderItem.product_id,
+                   func.sum(case((recent, OrderItem.quantity), else_=0)),
+                   func.count(func.distinct(case((recent, Order.id), else_=None))),
+                   func.sum(case((recent, OrderItem.subtotal), else_=0)),
+                   func.count(func.distinct(Order.id)))
+            .join(Order, OrderItem.order_id == Order.id)
+            .where(OrderItem.product_id.in_(product_ids), Order.merchant_id == merchant_id,
+                   Order.ordered_at <= as_of, Order.status != OrderStatus.CANCELLED.value)
+            .group_by(OrderItem.product_id)
+        )).all()
+        histories = dict((await session.execute(
+            select(PriceHistory.product_id, func.count(PriceHistory.id))
+            .join(Product, Product.id == PriceHistory.product_id)
+            .where(PriceHistory.product_id.in_(product_ids), Product.merchant_id == merchant_id,
+                   PriceHistory.changed_at <= as_of)
+            .group_by(PriceHistory.product_id)
+        )).all())
+    result = {product_id: SalesSnapshot(price_changes=histories.get(product_id, 0))
+              for product_id in product_ids}
+    for product_id, units, orders, revenue, lifetime in sales:
+        result[product_id] = SalesSnapshot(int(units), int(orders), Decimal(str(revenue)),
+                                          int(lifetime), histories.get(product_id, 0))
+    return result
+
+
 async def extract_pricing_signals(
     product_id: int,
     session: AsyncSession,
     lookback_days: int = 14,
     as_of: Optional[datetime] = None,
     *, preloaded_product: Product | None = None,
+    preloaded_sales: SalesSnapshot | None = None,
 ) -> Optional[ProductPricingSignals]:
     """Retrieve product, inventory, and sales records to assemble deterministic signals."""
     with session.no_autoflush:
@@ -122,26 +169,13 @@ async def extract_pricing_signals(
         reorder_qty = inv.reorder_quantity if inv else 0
         is_low = avail_qty <= reorder_pt
 
-        # 3. Aggregate Sales within Lookback Window
-        cutoff_dt = as_of - timedelta(days=lookback_days)
-        sales_stmt = (
-            select(
-                func.coalesce(func.sum(OrderItem.quantity), 0).label("units_sold"),
-                func.count(func.distinct(Order.id)).label("orders_count"),
-                func.coalesce(func.sum(OrderItem.subtotal), Decimal("0.00")).label("revenue"),
-            )
-            .select_from(OrderItem)
-            .join(Order, OrderItem.order_id == Order.id)
-            .where(
-                OrderItem.product_id == product_id,
-                Order.ordered_at >= cutoff_dt,
-                Order.ordered_at <= as_of,
-                Order.merchant_id == product.merchant_id,
-                Order.status != OrderStatus.CANCELLED.value,
-            )
-        )
-        sales_res = await session.execute(sales_stmt)
-        units_sold, orders_count, revenue = sales_res.one()
+        if preloaded_sales is None:
+            preloaded_sales = (await aggregate_sales_snapshots(
+                session, product.merchant_id, [product_id], lookback_days, as_of
+            ))[product_id]
+        units_sold = preloaded_sales.units
+        orders_count = preloaded_sales.orders
+        revenue = preloaded_sales.revenue
 
         # Sales velocity calculation: units per day
         sales_velocity = calculate_sales_velocity(int(units_sold), lookback_days)
@@ -152,25 +186,8 @@ async def extract_pricing_signals(
         else:
             days_of_inventory = 999.0 if avail_qty > 0 else 0.0
 
-        # 4. Total Lifetime Order History (to verify data sufficiency)
-        lifetime_stmt = (
-            select(func.count(func.distinct(Order.id)))
-            .select_from(OrderItem)
-            .join(Order, OrderItem.order_id == Order.id)
-            .where(
-                OrderItem.product_id == product_id,
-                Order.ordered_at <= as_of,
-                Order.merchant_id == product.merchant_id,
-                Order.status != OrderStatus.CANCELLED.value,
-            )
-        )
-        lifetime_res = await session.execute(lifetime_stmt)
-        total_lifetime_orders = lifetime_res.scalar_one()
-
-        # 5. Price History Event Count
-        ph_stmt = select(func.count(PriceHistory.id)).where(PriceHistory.product_id == product_id, PriceHistory.changed_at <= as_of)
-        ph_res = await session.execute(ph_stmt)
-        price_changes_count = ph_res.scalar_one()
+        total_lifetime_orders = preloaded_sales.lifetime_orders
+        price_changes_count = preloaded_sales.price_changes
 
         # Data sufficiency criteria
         has_sufficient_data = total_lifetime_orders >= MIN_HISTORY_ORDERS or units_sold >= MIN_RECENT_UNITS
