@@ -11,8 +11,8 @@ describe("Dashboard Component", () => {
   });
   it("renders all four foundation metrics using backend data instead of mock values", async () => {
     render(<App />); for (const title of ["Revenue", "Orders", "AI Recommendations"]) expect(screen.getByText(title)).toBeInTheDocument();
-    await screen.findByText("$69,930.00"); expect(screen.getByText("7")).toBeInTheDocument();
-    expect(screen.queryByText("$124,500")).not.toBeInTheDocument();
+    await screen.findByText("₹69,930.00"); expect(screen.getByText("7")).toBeInTheDocument();
+    expect(screen.queryByText("₹124,500")).not.toBeInTheDocument();
   });
   it("renders the health badge status", async () => { render(<App />); expect(await screen.findByText("API Connected")).toBeInTheDocument(); });
   it("makes merchant management discoverable from the dashboard", async () => {

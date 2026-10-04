@@ -7,7 +7,7 @@ import { catalog, fetchStore, mockResponse, plan, pricing, restock } from "./fix
 describe("Recommendation cards", () => {
   it("renders pricing values, percentage, confidence, and risk", () => {
     render(<PricingCard data={pricing} name="Wireless Mouse" />);
-    for (const text of ["$999.00", "$1,049.00", "+5%", "86%", "Risk: medium", "Recommendation Only"]) expect(screen.getByText(text)).toBeInTheDocument();
+    for (const text of ["₹999.00", "₹1,049.00", "+5%", "86%", "Risk: medium", "Recommendation Only"]) expect(screen.getByText(text)).toBeInTheDocument();
   });
   it("renders hold price correctly", () => { render(<PricingCard data={{ ...pricing, recommended_price: 999, price_change_percent: 0 }} />); expect(screen.getByText("Hold Price")).toBeInTheDocument(); });
   it("renders restock forecast and quantity", () => { render(<RestockCard data={restock} />); for (const text of ["8 units", "5.00/day", "1.6 days", "67 units", "Risk: high"]) expect(screen.getByText(text)).toBeInTheDocument(); });
@@ -38,7 +38,7 @@ describe("Live dashboard interactions", () => {
   it("runs pricing and restock analyses from the drawer", async () => {
     render(<App />); fireEvent.click(await screen.findByRole("button", { name: "Analyze Wireless Mouse" }));
     const dialog = screen.getByRole("dialog"); fireEvent.click(within(dialog).getByRole("button", { name: "Run Pricing Analysis" }));
-    expect(await within(dialog).findByText("$1,049.00")).toBeInTheDocument();
+    expect(await within(dialog).findByText("₹1,049.00")).toBeInTheDocument();
     fireEvent.click(within(dialog).getByRole("button", { name: "Run Restock Analysis" }));
     expect(await within(dialog).findByText("67 units")).toBeInTheDocument();
     fireEvent.keyDown(dialog, { key: "Escape" }); expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

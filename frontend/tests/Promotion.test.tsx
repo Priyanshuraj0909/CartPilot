@@ -9,7 +9,7 @@ describe("Promotion experience", () => {
   beforeEach(() => { window.history.replaceState({}, "", "/products"); global.fetch = vi.fn(input => String(input).includes("/promotion/") ? Promise.resolve(mockResponse(promotion)) : fetchStore(input)); });
   it("shows discount economics, evidence, trend and advisory status", () => {
     render(<PromotionCard data={promotion} name="Bluetooth Speaker" />);
-    for (const text of ["Bluetooth Speaker", "10% Discount", "$1,349.10", "120 units", "declining", "37.0%", "75%", "Recommendation Only"]) expect(screen.getByText(text)).toBeInTheDocument();
+    for (const text of ["Bluetooth Speaker", "10% Discount", "₹1,349.10", "120 units", "declining", "37.0%", "75%", "Recommendation Only"]) expect(screen.getByText(text)).toBeInTheDocument();
   });
   it("shows a blocked promotion clearly", () => {
     render(<PromotionCard data={{ ...promotion, promotion_recommended: false, promotion_type: "none", discount_percentage: 0, promotional_price: 1499 }} />);

@@ -199,7 +199,7 @@ docker compose up -d postgres redis
 Settings load repository-root `.env`, then optional `backend/.env`; process environment
 variables have highest precedence. Frontend credentials must never contain Shopify
 access tokens. Set VITE_API_URL to the backend URL and VITE_CURRENCY to your display
-currency (USD by default). Display currency does not convert stored prices.
+currency (INR by default). Display currency does not convert stored prices.
 
 In a backend terminal:
 
