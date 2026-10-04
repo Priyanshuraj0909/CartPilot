@@ -19,4 +19,18 @@ describe("Cross-agent merchant planning", () => {
  it("keeps critical overflow visible with a budget warning",async()=>{vi.mocked(api.runOrchestrator).mockResolvedValue({...intelligent,omitted_actions:[{...restock,id:"2:restock",product_id:2,product_name:"Urgent Speaker"}],warnings:["Action budget: one critical item remains visible."]});render(<App/>);await analyzeStore();expect(screen.getByText(/Additional actions outside the queue \(1\)/)).toBeInTheDocument();expect(screen.getByText(/one critical item/)).toBeInTheDocument();expect(screen.getByText(/Urgent Speaker/)).toBeInTheDocument();});
  it("preserves the queue while reporting a partial failure",async()=>{vi.mocked(api.runOrchestrator).mockResolvedValue({...intelligent,complete:false,agent_results:[...intelligent.agent_results,{agent_name:"promotion",product_id:2,success:false,recommendation:null,risk_level:"high",confidence:0,error:{code:"agent_failed",message:"Promotion analysis unavailable."}}]});render(<App/>);await analyzeStore();expect(screen.getByText(/This plan is incomplete/)).toBeInTheDocument();expect(screen.getByText(/Promotion analysis unavailable/)).toBeInTheDocument();expect(screen.getByRole("list",{name:"Priority actions"})).toBeInTheDocument();});
  it("reuses equivalent session plans after repeated analysis",async()=>{render(<App/>);await analyzeStore();fireEvent.click(screen.getByRole("button",{name:"Analyze Store"}));await waitFor(()=>expect(api.runOrchestrator).toHaveBeenCalledTimes(2));fireEvent.click(screen.getByRole("link",{name:"Recommendations"}));expect(await screen.findByRole("heading",{name:"Recommendations"})).toBeInTheDocument();expect(screen.getAllByRole("heading",{name:"CartPilot Store Summary"})).toHaveLength(1);});
+
+ it("opens individual product analysis directly from AI Manager without selecting or running a store plan",async()=>{
+   render(<App/>);
+   fireEvent.click(await screen.findByRole("button",{name:"View & analyze Wireless Mouse"}));
+   const dialog=screen.getByRole("dialog");
+   for(const name of ["Run Pricing Analysis","Run Restock Analysis","Run Promotion Analysis","Run Listing Analysis"]){
+     expect(within(dialog).getByRole("button",{name})).toBeInTheDocument();
+   }
+   expect(api.runOrchestrator).not.toHaveBeenCalled();
+   expect(screen.getByRole("checkbox")).not.toBeChecked();
+   fireEvent.click(within(dialog).getByRole("button",{name:"Run Restock Analysis"}));
+   expect(await within(dialog).findByText("Lead-time demand exceeds available inventory.")).toBeInTheDocument();
+   expect(window.location.pathname).toBe("/ai-manager");
+ });
 });

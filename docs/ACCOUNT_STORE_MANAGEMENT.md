@@ -107,3 +107,12 @@ File.text. Cancelling the picker is silent; dropping a link shows an actionable 
 Verification: 127 frontend tests and build passed. Real Chrome read a native CSV through
 the picker and a native DataTransfer file dropped on the button, with immediate readiness
 and preview. API responses were mocked for the UI check; no merchant data was imported.
+
+### Individual analysis from AI Manager
+
+AI Manager Step 2 now shows **View & analyze** beside each loaded product. Search by
+name, SKU or category, then click that button to open the existing product drawer.
+Click **Run Restock Analysis** to test restocking, or choose Pricing, Promotion or
+Listing analysis. Opening the drawer does not select the checkbox or run a store plan.
+Verification: 128 frontend tests and the production build passed. A real browser opened
+the drawer from AI Manager with all four analysis buttons and no browser errors.
