@@ -1407,3 +1407,10 @@ main.auth-page { padding: 0; margin: 0; max-width: none; width: 100%; }
 .dashboard-search .catalog-search { align-items:flex-end; }
 .dashboard-search .catalog-search label { flex:1; }
 .dashboard-search .search { width:100%; }
+
+.sales-dropzone { border:2px dashed #abc7bb; border-radius:12px; padding:20px; background:#f8fcfa; }
+.sales-dropzone.dragging,.sales-dropzone:focus-visible { border-color:var(--primary); background:#e9f5ef; outline:2px solid #166b5d; outline-offset:3px; }
+.sales-dropzone label,.sales-example label { display:flex; flex-direction:column; gap:8px; margin:14px 0; }
+.sales-paste textarea { width:100%; min-height:140px; resize:vertical; padding:12px; border:1px solid #d8e1dc; border-radius:6px; font-family:monospace; font-size:13px; }
+.sales-example,.sales-preview { margin:20px 0; padding:18px; border:1px solid #d8e1dc; border-radius:10px; }
+.sales-preview>.btn { margin-top:16px; }

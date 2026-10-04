@@ -1,3 +1,5 @@
+import { SalesImport } from "./SalesImport";
+import { formatCurrency } from "../services/format";
 import { useEffect, useState, type FormEvent } from 'react';
 import { request } from '../services/api';
 import { useStore } from '../hooks/useStore';
@@ -42,25 +44,6 @@ export function StoreManagement({ mode = 'products' }: { mode?: 'products' | 'sa
       cost_price: f.get('cost_price'), selling_price: f.get('selling_price'), quantity: Number(f.get('quantity')),
     }, id ? 'PUT' : 'POST'), id ? 'Product changes saved.' : 'Product added. You can now run its analysis.');
   }
-  async function upload(file: File) {
-    try {
-      if (file.size > 200000) throw new Error('File must be under 200 KB.');
-      const rows = (await file.text()).replace(/^\uFEFF/, '').trim().split(/\r?\n/);
-      if (rows.shift()?.trim() !== 'reference,product_id,quantity,unit_price,ordered_at') throw new Error('Use the headers in the sample CSV.');
-      const sales = rows.map(row => {
-        const cells = row.split(',').map(cell => cell.trim());
-        if (cells.length !== 5) throw new Error('Each row needs five fields; quoted commas are not supported.');
-        const [reference, product_id, quantity, unit_price, ordered_at] = cells;
-        return { reference, product_id: Number(product_id), quantity: Number(quantity), unit_price, ordered_at };
-      });
-      await run(async () => {
-        const result = await request<{ imported: number; skipped: number }>('/api/v1/sales/import', undefined, { sales });
-        setMessage(`${result.imported} sales imported; ${result.skipped} matching records skipped.`);
-      }, 'Sales import complete. Your revenue summary will refresh.');
-    } catch (e) { setError(e instanceof Error ? e.message : 'Invalid file.'); }
-  }
-  const sampleId = store.catalog?.products[0]?.id ?? 1;
-  const sample = `reference,product_id,quantity,unit_price,ordered_at\nexample-sale-1,${sampleId},2,20.00,2026-10-01T12:00:00Z\n`;
   return <section className="card merchant-tools"><h2>{title}</h2>
     {!authenticated ? <><p>Sign in or create a merchant account to manage your own products, import sales and view alerts.</p><button className="btn" onClick={() => window.dispatchEvent(new Event('cartpilot-open-login'))}>Sign in / Create account</button></> : <>
       {error && <p role="alert" className="management-error">{error}</p>}{message && <p role="status">{message}</p>}
@@ -77,11 +60,8 @@ export function StoreManagement({ mode = 'products' }: { mode?: 'products' | 'sa
           <label className="wide">Description<textarea name="description" maxLength={5000} defaultValue={product?.description || ''} /></label>
           <button className="btn" disabled={busy}>{busy ? 'Saving…' : id ? 'Save changes' : 'Add product'}</button>
         </form>{id && <button className="btn secondary" disabled={busy} onClick={() => { if (window.confirm('Archive this product? Its order history will be retained.')) void run(() => request(`/api/v1/products/${id}`, undefined, {}, 'DELETE'), 'Product archived; history retained.'); }}>Archive product</button>}</>}
-      {mode === 'sales' && <><h3>Upload sales data</h3><p>Upload a CSV with at most 500 rows. Use unique references and timezone-aware past dates.</p>
-        <a className="text-btn" download="cartpilot-sales-example.csv" href={`data:text/csv;charset=utf-8,${encodeURIComponent(sample)}`}>Download sample CSV</a>
-        <p>Replace the sample values with actual recorded sales. Product IDs: {store.catalog?.products.map(p => `${p.name} (${p.id})`).join(', ') || 'Add products first.'}</p>
-        <label>Sales CSV<input type="file" accept=".csv" disabled={busy} onChange={e => { const f = e.target.files?.[0]; if (f) void upload(f); e.target.value = ''; }} /></label>
-        {insights ? <><h3>Recorded sales revenue: {insights.total_revenue}</h3><p>Ranked by units sold. These are observed sales, not predicted revenue growth.</p>{insights.products.length ? <div className="management-table"><table><thead><tr><th>Product</th><th>Units sold</th><th>Revenue</th></tr></thead><tbody>{insights.products.map(p => <tr key={p.id}><td>{p.name}</td><td>{p.units}</td><td>{p.revenue}</td></tr>)}</tbody></table></div> : <p>No recorded sales yet. Upload your sales file to populate this summary.</p>}</> : <p role="status">Loading sales summary…</p>}</>}
+      {mode === 'sales' && <><SalesImport products={store.catalog?.products.filter(p => p.source !== 'shopify') ?? []} onImported={store.refresh} />
+        {insights ? <><h3>Recorded sales revenue: {formatCurrency(insights.total_revenue)}</h3><p>Ranked by units sold. These are observed sales, not predicted revenue growth.</p>{insights.products.length ? <div className="management-table"><table><thead><tr><th>Product</th><th>Units sold</th><th>Revenue</th></tr></thead><tbody>{insights.products.map(p => <tr key={p.id}><td>{p.name}</td><td>{p.units}</td><td>{formatCurrency(p.revenue)}</td></tr>)}</tbody></table></div> : <p>No recorded sales yet. Upload your sales file to populate this summary.</p>}</> : <p role="status">Loading sales summary…</p>}</>}
       {mode === 'notifications' && <><p>Current stock alerts for your store. Email delivery is not configured.</p>{alerts === null ? <p role="status">Loading alerts…</p> : alerts.length ? <ul>{alerts.map((a, i) => <li key={i}><strong>{a.product}</strong> — {a.message}</li>)}</ul> : <p>No low-stock alerts. Your available stock is above the configured reorder points.</p>}<button className="btn secondary" onClick={store.refresh}>Refresh alerts</button></>}
     </>}
   </section>;

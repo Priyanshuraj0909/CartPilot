@@ -20,7 +20,7 @@ it('submits an added product through the visible form',async()=>{
 it('shows sales summary without needing a hidden button',async()=>{
  vi.mocked(request).mockResolvedValue({total_revenue:'40.00',products:[{id:7,name:'Mouse',units:2,revenue:'40.00'}]});
  render(<StoreManagement mode="sales"/>);
- expect(await screen.findByText('Recorded sales revenue: 40.00')).toBeInTheDocument();
+ expect(await screen.findByText('Recorded sales revenue: ₹40.00')).toBeInTheDocument();
  expect(screen.getByRole('link',{name:'Download sample CSV'})).toHaveAttribute('download');
 });
 it('loads current stock notifications on page entry',async()=>{

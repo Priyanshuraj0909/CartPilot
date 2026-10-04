@@ -73,3 +73,26 @@ form. Store name has its own labeled input and helper text. Inputs include autof
 hints; password visibility uses a named toggle; submission disables the fieldset;
 errors use an alert; keyboard focus is visible. Desktop and 390px mobile layouts
 were inspected in a real browser (no horizontal overflow or browser errors).
+
+
+## Easier sales import — 4 October 2026
+
+Sales & Insights now accepts a chosen CSV, a dragged file, pasted CSV text, and files
+available through the browser clipboard. Every method stages the same validated rows
+for a preview; only **Import sales** submits them. Clipboard file support depends on
+browser/OS; the file picker and text area remain available. Limits: 500 rows, 200 KB,
+required header, integer IDs/quantities, nonnegative decimal prices, unique references,
+and past timezone-aware dates. Backend validation and merchant ownership remain final.
+
+For a beginner test: choose the product under **Product for test example**, click
+**Insert test example**, review the two rows, and click **Import sales**. The app fills
+its real ID and current selling price. Quantity is 2 + 1, so a 1099.00 product adds
+3297.00 revenue. Use a test store. The preview has not written anything before import.
+Click **Import sales** again with the same preview: the backend skips matching references.
+Editing the pasted text invalidates the preview. Sample download remains available.
+Import messages now retain imported/skipped counts; revenue uses the INR formatter.
+
+Verification: 122 frontend tests and production build pass, including picker/drop/file
+paste/text staging, explicit submission, duplicate counts, failure retry, malformed input,
+size/row limits and missing timezone. Browser walkthrough of the importer used isolated
+mock responses to avoid writing to the configured merchant database.
