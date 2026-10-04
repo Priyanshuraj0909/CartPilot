@@ -309,6 +309,7 @@ current testing review and account/store guide when discussing the present proje
 Open **Products** from the sidebar. The catalogue and labelled **Search products** field
 appear above the editing form. Search by product name, SKU or category; case and outside
 spaces are ignored. **Clear search** restores the table. Counts describe loaded products;
-use **Load more products** when available to include later pages. Dashboard search covers
-its six-product preview. **Manage Store** has a separate **Find a product to edit** search
+use **Load more products** when available to include later pages. Dashboard has a search field directly below its title; it searches all loaded products
+and shows matching rows above the overview. Without a query, its catalogue previews six
+products. Use **Load more products to search** if more pages are available. **Manage Store** has a separate **Find a product to edit** search
 that filters the editable product selector without losing the current selection.

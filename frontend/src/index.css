@@ -1402,3 +1402,8 @@ main.auth-page { padding: 0; margin: 0; max-width: none; width: 100%; }
 .catalog-search small { flex-basis:100%; color:var(--muted); font-size:12px; }
 .management-search { margin:18px 0; }
 @media(max-width:640px) { .catalog-search label { width:100%; } .catalog-search input { width:100%; } }
+
+.dashboard-search { margin-bottom:20px; }
+.dashboard-search .catalog-search { align-items:flex-end; }
+.dashboard-search .catalog-search label { flex:1; }
+.dashboard-search .search { width:100%; }
