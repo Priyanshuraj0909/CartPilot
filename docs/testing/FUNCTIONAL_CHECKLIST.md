@@ -4,6 +4,14 @@ Date: 3 October 2026. Scope: current repository and isolated local regression. N
 
 Statuses: IMPLEMENTED = source exists; PASS LOCAL = exercised by regression; MISSING = no feature to execute; NOT RUN = requires separate environment/tooling. Historical browser evidence is not a fresh browser test.
 
+## Current review — 4 October 2026
+
+The tables below describe the historical 3 October baseline. Phase 15 supersedes its
+missing authentication, product CRUD, sales import and revenue-summary entries.
+Use [the nine-step testing guide](STEP_BY_STEP_TESTING.md) for the current assessment,
+commands, evidence limits and remaining gaps. Use [the manual test sheet](MANUAL_TEST_CASES.csv)
+in Excel; its results are deliberately unfilled until someone executes each case.
+
 ## 1. Basic functionality checklist
 
 | Feature / test | Status | Evidence or prerequisite |

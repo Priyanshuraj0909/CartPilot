@@ -116,6 +116,12 @@ Configuration/deployment: DEPLOYMENT.md. No OpenAI/Gemini/LLM SDK is used by age
 
 ## 12. Testing
 
+Current continuation: see [4 October testing review](docs/testing/CURRENT_TEST_REVIEW.md)
+and [nine-step procedure](docs/testing/STEP_BY_STEP_TESTING.md). The current local run
+passed 583 backend tests, 89 frontend tests and the TypeScript/Vite build. Manual UAT
+results must be recorded separately; the Excel-compatible sheet is unexecuted.
+The paragraph below records historical Phase 14 verification.
+
 Use TEST_SUMMARY.md: 560 backend tests, 76 frontend tests, successful TypeScript/Vite
 build, no configured lint. Explain isolated fixtures, synthetic Shopify transport,
 state/ownership/error testing, bootstrap and browser verification. Do not call test

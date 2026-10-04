@@ -11,7 +11,8 @@ proposals pass through policies, human approval, separate confirmed local/simula
 execution and persistent audit. No LLM, forecasting ML or autonomous learning is implemented.
 
 **READY WITH MINOR LIMITATIONS for a trusted faculty demo, viva and source submission.**
-Public multi-tenant production is not ready: authenticated merchant identity is absent.
+Account authentication and merchant scope are implemented in the Phase 15 continuation.
+General public production readiness still requires further security and infrastructure review.
 Shopify is READ ONLY; local price/listing changes are never pushed to it. Restock and
 promotion execution are simulations, not real supplier orders/campaigns.
 
@@ -28,7 +29,9 @@ Implemented/read-only/simulated boundaries are listed in [FINAL_STATUS.md](FINAL
 - [DEMO_SCRIPT.md](DEMO_SCRIPT.md): seven-minute four-product demo and exact offline fallback.
 - [VIVA_QA.md](VIVA_QA.md): quick-reference sheet and 52 source-matched questions/answers.
 - [PROJECT_REPORT_OUTLINE.md](PROJECT_REPORT_OUTLINE.md): abstract, report structure and 12-slide content outline.
-- [TEST_SUMMARY.md](TEST_SUMMARY.md): final **560 backend / 76 frontend** tests and actual verification limits.
+- [Current testing review](docs/testing/CURRENT_TEST_REVIEW.md): **583 backend / 89 frontend** tests, build results and current verification limits.
+- [Testing procedure](docs/testing/STEP_BY_STEP_TESTING.md) and [manual test sheet](docs/testing/MANUAL_TEST_CASES.csv): reproducible acceptance checks; manual results remain pending.
+- [TEST_SUMMARY.md](TEST_SUMMARY.md): historical Phase 14 **560 backend / 76 frontend** results.
 - [Screenshots](docs/screenshots/README.md): 15 real browser captures; Shopify panel is explicitly mocked.
 - [Algorithms](docs/ALGORITHMS.md) and [API/data/security reference](docs/API_DATABASE_SECURITY.md).
 - [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md): source archive generation and institutional items.
@@ -175,8 +178,8 @@ and frontend build despite its historical filename.
 Phase 12 source also passed from an isolated copy containing all non-ignored tracked
 and untracked submission files; frontend dependencies were installed with offline
 `npm ci`. That Phase 12 check was not a committed fresh clone or a clean Python dependency installation:
-Python tests reused the installed virtual environment. Include all intended untracked
-source files when preparing the submission; Git HEAD still predates later phases.
+Python tests reused the installed virtual environment. That historical reproduction does not certify the current committed source.
+Use the current testing review for the latest regression results.
 
 ## Demo flow
 
@@ -226,9 +229,11 @@ store was accessed. Stop both servers with Ctrl+C after the demonstration.
 
 ## Current limitations
 
-This MVP has scope checks but no authenticated merchant identity. Legacy single-product
-agent requests may omit merchant scope; the frontend always supplies it. Use a trusted
-local environment. Do not expose it as a public multi-tenant service.
+Phase 15 adds account authentication and server-bound merchant scope, including legacy
+single-product analysis. Production requires authentication; anonymous seeded demos
+remain available in development/test by default. See
+[account and store management](docs/ACCOUNT_STORE_MANAGEMENT.md) for setup and limits.
+General public launch still requires ingress rate limits and broader security/load audits.
 
 Live Shopify permissions/token behavior and PostgreSQL concurrency are unverified here;
 Docker is unavailable. Shopify sync is manual, capped and synchronous, covers recent
@@ -256,7 +261,8 @@ backend with `sh scripts/start.sh` from backend; apply migrations separately wit
 
 Production remains advisory: guarded writes and Shopify routes stay blocked. The
 full approval/Shopify faculty demo must use an isolated, access-controlled private
-development/test environment. No authentication or public cloud deployment is claimed.
+development/test environment. Phase 15 subsequently adds authentication. The Phase 13 evidence does not certify
+the current hosted application; see the current testing review for hosted check limits.
 [Phase 13 evidence](phases/PHASE_13.md) distinguishes actual PostgreSQL/start/build/browser
 checks from Docker, remote CI, provider hosting and live Shopify checks not performed.
 
@@ -270,8 +276,9 @@ all five roles. Exact formulas and examples are in [ALGORITHMS.md](docs/ALGORITH
 
 ## Future scope and final stop
 
-Authentication/authorization, measured forecasting, supplier adapters, approved Shopify
-writes, additional platforms and outcome learning remain future work. No new feature
+Measured forecasting, supplier adapters, approved Shopify writes, additional platforms,
+password recovery/email verification and outcome learning remain future work.
+Account authentication and merchant authorization were added in Phase 15. No new feature
 is included in the final package. Phase 14 completes documentation/demo/submission
 preparation; see [PHASE_14.md](phases/PHASE_14.md). Stop development unless a real defect
 or explicit project-guide request requires it.

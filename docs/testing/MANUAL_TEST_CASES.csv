@@ -1,0 +1,19 @@
+Test Case,Input,Expected Result,Actual Result,Status
+Register,Unique valid email; password >=12 characters; owner/store names,Account and new store created,,Not Run
+Login,Valid registered credentials,Own store opens,,Not Run
+Login rejected,Wrong password,401/error; no session,,Not Run
+Invalid email,bad; otherwise valid signup fields,422/error; no account,,Not Run
+Logout,Active session,Session revoked; protected requests denied,,Not Run
+Add product,SKU TEST-1; cost 10; price 20; stock 5,Product saved; persists after refresh,,Not Run
+Edit product,Change price to 21,Saved; price history retained,,Not Run
+Duplicate SKU,Create TEST-1 again,409/error; no duplicate,,Not Run
+Import sales,One sale: quantity 2; unit price 20; past UTC timestamp,One sale imported,,Not Run
+Revenue analysis,Open Sales & Insights after import,Recorded revenue 40.00,,Not Run
+Repeat import,Same sale reference and values,Skipped; revenue stays 40.00,,Not Run
+Empty import,No rows,422/error; no changes,,Not Run
+Recommendations,Analyze owned product,Structured advice or insufficient-data explanation,,Not Run
+Stock alerts,Stock 5; reorder point 10,Low-stock alert,,Not Run
+Archive product,Archive TEST-1,Archived; sales history retained,,Not Run
+Foreign store access,Second account requests first store,403/404 as route specifies; no foreign data,,Not Run
+API outage,Isolated test transport failure,Visible retryable error,,Not Run
+Expired session,Expired token in isolated fixture,401; sign in again,,Not Run

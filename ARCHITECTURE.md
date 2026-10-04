@@ -44,10 +44,11 @@ no credentials or unnecessary customer payloads are retained.
 
 The MVP validates merchant-product/recommendation/action ownership. Frontend analysis
 calls always send merchant scope. Legacy single-product APIs permit omitted scope
-for compatibility; there is **no authenticated identity binding**. This application
-must run in a trusted local/demo environment. It is not ready for public multi-tenant
-production. Action writes and Shopify routes are restricted to development/test.
-No JWT login, rate-limited public ingress or production identity system is claimed.
+for compatibility in anonymous development/test demos. Phase 15 binds authenticated
+requests to the session merchant, including these legacy routes, and requires accounts
+for production business APIs. General public readiness still requires rate controls
+and broader security/load review. Action writes and Shopify routes are restricted
+to development/test. Sessions use opaque revocable tokens; see the continuation below.
 
 Approval and execution are separate. Atomic claims, PostgreSQL row locks, source-value
 comparisons, immutable payload verification, current-state policy validation, savepoints,
@@ -89,7 +90,8 @@ clean bootstrap, browser walkthrough, performance and unverified deployment limi
 Browser → HTTPS static frontend → HTTPS Python/FastAPI service → managed PostgreSQL.
 Optional Redis provides diagnostics; backend-only Shopify read access is available
 only in a protected private demo under the existing development/test gate. Production
-mode keeps guarded writes and Shopify routes blocked. Authentication is still absent.
+mode keeps guarded writes and Shopify routes blocked. Phase 15 adds required account
+authentication for production business APIs.
 Backend validates environment, database URL, port and log level centrally; serving,
 release migrations and explicit demo seeding are separate operations. Frontend API
 URL is a public build-time setting; static host routing falls back to index.html.
