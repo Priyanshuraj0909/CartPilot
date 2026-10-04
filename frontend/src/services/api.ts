@@ -16,37 +16,43 @@ export async function request<T>(path: string, signal?: AbortSignal, body?: unkn
   try {
     response = await fetch(`${base}${path}`, { signal: controller.signal, headers: { ...(body === undefined ? {} : { "Content-Type": "application/json" }), ...(token ? { Authorization: `Bearer ${token}` } : {}) }, ...(body === undefined ? {} : { method: method || "POST", body: JSON.stringify(body) }) });
   } catch (error) {
+    clearTimeout(timer); signal?.removeEventListener("abort", cancel);
     if (timedOut) throw new ApiError("CartPilot took too long to respond. Please try again.", 0);
     if (error instanceof DOMException && error.name === "AbortError") throw error;
     throw new ApiError("Unable to reach CartPilot. Check that the backend is running and try again.", 0);
   }
-  finally { clearTimeout(timer); signal?.removeEventListener("abort", cancel); }
-  if (!response.ok) {
-    if (response.status === 401 && sessionStorage.getItem("cartpilot-token")) { sessionStorage.removeItem("cartpilot-token"); window.dispatchEvent(new Event("cartpilot-session-expired")); }
-    const messages: Record<number, string> = {
-      401: "Sign in to continue.",
-      404: "The merchant or product could not be found. Refresh your store data.",
-      403: "This request is not permitted for the selected merchant or deployment.",
-      409: "This action changed or is not approved for execution. Refresh the action list.",
-      503: "CartPilot could not complete this request. Store data is temporarily unavailable. Please try again.",
-      422: "The analysis could not be validated. Check product inventory and your selection.",
-    };
-    let message = messages[response.status] || "CartPilot could not complete this request. Please try again.";
-    if (response.status === 403) {
-      // Recognize only known safe reasons; never display arbitrary server error bodies.
-      const payload: unknown = await response.json().catch(() => null);
-      const detail = payload && typeof payload === "object" && "detail" in payload ? payload.detail : null;
-      if (detail === LOCAL_ONLY_DETAIL) {
-        message = path.startsWith("/api/v1/integrations/shopify/") ? SHOPIFY_PRODUCTION_MESSAGE
-          : "Action creation, approval and execution are disabled in this hosted advisory demo.";
-      } else if (detail === "Product does not belong to the selected merchant.") {
-        message = "This product does not belong to the selected merchant.";
+  try {
+    if (!response.ok) {
+      if (response.status === 401 && token && sessionStorage.getItem("cartpilot-token") === token) { sessionStorage.removeItem("cartpilot-token"); window.dispatchEvent(new Event("cartpilot-session-expired")); }
+      const messages: Record<number, string> = {
+        401: "Sign in to continue.",
+        404: "The merchant or product could not be found. Refresh your store data.",
+        403: "This request is not permitted for the selected merchant or deployment.",
+        409: "This action changed or is not approved for execution. Refresh the action list.",
+        503: "CartPilot could not complete this request. Store data is temporarily unavailable. Please try again.",
+        422: "The analysis could not be validated. Check product inventory and your selection.",
+      };
+      let message = messages[response.status] || "CartPilot could not complete this request. Please try again.";
+      if (response.status === 403) {
+        // Recognize only known safe reasons; never display arbitrary server error bodies.
+        const payload: unknown = await response.json().catch(() => null);
+        const detail = payload && typeof payload === "object" && "detail" in payload ? payload.detail : null;
+        if (detail === LOCAL_ONLY_DETAIL) {
+          message = path.startsWith("/api/v1/integrations/shopify/") ? SHOPIFY_PRODUCTION_MESSAGE
+            : "Action creation, approval and execution are disabled in this hosted advisory demo.";
+        } else if (detail === "Product does not belong to the selected merchant.") {
+          message = "This product does not belong to the selected merchant.";
+        }
       }
+      throw new ApiError(message, response.status);
     }
-    throw new ApiError(message, response.status);
-  }
-  try { return await response.json() as T; }
-  catch { throw new ApiError("CartPilot returned an unreadable response. Please try again.", response.status); }
+    try { return await response.json() as T; }
+    catch {
+      if (timedOut) throw new ApiError("CartPilot took too long to respond. Please try again.", 0);
+      if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+      throw new ApiError("CartPilot returned an unreadable response. Please try again.", response.status);
+    }
+  } finally { clearTimeout(timer); signal?.removeEventListener("abort", cancel); }
 }
 export const api = {
   getShopifyStatus: (merchantId: number, signal?: AbortSignal) => request<ShopifyStatus>(`/api/v1/integrations/shopify/status?merchant_id=${merchantId}`, signal),

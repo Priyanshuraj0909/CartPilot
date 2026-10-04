@@ -56,3 +56,24 @@ describe("bounded API requests", () => {
     await expect(pending).rejects.toMatchObject({name:"AbortError"});
   });
 });
+
+it('keeps the login deadline active while reading the response body', async () => {
+ vi.useFakeTimers();
+ vi.stubGlobal('fetch',vi.fn((_url,options)=>Promise.resolve({ok:true,status:200,json:()=>new Promise((_resolve,reject)=>{
+   options.signal.addEventListener('abort',()=>reject(new DOMException('Aborted','AbortError')));
+ })})));
+ try {
+   const pending=expect(request('/api/v1/auth/login',undefined,{email:'owner@example.test',password:'long-enough-password'})).rejects.toThrow('took too long');
+   await vi.advanceTimersByTimeAsync(60000);await pending;
+ } finally {vi.useRealTimers();}
+});
+
+it('does not expire a newer session when an older request returns 401',async()=>{
+ sessionStorage.setItem('cartpilot-token','old-token');
+ let respond!: (response: Response)=>void;
+ vi.stubGlobal('fetch',vi.fn(()=>new Promise<Response>(resolve=>{respond=resolve;})));
+ const pending=expect(request('/api/v1/auth/me')).rejects.toMatchObject({status:401});
+ sessionStorage.setItem('cartpilot-token','new-token');respond(mockResponse({},401));
+ await pending;expect(sessionStorage.getItem('cartpilot-token')).toBe('new-token');
+ sessionStorage.clear();
+});

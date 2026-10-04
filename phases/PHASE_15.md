@@ -43,3 +43,21 @@ code against the new implementation on the configured database measured 8.325 s 
 0.801 s for 25 products with identical product metrics/revenue. This single local sample
 includes connection warmup and is not a load-test or a universal latency guarantee.
 Launcher syntax and already-running-service reuse passed. No cloud deployment occurred.
+
+## Hosted login recovery repair — 2026-10-05
+
+A one-shot auth-status failure previously persisted as “Backend unavailable. Reload to
+retry,” while any `/auth/me` failure deleted the saved token. Hosted login now uses
+its already-required authentication setting without a redundant status request.
+Session verification retries transient network/502/503/504 failures at most three
+attempts, preserves tokens during outages, and offers Retry connection. Only a 401
+expires the session. Unmounted checks are cancelled. Login/signup writes are never
+automatically retried; request deadlines cover response-body reading so the form
+unlocks after timeout and merchants can retry deliberately.
+
+Verification: 587 backend tests, 134 frontend tests and TypeScript/Vite production build passed,
+including transient recovery, retry exhaustion/manual recovery, expired sessions,
+failed-login retry and slow response-body timeout. Read-only hosted probes confirmed
+backend status/health, configured CORS and an expected 401 for nonexistent credentials.
+The historical screenshot does not establish the original provider outage cause;
+these repairs prevent the confirmed client recovery defects from persisting.
