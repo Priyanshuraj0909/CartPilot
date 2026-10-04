@@ -1,79 +1,169 @@
 # CartPilot
 
-**The AI Manager Sitting on Top of Your Inventory**
+**An e-commerce manager that turns inventory and sales data into explainable actions.**
 
-*A Multi-Agent E-Commerce Decision and Operations Management System*
+CartPilot helps a merchant answer four questions: **What price should I review? What
+should I restock? Which products could benefit from a promotion? Which listings need
+improvement?** It combines these answers into a prioritized plan, checks business
+rules, and keeps the merchant in control through approval and audit history.
 
-CartPilot is an e-commerce decision-support MVP. Four deterministic specialists analyze
-pricing, replenishment, promotions and factual listing quality. The Master Orchestrator
-coordinates goal-based recommendations, conflicts, synergies and dependencies. Eligible
-proposals pass through policies, human approval, separate confirmed local/simulated
-execution and persistent audit. No LLM, forecasting ML or autonomous learning is implemented.
+Built with **React + TypeScript, FastAPI + Python, and SQLAlchemy**, with PostgreSQL
+as the deployment database and SQLite for isolated tests and demos.
 
-**READY WITH MINOR LIMITATIONS for a trusted faculty demo, viva and source submission.**
-Account authentication and merchant scope are implemented in the Phase 15 continuation.
-General public production readiness still requires further security and infrastructure review.
-Shopify is READ ONLY; local price/listing changes are never pushed to it. Restock and
-promotion execution are simulations, not real supplier orders/campaigns.
+> The current agents use deterministic business rules. No external LLM, trained
+> forecasting model or autonomous learning is implemented. “Multi-agent” describes
+> four specialist modules coordinated by a master orchestrator.
 
-## Problem, solution and objectives
+## Understand the project in one minute
 
-Pricing, stock, discounts and catalog maintenance can produce conflicting decisions
-when reviewed separately. CartPilot centralizes their shared signals, provides explainable
-specialist proposals, prioritizes review by merchant goals and blocks unsafe actions.
-The objective is demonstrable coordination and safety, not an unmeasured revenue lift.
-Implemented/read-only/simulated boundaries are listed in [FINAL_STATUS.md](FINAL_STATUS.md).
+A merchant usually reviews sales, stock, pricing and product descriptions separately.
+Those decisions can conflict: a discount may increase demand for a product that is
+already close to running out.
 
-## Submission and demo guide
+CartPilot reads the same store data for each specialist, combines their recommendations,
+and resolves conflicts before showing a plan. For example, when stock is low and
+sales are strong, replenishment can take priority and a promotion can be blocked.
+Recommendations explain their reason, risk and heuristic confidence.
 
-- [DEMO_SCRIPT.md](DEMO_SCRIPT.md): seven-minute four-product demo and exact offline fallback.
-- [VIVA_QA.md](VIVA_QA.md): quick-reference sheet and 52 source-matched questions/answers.
-- [PROJECT_REPORT_OUTLINE.md](PROJECT_REPORT_OUTLINE.md): abstract, report structure and 12-slide content outline.
-- [Current testing review](docs/testing/CURRENT_TEST_REVIEW.md): **583 backend / 89 frontend** tests, build results and current verification limits.
-- [Testing procedure](docs/testing/STEP_BY_STEP_TESTING.md) and [manual test sheet](docs/testing/MANUAL_TEST_CASES.csv): reproducible acceptance checks; manual results remain pending.
-- [TEST_SUMMARY.md](TEST_SUMMARY.md): historical Phase 14 **560 backend / 76 frontend** results.
-- [Screenshots](docs/screenshots/README.md): 15 real browser captures; Shopify panel is explicitly mocked.
-- [Algorithms](docs/ALGORITHMS.md) and [API/data/security reference](docs/API_DATABASE_SECURITY.md).
-- [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md): source archive generation and institutional items.
+**The main engineering idea is coordination with safety:** a recommendation does not
+change store data. Approval and execution are separate steps, and execution checks
+the latest state again.
+
+## What a merchant can do
+
+| Feature | What it does |
+| --- | --- |
+| Accounts | Register, sign in and sign out; access the account's own store |
+| Store management | Create, edit and archive local products; retain sales and price history |
+| Sales & Insights | Import a bounded sales CSV, view recorded revenue and rank products |
+| Stock notifications | View low-stock alerts computed from current inventory |
+| Specialist analysis | Request pricing, restock, promotion and listing recommendations |
+| AI Manager | Combine specialist results into a plan for a selected merchant goal |
+| Review workflow | Review policies, approve/reject, then separately confirm eligible execution |
+| History | Inspect saved recommendations, price changes and action audit records |
+| Shopify integration | Read-only synchronization in development/test; offline tests use mocked responses |
+
+Revenue means **recorded sales totals**; the project does not demonstrate a measured
+increase in business revenue. Stock alerts are shown in the application, not delivered
+by an email service.
+
+## How the agents work
+
+| Module | Inputs | Decision | Safety check |
+| --- | --- | --- | --- |
+| Pricing | Price, cost, sales history and stock | Hold, increase or decrease recommendation | Bounded movement and cost protection |
+| Restock | Available stock, demand and lead time | Suggested replenishment quantity and stockout exposure | Valid inventory and capped quantity |
+| Promotion | Stock coverage, sales trend, price and cost | Margin-safe discount candidate | Block unsafe discounts and stockout conflicts |
+| Listing | Title, description, category and SKU | Factual content improvements and completeness checks | Preserve facts; request verification for missing attributes |
+| Master Orchestrator | Merchant goal and shared store signals | Prioritized plan with conflicts, dependencies and synergies | Merchant scope, inventory overrides and partial-failure visibility |
+
+Exact rules and rounding are documented in [Algorithms](docs/ALGORITHMS.md). Confidence
+scores express rule-based evidence strength; they are not calibrated prediction accuracy.
+
+## Architecture
+
+```mermaid
+flowchart TD
+    Source[Local products / imported sales / read-only Shopify] --> Data[(Store data)]
+    Data --> Signals[Shared sales and inventory signals]
+    Signals --> Specialists[Pricing / Restock / Promotion / Listing]
+    Specialists --> Master[Master Orchestrator]
+    Master --> Plan[Prioritized plan and conflict resolution]
+    Plan --> Policy[Business policy validation]
+    Policy --> Approval[Merchant approval or rejection]
+    Approval --> Execution[Separate confirmation and fresh validation]
+    Execution --> Result[Local price/listing update or simulated restock/promotion]
+    Result --> Audit[Audit history]
+```
+
+The React interface calls typed FastAPI endpoints. Pydantic validates API data,
+SQLAlchemy handles persistence, and Alembic manages database migrations. Account
+sessions bind authenticated requests to a merchant's store.
+
+| Layer | Technology and purpose |
+| --- | --- |
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS; merchant interface and typed API client |
+| Backend | Python 3.12+, FastAPI, Pydantic; APIs and business rules |
+| Persistence | Async SQLAlchemy, PostgreSQL, Alembic; records, transactions and migrations |
+| Tests | pytest, pytest-asyncio, httpx, Vitest and React Testing Library |
+| CI | GitHub Actions; backend tests, frontend tests and production build |
+| Optional infrastructure | Redis for diagnostics; recommendations do not depend on it |
+
+Read [ARCHITECTURE.md](ARCHITECTURE.md) for transaction and deployment details.
+
+## Explain it in a placement interview
+
+### 30-second introduction
+
+> “CartPilot is a full-stack e-commerce decision-support project. It analyzes sales
+> and inventory through four specialist modules for pricing, restocking, promotions
+> and product listings. A master orchestrator combines their recommendations and
+> resolves conflicts. Merchants review and approve eligible actions, while the
+> backend validates policies and records an audit trail. It uses React and TypeScript
+> on the frontend, FastAPI on the backend, and SQLAlchemy for persistence.”
+
+### Two-minute explanation
+
+1. **Problem:** store decisions are connected, but merchants often review them separately.
+2. **Solution:** specialist modules analyze shared data and an orchestrator creates one prioritized plan.
+3. **Example:** low stock can override a promotion suggestion, preventing conflicting advice.
+4. **Implementation:** typed APIs, account-scoped access, database migrations, transactional workflows and a React dashboard.
+5. **Safety:** recommendations, approval and execution are separate; execution revalidates current values and prevents duplicate execution.
+6. **Evidence:** the latest local review passed 583 backend tests, 89 frontend tests and the TypeScript/Vite build.
+7. **Limits:** rules are deterministic; Shopify is read-only; restock and promotion execution are simulated.
+
+### Questions you should be ready to answer
+
+| Interview question | Key point to explain |
+| --- | --- |
+| Why multiple agents? | Each specialist has focused inputs and rules; coordination handles decisions that affect each other. |
+| Is this an LLM project? | The current implementation uses deterministic rules, which make recommendations reproducible and testable. |
+| How do you prevent unsafe changes? | Typed validation, policy limits, explicit approval, separate execution and fresh state checks. |
+| How do you protect different stores? | Authenticated requests use server-bound merchant scope; ownership checks reject foreign-store access. |
+| How does login work? | Salted scrypt password hashes and expiring, revocable sessions; stored session tokens are hashed. |
+| What if an agent fails? | The plan exposes partial failures so incomplete analysis is visible. |
+| What if an action is executed twice? | Workflow identity and atomic state checks support idempotency. |
+| How did you test it? | Isolated SQLite fixtures, API tests, rule/failure tests, mocked Shopify and frontend interaction tests. |
+| What would you improve next? | Public ingress rate controls, password recovery, provider/concurrency testing and measured forecasting. |
+
+Describe **your own contribution accurately**: identify the modules you implemented,
+one design decision you can defend, and a bug you fixed. The repository alone does
+not establish who authored each part. See [VIVA_QA.md](VIVA_QA.md) for deeper questions;
+its Phase 14 answers should be read alongside the current account/store continuation.
+
+## A simple interview demo
+
+1. Open the dashboard and explain inventory, sales and recommendations.
+2. Show Manage Store, Sales & Insights and Notifications. A new account starts empty: add a product and import sales first.
+3. Use seeded demo data to show richer specialist recommendations and a Balanced Growth plan.
+4. Explain one recommendation and one conflict or blocked action.
+5. In a private development/test demo, approve an eligible action and separately confirm execution.
+6. Show the resulting local change or simulation and the audit history.
+
+Seeded demo merchants are separate from newly registered accounts. For the repeatable
+four-product scenario and offline Shopify fixture, use [DEMO_SCRIPT.md](DEMO_SCRIPT.md).
+Production blocks guarded action writes and Shopify routes even after login.
 
 ## Project structure
 
 ```text
 backend/
-  app/agents/                  specialist interfaces
-  app/services/                signals, rules, orchestration, policies and workflow
-  app/models/ + app/schemas/    persistence and typed API contracts
-  app/api/v1/                  implemented HTTP routes
-  alembic/                     versioned migrations
-  tests/                       isolated regression and offline fixtures
-  scripts/                     separate release/start commands
+  app/agents/        Specialist interfaces
+  app/services/      Signals, rules, orchestration, account and action workflows
+  app/api/v1/        Auth, store, management, analysis and action endpoints
+  app/models/        Database models
+  app/schemas/       Typed request and response contracts
+  alembic/           Database migrations
+  tests/             Regression, API, failure and offline scenario tests
 frontend/
-  src/components/ + pages/     nine-route UI, recommendation/action components
-  src/services/                typed backend client and formatting
-  tests/                       Vitest/React Testing Library
-phases/                        historical implementation/verification records
-scripts/                       verification, capture and submission utilities
-docs/                          formulas, references, JSON evidence and screenshots
-.github/workflows/             tests/build CI configuration
+  src/components/    Shared UI and merchant workflow components
+  src/pages/         Dashboard, catalog, analysis, approval and history pages
+  src/services/      Typed backend client
+  tests/             UI and API-client tests
+docs/                Algorithms, testing guides and supporting evidence
+phases/              Historical implementation records
+.github/workflows/   Automated tests and build checks
 ```
-
-## Architecture and stack
-
-Shopify / Demo Data → existing Data Layer → four Agents → Master Orchestrator →
-Cross-Agent Intelligence → Unified Action Plan → Policy Validation → Human Approval →
-separately confirmed, revalidated Local/Simulated Execution → Audit Log.
-
-- Backend: Python 3.12+, FastAPI, Pydantic, async SQLAlchemy, Alembic, httpx.
-- Frontend: React 18, TypeScript, Vite, Tailwind CSS and Lucide icons.
-- Persistence: PostgreSQL 16 target; isolated SQLite test/demo databases.
-- Redis 7: optional diagnostics; disconnected Redis yields degraded health without
-  preventing recommendation or execution APIs.
-
-Read [ARCHITECTURE.md](ARCHITECTURE.md) for actual boundaries and safety behavior.
-Verified locally with Python **3.12.7** and Node **26.10.0**. Existing Dockerfiles target
-Python 3.12 and Node 24; container runtime could not be tested because Docker is absent
-in this environment. Use a supported Node release compatible with the checked-in
-Vite dependency tree; the exact tested version is reported rather than a patch pin.
 
 ## Local setup
 
@@ -125,182 +215,69 @@ export ENVIRONMENT=development
 export DATABASE_URL=sqlite+aiosqlite:////absolute/path/to/disposable-demo.sqlite
 ```
 
-The standard seed supports varied demand/stock; the deterministic four-product fixture
-below demonstrates the exact slow-mover, poor-listing and healthy-product scenario.
+The standard seed supports varied demand and stock. For a repeatable four-product
+scenario, follow [DEMO_SCRIPT.md](DEMO_SCRIPT.md).
 Root `.env` may contain other settings; process values override it. Phase 13 verified
 fresh PostgreSQL migrations and basic execution; provider TLS and concurrency stress
 remain deployment checks.
 
-## Environment variables
+## Use the account workflow locally
 
-`.env.example` contains placeholders and documented local-development defaults.
-DATABASE_URL, REDIS_URL and CORS_ORIGINS configure infrastructure. Pricing/restock/
-promotion/listing limits and MAX_ACTIONS_PER_PLAN configure existing guardrails.
-Production CORS requires explicit origins; CORS is not authentication.
-LOG_LEVEL defaults to INFO; production rejects DEBUG and requires explicit DATABASE_URL.
-Set REDIS_URL= to disable optional Redis diagnostics. Frontend Vite reads root .env,
-but exposes only public VITE_ settings. A production build without VITE_API_URL uses
-same-origin /api/v1 and requires an API reverse proxy. Separate hosts require an explicit URL.
+In the root `.env`, set `REQUIRE_AUTH=true` and `VITE_REQUIRE_AUTH=true`, then restart
+the backend and restart/rebuild the frontend. Production always requires accounts.
+Register a new account, add products and import sales to populate your own store.
+Signing up does not claim an existing seeded merchant.
 
-Shopify uses SHOPIFY_STORE_DOMAIN, SHOPIFY_ACCESS_TOKEN, SHOPIFY_MERCHANT_ID and a
-centralized SHOPIFY_API_VERSION (currently configured as 2026-10). Required read scopes:
-`read_products`, `read_inventory`, `read_orders`. The token belongs only in backend
-settings. Configure an existing, preferably dedicated merchant and select it in the UI.
-Integration routes are development/test only.
+Sales CSV headers: `reference,product_id,quantity,unit_price,ordered_at`. Use past
+timezone-aware timestamps, up to 500 rows and one product per reference. Reimporting
+the same reference and values skips the duplicate. Sales import does not reduce
+physical inventory. See [Account and store management](docs/ACCOUNT_STORE_MANAGEMENT.md).
 
-Read [Phase 11 setup](phases/PHASE_11.md) for current token acquisition, scopes, variant
-identity, location aggregation, order status/refund mapping, missing cost, pagination,
-rate limits and limitations. No real-store connection was exercised in final tests.
+## Test and build
 
-## Testing and reproducibility
+From the repository root:
 
 ```bash
 cd backend
 venv/bin/python -m pytest -q
-# Clean migrations, safe downgrade/upgrade, seed and full HTTP demo:
-venv/bin/python -m pytest tests/test_release_bootstrap.py -q
-# Isolated performance and seed report (no network/developer DB):
-venv/bin/python -m tests.release_checks
-# Existing offline scenario demos:
-venv/bin/python -m tests.demo_cross_agent
-venv/bin/python -m tests.demo_shopify
 cd ../frontend
 npm run test:run
 npm run build
 ```
 
-The frontend build runs TypeScript checking. Lint is not configured. Tests use fresh
-SQLite fixtures, enabled foreign keys, mocked health/services and synthetic Shopify
-HTTP. They do not rely on a real store, internet, developer credentials or persistent
-DB state. The existing root `scripts/verify_foundation.sh` runs the full regression
-and frontend build despite its historical filename.
+**Latest local verification, 4 October 2026:** 583 backend tests, 89 frontend tests
+across 12 files, and a successful TypeScript/Vite production build. Tests use isolated
+SQLite and mocked external services. These results do not certify live Shopify,
+production load capacity or the complete hosted user journey. The prepared 18-case
+manual acceptance sheet remains unexecuted.
 
-Phase 12 source also passed from an isolated copy containing all non-ignored tracked
-and untracked submission files; frontend dependencies were installed with offline
-`npm ci`. That Phase 12 check was not a committed fresh clone or a clean Python dependency installation:
-Python tests reused the installed virtual environment. That historical reproduction does not certify the current committed source.
-Use the current testing review for the latest regression results.
+See [Current testing review](docs/testing/CURRENT_TEST_REVIEW.md),
+[Testing procedure](docs/testing/STEP_BY_STEP_TESTING.md) and
+[Manual test sheet](docs/testing/MANUAL_TEST_CASES.csv). GitHub Actions is configured
+to run tests/build on pushes and pull requests; local results are separate from CI results.
 
-## Demo flow
+## Current boundaries and next steps
 
-1. Load seeded/local data or use Integrations → Test Connection → Sync Now.
-2. Review Dashboard, Products and Inventory; open a product and run each specialist.
-3. In AI Manager choose Balanced Growth and Analyze Store (maximum 100 products).
-4. Review priorities, blocked work, conflicts, synergies and original proposals.
-5. Create an eligible action for review; inspect its policy and proposed change.
-6. In Approvals approve/reject. Approval does not execute or change product data.
-7. Execute an approved action through separate confirmation and fresh policy checks.
-8. Show resulting local/simulated outcome, Price History and Action History.
-9. Repeat execution to demonstrate idempotency; stale/unsafe proposals remain blocked.
+- Local price/listing execution is guarded; restock and promotion execution are simulations.
+- Shopify synchronization is read-only and development/test only. No Shopify write or real supplier/campaign operation is implemented.
+- Password recovery, email verification, delivered email alerts and ingress rate controls remain future work.
+- Public launch requires broader security, provider, concurrency and load verification.
+- No cart recovery, trained demand forecasting, currency conversion or autonomous learning is implemented.
 
-The real Chrome walkthrough covered all nine pages, all four analyses, Balanced Growth,
-local price execution/audit and mocked Shopify sync. Browser widths 1440/768/390 had
-no page overflow or unexpected console/network failures. Backend-disconnection errors
-remain useful, and local data works independently of Shopify availability.
+## Further reading
 
-Evidence: [browser results](docs/examples/release-browser.json),
-[performance/seed results](docs/examples/release-performance.json),
-[four-product plan](docs/examples/cross-agent-demo.json), and
-[Shopify offline results](docs/examples/shopify-demo.json).
+| Document | Use it for |
+| --- | --- |
+| [Architecture](ARCHITECTURE.md) | System boundaries, consistency and security design |
+| [Algorithms](docs/ALGORITHMS.md) | Exact specialist formulas and guardrails |
+| [API/database/security](docs/API_DATABASE_SECURITY.md) | Core API and data reference; pair with the account continuation |
+| [Account and store management](docs/ACCOUNT_STORE_MANAGEMENT.md) | Current authentication and merchant workflows |
+| [Demo script](DEMO_SCRIPT.md) | Repeatable academic/interview demonstration |
+| [Viva questions](VIVA_QA.md) | Detailed technical preparation |
+| [Project report outline](PROJECT_REPORT_OUTLINE.md) | Report and presentation structure |
+| [Deployment guide](DEPLOYMENT.md) | Backend startup, migrations, HTTPS and hosting configuration |
+| [Vercel + Neon setup](docs/VERCEL_NEON.md) | Provider-specific setup notes |
+| [Report and slides](docs/deliverables/README.md) | Historical academic artifacts with identity placeholders |
 
-### Offline four-product browser demo
-
-For the exact verified scenario without touching your developer DB, run from backend:
-
-```bash
-release_demo_db=$(mktemp /tmp/cartpilot-demo.XXXXXX)
-export ENVIRONMENT=test DATABASE_URL="sqlite+aiosqlite:///$release_demo_db"
-export CORS_ORIGINS=http://127.0.0.1:5174
-export SHOPIFY_STORE_DOMAIN= SHOPIFY_ACCESS_TOKEN=
-venv/bin/python -m alembic upgrade head
-venv/bin/python -m tests.release_demo
-```
-
-In another terminal, from frontend:
-
-```bash
-VITE_API_URL=http://127.0.0.1:8012 npm run dev -- --host 127.0.0.1 --port 5174
-```
-
-Open `http://127.0.0.1:5174`. Select **Four-product Demo** for the coordinated scenario,
-then **Shopify Offline Demo** for synthetic read-only synchronization. These Shopify
-HTTP responses are mocked; the Connected badge in this fixture does not mean a real
-store was accessed. Stop both servers with Ctrl+C after the demonstration.
-
-## Current limitations
-
-Phase 15 adds account authentication and server-bound merchant scope, including legacy
-single-product analysis. Production requires authentication; anonymous seeded demos
-remain available in development/test by default. See
-[account and store management](docs/ACCOUNT_STORE_MANAGEMENT.md) for setup and limits.
-General public launch still requires ingress rate limits and broader security/load audits.
-
-Live Shopify permissions/token behavior and PostgreSQL concurrency are unverified here;
-Docker is unavailable. Shopify sync is manual, capped and synchronous, covers recent
-orders, may lack cost data and can retain a busy flag after process death. Deleted
-records/older-order changes need reconciliation. No automatic credential refresh,
-webhooks, Shopify writes, currency conversion or real supplier operations exist.
-
-Catalog sales aggregates remain per product despite eliminating redundant product
-loads. Performance evidence is a small SQLite/ASGI sanity check, not production load
-capacity. Backend requirements use lower bounds rather than a release lock; no CVE
-scan or fresh online dependency resolution is claimed. Dependency versions were not
-broadly upgraded. Two unused frontend helper packages were removed after import review.
-
-Earlier phase documents preserve historical implementation snapshots. Phase 12
-and this README describe the final MVP. No new business feature or integration was
-added during hardening.
-
-## Deployment (Phase 13)
-
-See [DEPLOYMENT.md](DEPLOYMENT.md) for provider-neutral static hosting, the Python
-service, PostgreSQL migrations, explicit demo seed, optional Redis, HTTPS/CORS,
-SPA routing, backend-only Shopify configuration and troubleshooting. Start the
-backend with `sh scripts/start.sh` from backend; apply migrations separately with
-`sh scripts/release.sh`. Neither startup command seeds or resets data.
-
-Production remains advisory: guarded writes and Shopify routes stay blocked. The
-full approval/Shopify faculty demo must use an isolated, access-controlled private
-development/test environment. Phase 15 subsequently adds authentication. The Phase 13 evidence does not certify
-the current hosted application; see the current testing review for hosted check limits.
-[Phase 13 evidence](phases/PHASE_13.md) distinguishes actual PostgreSQL/start/build/browser
-checks from Docker, remote CI, provider hosting and live Shopify checks not performed.
-
-## Agent overview and final boundaries
-
-Pricing proposes bounded changes with cost/movement protection; Restock proposes lead-time
-replenishment; Promotion checks excess inventory, trends and retained margin; Listing
-uses grounded text/attribute checks. Master Orchestrator selects and coordinates these
-by six merchant goals. [AGENTS.md](AGENTS.md) preserves development rules and describes
-all five roles. Exact formulas and examples are in [ALGORITHMS.md](docs/ALGORITHMS.md).
-
-## Future scope and final stop
-
-Measured forecasting, supplier adapters, approved Shopify writes, additional platforms,
-password recovery/email verification and outcome learning remain future work.
-Account authentication and merchant authorization were added in Phase 15. No new feature
-is included in the final package. Phase 14 completes documentation/demo/submission
-preparation; see [PHASE_14.md](phases/PHASE_14.md). Stop development unless a real defect
-or explicit project-guide request requires it.
-
-### Requested final report and PowerPoint
-
-The [editable report, PDF and 12-slide PPT](docs/deliverables/README.md) were generated
-on explicit request after Phase 14. Academic identity fields remain marked placeholders.
-The [deployment handoff](docs/DEPLOYMENT_HANDOFF.md) records the latest native startup
-verification and the information needed for actual hosting.
-
-### Vercel + Neon deployment preparation
-
-[Setup and account steps](docs/VERCEL_NEON.md) cover two Vercel projects and a Neon database.
-Local preparation passed 564 backend tests, 76 frontend tests and the production build.
-Actual cloud deployment remains pending account connections; production writes remain gated.
-
-### Account and store management continuation
-
-[Setup and current limits](docs/ACCOUNT_STORE_MANAGEMENT.md): signup/login/logout,
-production account authorization, product create/edit/archive, sales CSV import,
-recorded-sales ranking and stock alerts. Apply `python -m alembic upgrade head` before
-using accounts. For authenticated local use set REQUIRE_AUTH=true in the backend and
-VITE_REQUIRE_AUTH=true in the frontend, then restart/rebuild. Production always requires
-accounts. Historical academic artifacts describe the earlier MVP snapshot.
+Earlier phase documents and academic artifacts record earlier versions. Use the
+current testing review and account/store guide when discussing the present project.
