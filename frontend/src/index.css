@@ -1414,3 +1414,8 @@ main.auth-page { padding: 0; margin: 0; max-width: none; width: 100%; }
 .sales-paste textarea { width:100%; min-height:140px; resize:vertical; padding:12px; border:1px solid #d8e1dc; border-radius:6px; font-family:monospace; font-size:13px; }
 .sales-example,.sales-preview { margin:20px 0; padding:18px; border:1px solid #d8e1dc; border-radius:10px; }
 .sales-preview>.btn { margin-top:16px; }
+
+.sales-dropzone>.btn { margin-top:8px; }
+.sales-file-ready { color:#166b5d; font-weight:600; overflow-wrap:anywhere; }
+.sales-text-input { margin-top:18px; }
+.sales-text-input label { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }

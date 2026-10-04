@@ -96,3 +96,14 @@ Verification: 122 frontend tests and production build pass, including picker/dro
 paste/text staging, explicit submission, duplicate counts, failure retry, malformed input,
 size/row limits and missing timezone. Browser walkthrough of the importer used isolated
 mock responses to avoid writing to the configured merchant database.
+
+### File-picker/drop follow-up
+
+The upload area now has an explicit **Choose CSV file** button, immediate reading/ready
+filename feedback and inline errors. Preview appears before the test-example panel.
+Drops are captured across the upload area, including the picker button, and read file
+items when the browser supplies an empty file list. FileReader supports browsers without
+File.text. Cancelling the picker is silent; dropping a link shows an actionable error.
+Verification: 127 frontend tests and build passed. Real Chrome read a native CSV through
+the picker and a native DataTransfer file dropped on the button, with immediate readiness
+and preview. API responses were mocked for the UI check; no merchant data was imported.

@@ -10,7 +10,7 @@ const refresh = vi.fn();
 function mount() { render(<SalesImport products={catalog.products} onImported={refresh} />); }
 function file(name = 'sales.csv', value = csv) {
   const f = new File([value], name, { type: 'text/csv' });
-  Object.defineProperty(f, 'text', { value: async () => value });
+  Object.defineProperty(f, 'text', { value: async () => value, configurable:true });
   return f;
 }
 beforeEach(() => { vi.mocked(request).mockReset(); refresh.mockClear(); });
@@ -71,5 +71,42 @@ describe('sales CSV input methods', () => {
     fireEvent.drop(screen.getByRole('group'), { dataTransfer: { files: [file('sales.xlsx')] } });
     expect(screen.getByRole('alert')).toHaveTextContent('Choose a .csv file');
     expect(request).not.toHaveBeenCalled();
+  });
+
+  it('accepts a drop directly onto the Choose CSV file button using transfer items', async () => {
+    mount(); const f = file();
+    fireEvent.drop(screen.getByRole('button', { name: 'Choose CSV file' }), { dataTransfer: {
+      files: [], items: [{kind:'file', getAsFile: () => f}],
+    } });
+    expect(await screen.findByText('Preview: sales.csv')).toBeInTheDocument();
+    expect(screen.getByText(/Ready: sales.csv/)).toBeInTheDocument();
+    expect(request).not.toHaveBeenCalled();
+  });
+  it('reads native files through FileReader when File.text is unavailable', async () => {
+    mount(); const f = new File([csv], 'native.csv', {type:'text/csv'});
+    Object.defineProperty(f, 'text', {value:undefined});
+    fireEvent.change(screen.getByLabelText('Sales CSV'), {target:{files:[f]}});
+    expect(await screen.findByText('Preview: native.csv')).toBeInTheDocument();
+    expect(screen.getByText(/Ready: native.csv/)).toBeInTheDocument();
+  });
+  it('opens the file picker from the explicit button and ignores cancellation', () => {
+    mount(); const input = screen.getByLabelText('Sales CSV');
+    const click = vi.spyOn(input,'click');
+    fireEvent.click(screen.getByRole('button',{name:'Choose CSV file'}));
+    expect(click).toHaveBeenCalledOnce();
+    fireEvent.change(input,{target:{files:[]}});
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+  it('reports a dropped link rather than silently ignoring it', () => {
+    mount(); fireEvent.drop(screen.getByRole('group'),{dataTransfer:{files:[],items:[]}});
+    expect(screen.getByRole('alert')).toHaveTextContent('Drag an actual CSV file');
+  });
+  it('lets a failed file read recover with another selection', async () => {
+    mount(); const broken=file();
+    Object.defineProperty(broken,'text',{value:async()=>{throw new Error('Read failed');}, configurable:true});
+    fireEvent.change(screen.getByLabelText('Sales CSV'),{target:{files:[broken]}});
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not read');
+    fireEvent.change(screen.getByLabelText('Sales CSV'),{target:{files:[file()]}});
+    expect(await screen.findByText('Preview: sales.csv')).toBeInTheDocument();
   });
 });
