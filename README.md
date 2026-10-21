@@ -1,207 +1,183 @@
+<div align="center">
+
 # CartPilot
 
-**An e-commerce manager that turns inventory and sales data into explainable actions.**
+### Smarter commerce decisions. One merchant-controlled plan.
 
-CartPilot helps a merchant answer four questions: **What price should I review? What
-should I restock? Which products could benefit from a promotion? Which listings need
-improvement?** It combines these answers into a prioritized plan, checks business
-rules, and keeps the merchant in control through approval and audit history.
+CartPilot is a full-stack e-commerce decision-support system. Four deterministic
+specialists review pricing, replenishment, promotions and product listings; a Master
+Orchestrator combines their findings into a prioritized plan with visible conflicts,
+policy checks and approval steps.
 
-Built with **React + TypeScript, FastAPI + Python, and SQLAlchemy**, with PostgreSQL
-as the deployment database and SQLite for isolated tests and demos.
+[![React](https://img.shields.io/badge/React-18-149eca?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Python](https://img.shields.io/badge/Python-3.12-3776ab?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2B-4169e1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ed?logo=docker&logoColor=white)](https://www.docker.com/)
+[![GitHub Actions](https://img.shields.io/badge/CI-GitHub_Actions-2088ff?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 
-> The current agents use deterministic business rules. No external LLM, trained
-> forecasting model or autonomous learning is implemented. “Multi-agent” describes
-> four specialist modules coordinated by a master orchestrator.
+[Live demo](https://cart-pilot-seven.vercel.app/) ·
+[Source code](https://github.com/Priyanshuraj0909/CartPilot) ·
+[Documentation](#documentation) ·
+[Report an issue](https://github.com/Priyanshuraj0909/CartPilot/issues)
 
-## Understand the project in one minute
+</div>
 
-A merchant usually reviews sales, stock, pricing and product descriptions separately.
-Those decisions can conflict: a discount may increase demand for a product that is
-already close to running out.
+> **Project boundary:** “Multi-agent” means focused deterministic business-rule modules
+> coordinated by application code. CartPilot does not currently use an LLM, trained
+> machine-learning model, predictive forecast or autonomous learning. Recommendations
+> do not modify merchant data by themselves.
 
-CartPilot reads the same store data for each specialist, combines their recommendations,
-and resolves conflicts before showing a plan. For example, when stock is low and
-sales are strong, replenishment can take priority and a promotion can be blocked.
-Recommendations explain their reason, risk and heuristic confidence.
+## See CartPilot
 
-**The main engineering idea is coordination with safety:** a recommendation does not
-change store data. Approval and execution are separate steps, and execution checks
-the latest state again.
+The repository includes real browser captures of the seeded Four-product Demo. They use
+synthetic data; the Shopify screen uses a mocked offline integration, not a live store.
 
-## What a merchant can do
+<p align="center">
+  <img src="docs/screenshots/01_dashboard.png" alt="CartPilot dashboard with store overview" width="48%" />
+  <img src="docs/screenshots/02_products.png" alt="Product catalog and inventory" width="48%" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/09_priority_plan.png" alt="Prioritized Master Orchestrator plan" width="48%" />
+  <img src="docs/screenshots/11_approval_workflow.png" alt="Merchant action approval workflow" width="48%" />
+</p>
 
-| Feature | What it does |
+[Browse all 15 screenshots and reproduction notes](docs/screenshots/README.md).
+
+## Why CartPilot?
+
+Commerce decisions affect one another. A promotion can increase demand for an item that
+is already close to selling out; a price adjustment can work against a listing change.
+CartPilot evaluates sales and inventory through specialist rules, then surfaces a
+single explainable plan so a merchant can review those trade-offs together.
+
+The project focuses on **coordination and guarded action**: each recommendation has a
+reason and risk context; the orchestrator exposes blocked work, conflicts, synergies,
+dependencies and partial failures. Review, approval and execution are distinct steps.
+
+## Capabilities
+
+| Area | Current behavior |
 | --- | --- |
-| Accounts | Register, sign in and sign out; access the account's own store |
-| Store management | Create, edit and archive local products; retain sales and price history |
-| Sales & Insights | Import a bounded sales CSV, view recorded revenue and rank products |
-| Stock notifications | View low-stock alerts computed from current inventory |
-| Specialist analysis | Request pricing, restock, promotion and listing recommendations |
-| AI Manager | Combine specialist results into a plan for a selected merchant goal |
-| Review workflow | Review policies, approve/reject, then separately confirm eligible execution |
-| History | Inspect saved recommendations, price changes and action audit records |
-| Shopify integration | Read-only synchronization in development/test; offline tests use mocked responses |
+| Merchant workspace | Sign up, sign in, recover login email using store name and password, and access account-scoped store data |
+| Catalog and inventory | Create, edit and archive local products; view physical, reserved and available stock and price history |
+| Sales and insights | Import bounded, idempotent CSV sales; view recorded revenue, product rankings and in-app low-stock alerts |
+| Pricing specialist | Recommend bounded price reviews using price, cost, sales history and stock signals |
+| Restock specialist | Estimate coverage, stockout exposure and capped replenishment quantities |
+| Promotion specialist | Identify slow or excess stock opportunities with stockout and retained-margin checks |
+| Listing specialist | Flag content/completeness issues and suggest grounded copy without inventing product facts |
+| Master Orchestrator | Analyze merchant goals, coordinate relevant specialists, prioritize a bounded queue and explain cross-agent relationships |
+| Review and audit | Approve or reject proposals; separately confirm eligible execution; inspect recorded action history |
+| Shopify (optional) | Development/test read-only sync of products, inventory and recent orders; optional persistent cache-refresh worker |
 
-Revenue means **recorded sales totals**; the project does not demonstrate a measured
-increase in business revenue. Stock alerts are shown in the application, not delivered
-by an email service.
-
-## How the agents work
-
-| Module | Inputs | Decision | Safety check |
-| --- | --- | --- | --- |
-| Pricing | Price, cost, sales history and stock | Hold, increase or decrease recommendation | Bounded movement and cost protection |
-| Restock | Available stock, demand and lead time | Suggested replenishment quantity and stockout exposure | Valid inventory and capped quantity |
-| Promotion | Stock coverage, sales trend, price and cost | Margin-safe discount candidate | Block unsafe discounts and stockout conflicts |
-| Listing | Title, description, category and SKU | Factual content improvements and completeness checks | Preserve facts; request verification for missing attributes |
-| Master Orchestrator | Merchant goal and shared store signals | Prioritized plan with conflicts, dependencies and synergies | Merchant scope, inventory overrides and partial-failure visibility |
-
-Exact rules and rounding are documented in [Algorithms](docs/ALGORITHMS.md). Confidence
-scores express rule-based evidence strength; they are not calibrated prediction accuracy.
+Stock notifications are in-app only. Sales import records sales and does not decrement
+physical stock. Shopify credentials stay backend-side; imported data does not write back
+to Shopify.
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    Source[Local products / imported sales / read-only Shopify] --> Data[(Store data)]
-    Data --> Signals[Shared sales and inventory signals]
-    Signals --> Specialists[Pricing / Restock / Promotion / Listing]
-    Specialists --> Master[Master Orchestrator]
-    Master --> Plan[Prioritized plan and conflict resolution]
-    Plan --> Policy[Business policy validation]
-    Policy --> Approval[Merchant approval or rejection]
-    Approval --> Execution[Separate confirmation and fresh validation]
-    Execution --> Result[Local price/listing update or simulated restock/promotion]
-    Result --> Audit[Audit history]
+    M[Merchant] --> UI[React and TypeScript dashboard]
+    UI --> API[FastAPI typed REST API]
+    API --> AUTH[Account identity and merchant scope]
+    API --> DB[(PostgreSQL / SQLAlchemy)]
+    DB --> SIG[Shared sales and inventory signals]
+    SIG --> P[Pricing specialist]
+    SIG --> R[Restock specialist]
+    SIG --> C[Promotion specialist]
+    SIG --> L[Listing specialist]
+    P --> O[Master Orchestrator]
+    R --> O
+    C --> O
+    L --> O
+    O --> X[Conflicts, dependencies, synergies and priority]
+    X --> V[Application policy validation]
+    V --> H[Merchant approval]
+    H --> F[Separate confirmation and fresh-state validation]
+    F --> E[Local price/listing change or restock/promotion simulation]
+    E --> AUD[(Action and audit history)]
+    API -. optional read-only sync .-> SHOP[Shopify Admin API]
+    SHOP -. imported cache data .-> DB
 ```
 
-The React interface calls typed FastAPI endpoints. Pydantic validates API data,
-SQLAlchemy handles persistence, and Alembic manages database migrations. Account
-sessions bind authenticated requests to a merchant's store.
+The four specialists use shared store context but own separate rules and typed outputs.
+The orchestrator selects work for a merchant goal, applies inventory safety overrides,
+exposes incomplete specialist results and creates a deterministic, prioritized advisory
+queue. Exact thresholds and rounding are in [docs/ALGORITHMS.md](docs/ALGORITHMS.md).
 
-| Layer | Technology and purpose |
+## How a guarded action flows
+
+1. The merchant signs in and works within their account's store scope.
+2. They manage catalog data or import sales; optional Shopify sync reads external data into the local cache.
+3. Specialists generate explainable recommendations from current data.
+4. The orchestrator combines recommendations and reports conflicts and blocked items.
+5. The merchant reviews and approves or rejects eligible proposals.
+6. Execution requires a separate confirmation and rechecks current state and policy.
+7. Local price/listing changes or restock/promotion simulations are recorded in action history.
+
+Specialists never execute actions. Local price and listing actions can update CartPilot's
+database after the guarded workflow. Restock and promotion execution only records a
+simulation: it does not create a supplier order, receive inventory or launch a campaign.
+No execution changes Shopify.
+
+## Technology
+
+| Layer | Tools |
 | --- | --- |
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS; merchant interface and typed API client |
-| Backend | Python 3.12+, FastAPI, Pydantic; APIs and business rules |
-| Persistence | Async SQLAlchemy, PostgreSQL, Alembic; records, transactions and migrations |
-| Tests | pytest, pytest-asyncio, httpx, Vitest and React Testing Library |
-| CI | GitHub Actions; backend tests, frontend tests and production build |
-| Optional infrastructure | Redis for diagnostics; recommendations do not depend on it |
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS |
+| API | Python 3.12+, FastAPI, Pydantic, Uvicorn |
+| Data | PostgreSQL, async SQLAlchemy, Alembic; SQLite for isolated tests and demos |
+| Shopify | Read-only Admin GraphQL integration; optional persistent sync worker |
+| Tests | pytest, pytest-asyncio, httpx, Vitest, React Testing Library |
+| Delivery | Docker Compose configuration; GitHub Actions tests and frontend build |
+| Optional diagnostics | Redis; business recommendations and actions do not depend on it |
 
-Read [ARCHITECTURE.md](ARCHITECTURE.md) for transaction and deployment details.
-
-## Explain it in a placement interview
-
-### 30-second introduction
-
-> “CartPilot is a full-stack e-commerce decision-support project. It analyzes sales
-> and inventory through four specialist modules for pricing, restocking, promotions
-> and product listings. A master orchestrator combines their recommendations and
-> resolves conflicts. Merchants review and approve eligible actions, while the
-> backend validates policies and records an audit trail. It uses React and TypeScript
-> on the frontend, FastAPI on the backend, and SQLAlchemy for persistence.”
-
-### Two-minute explanation
-
-1. **Problem:** store decisions are connected, but merchants often review them separately.
-2. **Solution:** specialist modules analyze shared data and an orchestrator creates one prioritized plan.
-3. **Example:** low stock can override a promotion suggestion, preventing conflicting advice.
-4. **Implementation:** typed APIs, account-scoped access, database migrations, transactional workflows and a React dashboard.
-5. **Safety:** recommendations, approval and execution are separate; execution revalidates current values and prevents duplicate execution.
-6. **Evidence:** the latest local review passed 583 backend tests, 89 frontend tests and the TypeScript/Vite build.
-7. **Limits:** rules are deterministic; Shopify is read-only; restock and promotion execution are simulated.
-
-### Questions you should be ready to answer
-
-| Interview question | Key point to explain |
-| --- | --- |
-| Why multiple agents? | Each specialist has focused inputs and rules; coordination handles decisions that affect each other. |
-| Is this an LLM project? | The current implementation uses deterministic rules, which make recommendations reproducible and testable. |
-| How do you prevent unsafe changes? | Typed validation, policy limits, explicit approval, separate execution and fresh state checks. |
-| How do you protect different stores? | Authenticated requests use server-bound merchant scope; ownership checks reject foreign-store access. |
-| How does login work? | Salted scrypt password hashes and expiring, revocable sessions; stored session tokens are hashed. |
-| What if an agent fails? | The plan exposes partial failures so incomplete analysis is visible. |
-| What if an action is executed twice? | Workflow identity and atomic state checks support idempotency. |
-| How did you test it? | Isolated SQLite fixtures, API tests, rule/failure tests, mocked Shopify and frontend interaction tests. |
-| What would you improve next? | Public ingress rate controls, password recovery, provider/concurrency testing and measured forecasting. |
-
-Describe **your own contribution accurately**: identify the modules you implemented,
-one design decision you can defend, and a bug you fixed. The repository alone does
-not establish who authored each part. See [VIVA_QA.md](VIVA_QA.md) for deeper questions;
-its Phase 14 answers should be read alongside the current account/store continuation.
-
-## A simple interview demo
-
-1. Open the dashboard and explain inventory, sales and recommendations.
-2. Show Manage Store, Sales & Insights and Notifications. A new account starts empty: add a product and import sales first.
-3. Use seeded demo data to show richer specialist recommendations and a Balanced Growth plan.
-4. Explain one recommendation and one conflict or blocked action.
-5. In a private development/test demo, approve an eligible action and separately confirm execution.
-6. Show the resulting local change or simulation and the audit history.
-
-Seeded demo merchants are separate from newly registered accounts. For the repeatable
-four-product scenario and offline Shopify fixture, use [DEMO_SCRIPT.md](DEMO_SCRIPT.md).
-Production blocks guarded action writes and Shopify routes even after login.
-
-## Project structure
+## Repository map
 
 ```text
 backend/
-  app/agents/        Specialist interfaces
-  app/services/      Signals, rules, orchestration, account and action workflows
-  app/api/v1/        Auth, store, management, analysis and action endpoints
-  app/models/        Database models
-  app/schemas/       Typed request and response contracts
-  alembic/           Database migrations
-  tests/             Regression, API, failure and offline scenario tests
+  app/api/v1/       Versioned auth, catalog, agent, orchestration and action routes
+  app/agents/       Specialist agent interfaces
+  app/services/     Deterministic rules, signals and guarded workflows
+  app/integrations/ Shopify read-only client and optional refresh worker
+  app/models/       SQLAlchemy persistence models
+  alembic/          Database migrations
+  tests/            API, rules, workflow, failure and integration tests
 frontend/
-  src/components/    Shared UI and merchant workflow components
-  src/pages/         Dashboard, catalog, analysis, approval and history pages
-  src/services/      Typed backend client
-  tests/             UI and API-client tests
-docs/                Algorithms, testing guides and supporting evidence
-phases/              Historical implementation records
-.github/workflows/   Automated tests and build checks
+  src/pages/        Dashboard, catalog, analysis, approvals and history
+  src/components/   Shared UI and merchant workflow components
+  src/services/     Typed API client
+  tests/            UI and client tests
+docs/               Algorithms, security, setup, screenshots and evidence
+phases/             Phase implementation records
+.github/workflows/  CI workflow
 ```
 
-## Quick local launch (Mac)
+## Run locally
 
-Double-click `Start CartPilot.command`, or run:
+### Prerequisites
 
-```bash
-cd /Users/priyanshuraj/Projects/cartpilot
-bash scripts/dev.sh
-```
+- Python 3.12+
+- Node.js 24 (used by CI; compatible Node releases may also work locally)
+- Docker Compose for the PostgreSQL setup below
 
-This starts both services, opens the browser, and enables pooled database connections
-for local development. Keep the Terminal window open. It uses your configured database;
-it does not migrate, seed, or replace existing data. Account/store management still
-requires sign-in. Production configuration is unchanged. If a service is already
-running, the launcher reuses it. Set `VITE_API_URL=http://localhost:8000` in the root
-`.env` for the local frontend. A URL belongs in the browser address bar; Terminal can
-open it with `open http://127.0.0.1:5173/dashboard`.
+### 1. Configure PostgreSQL
 
-Catalog sales/history are aggregated in two batch queries per page instead of three
-queries per product. Refresh keeps existing same-merchant data visible until the
-new snapshot arrives; changing merchants clears it immediately.
-
-## Local setup
-
-From repository root:
+From the repository root:
 
 ```bash
 cp .env.example .env
-# Edit local environment values as needed; never commit this file.
-docker compose up -d postgres redis
+docker compose up -d postgres
 ```
 
-Settings load repository-root `.env`, then optional `backend/.env`; process environment
-variables have highest precedence. Frontend credentials must never contain Shopify
-access tokens. Set VITE_API_URL to the backend URL and VITE_CURRENCY to your display
-currency (INR by default). Display currency does not convert stored prices.
+The example file contains local development values. Replace them for your machine as
+needed. Keep `.env` private and never use its example credentials for a hosted service.
+Redis is optional diagnostics; it is not needed for the workflow below.
 
-In a backend terminal:
+### 2. Install and start the backend
 
 ```bash
 cd backend
@@ -213,11 +189,12 @@ python -m app.core.seed
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Apply migrations before seeding. The seed is development data: 1 merchant, 25 products,
-25 inventory records, 110 orders and 25 price-history records. It skips reseeding when
-merchants already exist. Never seed a valuable production database.
+Seeding is explicit and skips if a merchant already exists. It creates development
+demo data; do not run it against a database with valuable data.
 
-In a frontend terminal, from repository root:
+### 3. Install and start the frontend
+
+In a second terminal from the repository root:
 
 ```bash
 cd frontend
@@ -225,91 +202,135 @@ npm ci
 npm run dev -- --host 127.0.0.1
 ```
 
-Open `http://localhost:5173/dashboard`; backend OpenAPI is at
-`http://localhost:8000/docs`. API versioned routes begin `/api/v1`.
+Open [http://localhost:5173/dashboard](http://localhost:5173/dashboard). The API docs
+are at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-If Docker is unavailable, an isolated local SQLite demo can be used with an absolute
-path to a new disposable file. Before backend migration/seed/server commands, export:
+For an isolated SQLite demo instead of Docker/PostgreSQL, set `ENVIRONMENT=development`
+and `DATABASE_URL=sqlite+aiosqlite:////absolute/path/to/disposable-demo.sqlite` before
+running migrations. Use a new disposable database for a fresh seed/demo. The exact
+four-product walkthrough and offline Shopify mock are in [DEMO_SCRIPT.md](DEMO_SCRIPT.md).
 
-```bash
-export ENVIRONMENT=development
-export DATABASE_URL=sqlite+aiosqlite:////absolute/path/to/disposable-demo.sqlite
-```
+## Configuration
 
-The standard seed supports varied demand and stock. For a repeatable four-product
-scenario, follow [DEMO_SCRIPT.md](DEMO_SCRIPT.md).
-Root `.env` may contain other settings; process values override it. Phase 13 verified
-fresh PostgreSQL migrations and basic execution; provider TLS and concurrency stress
-remain deployment checks.
+See [.env.example](.env.example) for the complete list. Important settings:
 
-## Use the account workflow locally
+| Variable | Where | Purpose |
+| --- | --- | --- |
+| `DATABASE_URL` | Backend only | PostgreSQL connection; SQLite is supported for disposable local tests/demos |
+| `ENVIRONMENT` | Backend only | Runtime mode; production blocks action writes and Shopify routes |
+| `CORS_ORIGINS` | Backend only | Allowed browser origins |
+| `REQUIRE_AUTH` | Backend only | Enables account requirement in local development; production requires it |
+| `REDIS_URL` | Backend only | Optional diagnostics; empty disables Redis |
+| `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_CLIENT_ID`, `SHOPIFY_CLIENT_SECRET` | Backend secrets | Optional read-only Shopify connection; a legacy access token is also supported |
+| `SHOPIFY_AUTO_SYNC_ENABLED`, `SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS` | Backend only | Optional persistent worker refresh; default interval is 900 seconds |
+| `VITE_API_URL`, `VITE_CURRENCY`, `VITE_REQUIRE_AUTH` | Frontend build | Public build-time API/display/auth settings; rebuild after changes |
 
-In the root `.env`, set `REQUIRE_AUTH=true` and `VITE_REQUIRE_AUTH=true`, then restart
-the backend and restart/rebuild the frontend. Production always requires accounts.
-Register a new account, add products and import sales to populate your own store.
-Signing up does not claim an existing seeded merchant.
+Never put database credentials, session tokens or Shopify secrets in `VITE_` variables.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for release commands, hosting boundaries, worker
+placement and provider configuration.
 
-Sales CSV headers: `reference,product_id,quantity,unit_price,ordered_at`. Use past
-timezone-aware timestamps, up to 500 rows and one product per reference. Reimporting
-the same reference and values skips the duplicate. Sales import does not reduce
-physical inventory. See [Account and store management](docs/ACCOUNT_STORE_MANAGEMENT.md).
+## API surface
 
-## Test and build
+OpenAPI and interactive Swagger UI: `/docs` (for the local setup,
+`http://localhost:8000/docs`). Versioned routes use `/api/v1`.
 
-From the repository root:
-
-```bash
-cd backend
-venv/bin/python -m pytest -q
-cd ../frontend
-npm run test:run
-npm run build
-```
-
-**Latest local verification, 4 October 2026:** 583 backend tests, 89 frontend tests
-across 12 files, and a successful TypeScript/Vite production build. Tests use isolated
-SQLite and mocked external services. These results do not certify live Shopify,
-production load capacity or the complete hosted user journey. The prepared 18-case
-manual acceptance sheet remains unexecuted.
-
-See [Current testing review](docs/testing/CURRENT_TEST_REVIEW.md),
-[Testing procedure](docs/testing/STEP_BY_STEP_TESTING.md) and
-[Manual test sheet](docs/testing/MANUAL_TEST_CASES.csv). GitHub Actions is configured
-to run tests/build on pushes and pull requests; local results are separate from CI results.
-
-## Current boundaries and next steps
-
-- Local price/listing execution is guarded; restock and promotion execution are simulations.
-- Shopify synchronization is read-only and development/test only. No Shopify write or real supplier/campaign operation is implemented.
-- Password recovery, email verification, delivered email alerts and ingress rate controls remain future work.
-- Public launch requires broader security, provider, concurrency and load verification.
-- No cart recovery, trained demand forecasting, currency conversion or autonomous learning is implemented.
-
-## Further reading
-
-| Document | Use it for |
+| Category | Example routes |
 | --- | --- |
-| [Architecture](ARCHITECTURE.md) | System boundaries, consistency and security design |
-| [Algorithms](docs/ALGORITHMS.md) | Exact specialist formulas and guardrails |
-| [API/database/security](docs/API_DATABASE_SECURITY.md) | Core API and data reference; pair with the account continuation |
-| [Account and store management](docs/ACCOUNT_STORE_MANAGEMENT.md) | Current authentication and merchant workflows |
-| [Demo script](DEMO_SCRIPT.md) | Repeatable academic/interview demonstration |
-| [Viva questions](VIVA_QA.md) | Detailed technical preparation |
-| [Project report outline](PROJECT_REPORT_OUTLINE.md) | Report and presentation structure |
-| [Deployment guide](DEPLOYMENT.md) | Backend startup, migrations, HTTPS and hosting configuration |
-| [Vercel + Neon setup](docs/VERCEL_NEON.md) | Provider-specific setup notes |
-| [Report and slides](docs/deliverables/README.md) | Historical academic artifacts with identity placeholders |
+| Accounts | `POST /api/v1/auth/signup`, `POST /api/v1/auth/login`, `GET /api/v1/auth/me` |
+| Catalog and sales | `GET /api/v1/store/products`, `POST /api/v1/management/products`, `POST /api/v1/management/sales/import` |
+| Specialists | `POST /api/v1/pricing/recommend`, `/restock/recommend`, `/promotion/recommend`, `/listing/recommend` |
+| Orchestration | `POST /api/v1/orchestrate` |
+| Actions and audit | `GET /api/v1/actions`, `POST /api/v1/actions/{action_id}/approve`, `GET /api/v1/action-history` |
+| Health | `GET /health`, `GET /api/v1/health/detailed` |
+| Shopify read-only | `/api/v1/integrations/shopify/status`, `/last-sync`, `POST /sync` |
 
-Earlier phase documents and academic artifacts record earlier versions. Use the
-current testing review and account/store guide when discussing the present project.
+## Tests and CI
 
+Run the suites from the repository root:
 
-## Finding products
+```bash
+cd backend && venv/bin/python -m pytest -q
+cd ../frontend && npm run test:run && npm run build
+```
 
-Open **Products** from the sidebar. The catalogue and labelled **Search products** field
-appear above the editing form. Search by product name, SKU or category; case and outside
-spaces are ignored. **Clear search** restores the table. Counts describe loaded products;
-use **Load more products** when available to include later pages. Dashboard has a search field directly below its title; it searches all loaded products
-and shows matching rows above the overview. Without a query, its catalogue previews six
-products. Use **Load more products to search** if more pages are available. **Manage Store** has a separate **Find a product to edit** search
-that filters the editable product selector without losing the current selection.
+The latest documented local regression run is **587 backend tests** and **137 frontend
+tests**, plus a successful TypeScript/Vite production build (5 October 2026). These are
+local results, not a claim about the latest remote GitHub Actions run. CI is configured
+for pushes and pull requests in [`.github/workflows/ci.yml`](.github/workflows/ci.yml);
+it runs backend pytest, frontend Vitest and the frontend build. Live Shopify, cloud
+hosting and production load are outside these test results. See [TEST_SUMMARY.md](TEST_SUMMARY.md)
+and [current testing review](docs/testing/CURRENT_TEST_REVIEW.md).
+
+## Security and reliability boundaries
+
+- Passwords use salted scrypt hashes; opaque session tokens are stored hashed and sessions are revocable.
+- Authenticated business requests are scoped to the account's merchant; catalog, sales and action data use that scope.
+- Pydantic contracts, application policies, explicit approval, separate execution confirmation and fresh-state checks guard local actions.
+- Execution uses transactional state changes, duplicate protection and audit events; failures are surfaced without treating partial analysis as complete.
+- Production mode blocks guarded action writes and Shopify integration routes. Hosting configuration alone does not make the app a public multi-tenant service.
+
+These are implemented controls, not a claim of complete production security. Password
+recovery by email, email verification/delivery, ingress rate controls, broader provider
+and concurrency audits, and public production readiness remain incomplete.
+
+## Live demo
+
+Try the [CartPilot demo](https://cart-pilot-seven.vercel.app/). It is the project’s
+intended hosted preview; hosting availability and backend workflow readiness can change.
+The repository does not claim a verified public production deployment. For a repeatable
+workflow without relying on hosted services, use the [offline demo guide](DEMO_SCRIPT.md).
+
+## Engineering highlights
+
+- Focused rule modules make specialist decisions independently testable and explainable.
+- Shared signals plus typed conflict/dependency/synergy relationships let the orchestrator reason across decisions.
+- Merchant-scoped APIs and transactional approval/execution workflows establish explicit data and action boundaries.
+- Alembic migrations, failure-path tests and offline Shopify fixtures support repeatable development without live credentials.
+
+The project demonstrates coordination and safety boundaries; it does not claim measured
+revenue uplift, predictive accuracy or performance gains.
+
+## Current limitations and roadmap
+
+- [x] Four deterministic specialists and goal-based Master Orchestrator
+- [x] Account-scoped catalog workflows, sales import and in-app stock alerts
+- [x] Approval, separate execution confirmation and persistent action audit
+- [x] Read-only Shopify cache sync, including optional persistent scheduled refresh
+- [ ] Demand forecasting validated against historical outcomes
+- [ ] Broader Shopify workflows (any write capability requires separate design and approval)
+- [ ] Email verification, recovery and delivered notifications
+- [ ] Public-production security, provider/concurrency and load verification
+- [ ] Expanded analytics and measured outcome feedback
+
+## Contributing
+
+Bug reports and focused pull requests are welcome. Please open an issue for a substantial
+change, keep business rules out of UI components, add tests for changed behavior, and
+update the relevant documentation. Do not include credentials, real merchant data or
+unverified claims. See [`.github/workflows/ci.yml`](.github/workflows/ci.yml) for checks.
+
+## License
+
+No `LICENSE` file is currently present, so the repository does not specify a license.
+Contact the maintainer before reusing or redistributing the code.
+
+## Documentation
+
+| Guide | Contents |
+| --- | --- |
+| [Architecture](ARCHITECTURE.md) | Application structure and data boundaries |
+| [Master Orchestrator](MASTER_ORCHESTRATOR.md) | Orchestrator goals and operating rules |
+| [Algorithms](docs/ALGORITHMS.md) | Deterministic rules, thresholds and rounding |
+| [Account and store management](docs/ACCOUNT_STORE_MANAGEMENT.md) | Identity, merchant workflows and boundaries |
+| [Deployment](DEPLOYMENT.md) | Environment, migrations, hosting and worker setup |
+| [Demo script](DEMO_SCRIPT.md) | Repeatable seeded workflow and offline integration fixture |
+| [Testing summary](TEST_SUMMARY.md) | Recorded checks and their scope |
+| [Plan](PLAN.md) | Project phases and implementation history |
+
+<div align="center">
+
+Built as a full-stack engineering project by [Priyanshuraj](https://github.com/Priyanshuraj0909).
+
+[Star the repository](https://github.com/Priyanshuraj0909/CartPilot)
+
+</div>
