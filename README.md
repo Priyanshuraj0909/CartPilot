@@ -257,7 +257,8 @@ cd ../frontend && npm run test:run && npm run build
 The 21 October 2026 reliability release passes **635 backend tests** and **146 frontend
 tests**, plus the TypeScript/Vite production build. Two opt-in PostgreSQL tests are
 skipped in the default suite and pass separately against a disposable migrated database. These are
-local results, not a claim about the latest remote GitHub Actions run. CI is configured
+local results. The release also passed the remote backend, frontend and PostgreSQL
+jobs ([recorded run](https://github.com/Priyanshuraj0909/CartPilot/actions/runs/39615089349)). CI is configured
 for pushes and pull requests in [`.github/workflows/ci.yml`](.github/workflows/ci.yml);
 it runs backend pytest, frontend Vitest, the frontend build and a PostgreSQL migration/
 concurrency job. Live Shopify, cloud
@@ -282,7 +283,9 @@ PostgreSQL concurrency tests cover shared auth budgets and duplicate local execu
 
 Try the [CartPilot demo](https://cart-pilot-seven.vercel.app/). It is the project’s
 intended hosted preview; hosting availability and backend workflow readiness can change.
-The repository does not claim a verified public production deployment. For a repeatable
+The 21 October release passed deployment checks and same-origin HTTP probes; a full
+authenticated hosted merchant walkthrough and public-production readiness remain
+unverified. See [release evidence](docs/examples/reliability-release.json). For a repeatable
 workflow without relying on hosted services, use the [offline demo guide](DEMO_SCRIPT.md).
 
 ## Engineering highlights

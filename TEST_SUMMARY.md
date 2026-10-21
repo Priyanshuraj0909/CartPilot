@@ -12,6 +12,8 @@ Verified 21 October 2026 (Asia/Kolkata). Current source supersedes the historica
 | SQLite migration | Upgrade/downgrade preserves legacy activity and linked recommendations |
 | Added regression scope | Rate budgets/expiry/spoofed headers/storage failure; history ownership/pagination/partial results; recovery rollback/session revocation; Shopify cached credentials/retry limits; worker lifecycle; activity UI states |
 | Live Shopify, worker hosting and production load | Not verified by these tests |
+| Remote CI | Backend, frontend and PostgreSQL jobs passed for release 90a47de |
+| Hosted HTTP checks | Frontend bundle, same-origin database health/authentication/new route and SPA route passed; direct backend-hostname probes failed from this environment |
 | Lint | Not configured |
 
 Commands and database isolation requirements are in docs/RELIABILITY_RELEASE.md.

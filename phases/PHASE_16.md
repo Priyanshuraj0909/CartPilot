@@ -23,7 +23,9 @@ is retained. Never run test cleanup against store databases.
 Verification: 635 backend tests pass; two opt-in PostgreSQL tests pass separately;
 146 frontend tests and TypeScript/Vite build pass. Fresh SQLite upgrade/downgrade and
 PostgreSQL migrations pass. Full release evidence is in FINAL_STATUS.md and
-TEST_SUMMARY.md; publish/deployment evidence is recorded after the release completes.
+TEST_SUMMARY.md; publish/deployment evidence is recorded in docs/examples/reliability-release.json.
+Release 90a47de passed remote backend/frontend/PostgreSQL CI and all three existing
+Vercel deployment statuses; same-origin frontend/API health/auth probes passed.
 
 Remaining milestones: email verification/password reset through an email provider,
 live-store Shopify validation, persistent worker hosting, provider ingress controls,

@@ -1,0 +1,94 @@
+{
+  "verified_at_utc": "2026-10-21T14:17:33.103120+00:00",
+  "source_commit": "90a47dee9dbd9d4ece412c5d2c011f47baaf73dc",
+  "local_checks": {
+    "backend": {
+      "passed": 635,
+      "skipped_opt_in_postgres": 2
+    },
+    "frontend": {
+      "passed": 146,
+      "files": 17
+    },
+    "production_build": "passed",
+    "disposable_postgres": {
+      "migrations": "16_reliability",
+      "passed": 2,
+      "scope": [
+        "atomic concurrent auth budgets",
+        "duplicate execution changes price and records completion once"
+      ]
+    }
+  },
+  "deployment_migration": {
+    "from": "15_accounts",
+    "to": "16_reliability",
+    "merchant_account_product_order_session_counts_unchanged": true,
+    "seeded": false
+  },
+  "github_ci": {
+    "backend": "success",
+    "frontend": "success",
+    "postgres": "success",
+    "run_url": "https://github.com/Priyanshuraj0909/CartPilot/actions/runs/39615089349"
+  },
+  "vercel": [
+    {
+      "project": "cart-pilot",
+      "github_commit_status": "success",
+      "deployment_url": "https://vercel.com/king-09/cart-pilot/4tStWvsNpyd2nvvkHCxniMGGUDZw"
+    },
+    {
+      "project": "backend-cartpilot",
+      "github_commit_status": "success",
+      "deployment_url": "https://vercel.com/king-09/backend-cartpilot/Bggc8TZJtANrFRHCFTTc7GCYhcPe"
+    },
+    {
+      "project": "cartpilot-backend",
+      "github_commit_status": "success",
+      "deployment_url": "https://vercel.com/king-09/cartpilot-backend/7yWqjK2HngiQkhfAkpcm7WX8iQLG"
+    }
+  ],
+  "hosted_checks": [
+    {
+      "name": "frontend bundle",
+      "http_status": 200,
+      "saved_activity_ui": true,
+      "email_recovery_ui": true,
+      "rate_limit_message": true
+    },
+    {
+      "name": "same-origin /api/v1/health/detailed",
+      "http_status": 200,
+      "environment": "production",
+      "database": "connected",
+      "redis": "disabled"
+    },
+    {
+      "name": "same-origin /api/v1/auth/status",
+      "http_status": 200,
+      "authentication_required": true
+    },
+    {
+      "name": "same-origin /api/v1/agent-runs?merchant_id=1 without session",
+      "http_status": 401,
+      "cache_control": "no-store"
+    },
+    {
+      "name": "direct /agent-activity SPA route",
+      "http_status": 200,
+      "app_root_present": true
+    },
+    {
+      "name": "invalid login with reserved nonexistent identity",
+      "http_status": 401,
+      "account_created": false
+    }
+  ],
+  "limitations": [
+    "Direct backend-hostname probes from this environment failed with URLError; frontend proxy checks passed.",
+    "No authenticated hosted merchant walkthrough or live Shopify validation was performed.",
+    "No email provider, persistent worker host or commerce execution integration was provisioned.",
+    "The additional backend deployment was verified through its GitHub Vercel status, not an authenticated runtime walkthrough."
+  ]
+}

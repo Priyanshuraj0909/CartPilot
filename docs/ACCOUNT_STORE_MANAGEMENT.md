@@ -1,6 +1,8 @@
 # Account and store management continuation
 
 The user explicitly requested development beyond the Phase 14 submission boundary.
+Current verification and deployment status (21 October 2026) are in FINAL_STATUS.md
+and docs/RELIABILITY_RELEASE.md; older verification paragraphs below are historical.
 
 Implemented: account signup/login/logout, server-stored revocable 8-hour sessions,
 scrypt password hashing with individual salts, hashed session tokens, production

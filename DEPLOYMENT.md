@@ -238,8 +238,8 @@ VITE_API_URL=https://api.example.test npm run build
 The build includes TypeScript checks. Lint is not configured. GitHub Actions runs these
 checks with constrained Python dependencies and npm's lockfile, without real Shopify
 credentials. A separate disposable PostgreSQL service verifies migrations, shared auth
-budgets and concurrent duplicate execution. The workflow has been added; a remote
-GitHub Actions run is not claimed.
+budgets and concurrent duplicate execution. The reliability release passed remote backend/frontend/PostgreSQL CI; see
+[recorded evidence](docs/examples/reliability-release.json).
 
 For an isolated production service with demo data and
 `CORS_ORIGINS=https://cartpilot.example.test`:
@@ -297,8 +297,9 @@ adds documentation/test utilities only and does not change production permission
 ## Selected no-card academic hosting path
 
 [Vercel + Neon instructions](docs/VERCEL_NEON.md) configure separate frontend/backend
-projects and hosted PostgreSQL. Provider files are checked in locally; account connections
-and actual cloud builds remain pending. Production approval/Shopify gates remain intact.
+projects and hosted PostgreSQL. Existing cloud builds now pass for the reliability
+release; historical provider-access notes in the runbook remain labeled separately.
+Production approval/Shopify gates remain intact.
 
 ### Account migration and authenticated reads
 

@@ -28,7 +28,7 @@ forecasting model or autonomous learning is implemented.
 - Frontend: 146 passed; TypeScript/Vite production build passed.
 - Fresh SQLite migration upgrade/downgrade retains legacy runs and recommendations.
 - Fresh PostgreSQL migration passed; concurrent auth budget and duplicate execution passed.
-- Release and hosted verification evidence is recorded below after publishing.
+- GitHub CI, three Vercel deployments and same-origin hosted probes passed (details below).
 
 See [test evidence](TEST_SUMMARY.md), [release guide](docs/RELIABILITY_RELEASE.md) and
 [Phase 16](phases/PHASE_16.md) for scope and reproduction.
@@ -46,4 +46,18 @@ The configured CartPilot Neon database was migrated from 15_accounts to 16_relia
 on 21 October 2026. Merchant, account, product, order and session row counts were
 unchanged. No seeding, catalog edits or commerce execution occurred. GitHub confirms
 automatic Vercel checks for cart-pilot, backend-cartpilot and cartpilot-backend.
-Release commit and hosted verification results follow after the push.
+Release [90a47de](https://github.com/Priyanshuraj0909/CartPilot/commit/90a47dee9dbd9d4ece412c5d2c011f47baaf73dc)
+was pushed to main. [GitHub Actions](https://github.com/Priyanshuraj0909/CartPilot/actions/runs/39615089349)
+passed backend, frontend and PostgreSQL jobs. All three Vercel commit statuses report
+success: cart-pilot, backend-cartpilot and cartpilot-backend.
+
+The live frontend contains saved activity, email recovery and rate-limit messaging.
+Its same-origin detailed health returns 200 with production/database connected/Redis
+disabled; auth status requires accounts; the new activity endpoint returns 401 without
+a session and Cache-Control: no-store; /agent-activity serves the SPA. A reserved
+nonexistent login returns 401 without account creation.
+
+Direct probes of backend-cartpilot.vercel.app from this environment failed with
+URLError; the frontend API proxy works. An authenticated hosted merchant walkthrough
+and the additional backend's runtime remain unverified. These HTTP checks do not prove
+full production readiness. See [structured evidence](docs/examples/reliability-release.json).
