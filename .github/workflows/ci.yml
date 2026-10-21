@@ -35,3 +35,32 @@ jobs:
         working-directory: frontend
         env:
           VITE_API_URL: https://api.example.test
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: cartpilot_ci
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: cartpilot_ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U cartpilot_ci -d cartpilot_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      ENVIRONMENT: test
+      DATABASE_URL: postgresql+asyncpg://cartpilot_ci@localhost:5432/cartpilot_ci
+      CARTPILOT_TEST_POSTGRES_URL: postgresql+asyncpg://cartpilot_ci@localhost:5432/cartpilot_ci
+      REDIS_URL: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt -c requirements.lock.txt
+        working-directory: backend
+      - run: python -m alembic upgrade head
+        working-directory: backend
+      - run: python -m pytest tests/test_postgres_integration.py -q
+        working-directory: backend
