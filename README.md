@@ -70,6 +70,7 @@ dependencies and partial failures. Review, approval and execution are distinct s
 | Listing specialist | Flag content/completeness issues and suggest grounded copy without inventing product facts |
 | Master Orchestrator | Analyze merchant goals, coordinate relevant specialists, prioritize a bounded queue and explain cross-agent relationships |
 | Review and audit | Approve or reject proposals; separately confirm eligible execution; inspect recorded action history |
+| Saved AI Manager activity | Review merchant-scoped plan summaries across sessions, including partial results and failed-analysis counts |
 | Shopify (optional) | Development/test read-only sync of products, inventory and recent orders; optional persistent cache-refresh worker |
 
 Stock notifications are in-app only. Sales import records sales and does not decrement
@@ -237,9 +238,9 @@ OpenAPI and interactive Swagger UI: `/docs` (for the local setup,
 | Category | Example routes |
 | --- | --- |
 | Accounts | `POST /api/v1/auth/signup`, `POST /api/v1/auth/login`, `GET /api/v1/auth/me` |
-| Catalog and sales | `GET /api/v1/store/products`, `POST /api/v1/management/products`, `POST /api/v1/management/sales/import` |
+| Catalog and sales | `GET /api/v1/products`, `POST /api/v1/products`, `POST /api/v1/sales/import` |
 | Specialists | `POST /api/v1/pricing/recommend`, `/restock/recommend`, `/promotion/recommend`, `/listing/recommend` |
-| Orchestration | `POST /api/v1/orchestrate` |
+| Orchestration and activity | `POST /api/v1/orchestrate`, `GET /api/v1/agent-runs?merchant_id=ID` |
 | Actions and audit | `GET /api/v1/actions`, `POST /api/v1/actions/{action_id}/approve`, `GET /api/v1/action-history` |
 | Health | `GET /health`, `GET /api/v1/health/detailed` |
 | Shopify read-only | `/api/v1/integrations/shopify/status`, `/last-sync`, `POST /sync` |
@@ -253,25 +254,29 @@ cd backend && venv/bin/python -m pytest -q
 cd ../frontend && npm run test:run && npm run build
 ```
 
-The latest documented local regression run is **587 backend tests** and **137 frontend
-tests**, plus a successful TypeScript/Vite production build (5 October 2026). These are
+The 21 October 2026 reliability release passes **635 backend tests** and **146 frontend
+tests**, plus the TypeScript/Vite production build. Two opt-in PostgreSQL tests are
+skipped in the default suite and pass separately against a disposable migrated database. These are
 local results, not a claim about the latest remote GitHub Actions run. CI is configured
 for pushes and pull requests in [`.github/workflows/ci.yml`](.github/workflows/ci.yml);
-it runs backend pytest, frontend Vitest and the frontend build. Live Shopify, cloud
+it runs backend pytest, frontend Vitest, the frontend build and a PostgreSQL migration/
+concurrency job. Live Shopify, cloud
 hosting and production load are outside these test results. See [TEST_SUMMARY.md](TEST_SUMMARY.md)
 and [current testing review](docs/testing/CURRENT_TEST_REVIEW.md).
 
 ## Security and reliability boundaries
 
 - Passwords use salted scrypt hashes; opaque session tokens are stored hashed and sessions are revocable.
+- Signup, login and forgotten-email recovery have atomic database-backed attempt limits, shared across instances; blocked requests return 429 and Retry-After.
 - Authenticated business requests are scoped to the account's merchant; catalog, sales and action data use that scope.
 - Pydantic contracts, application policies, explicit approval, separate execution confirmation and fresh-state checks guard local actions.
 - Execution uses transactional state changes, duplicate protection and audit events; failures are surfaced without treating partial analysis as complete.
 - Production mode blocks guarded action writes and Shopify integration routes. Hosting configuration alone does not make the app a public multi-tenant service.
 
 These are implemented controls, not a claim of complete production security. Password
-recovery by email, email verification/delivery, ingress rate controls, broader provider
-and concurrency audits, and public production readiness remain incomplete.
+recovery by email, email verification/delivery, provider ingress controls, broader
+load/security audits, and public production readiness remain incomplete. Targeted
+PostgreSQL concurrency tests cover shared auth budgets and duplicate local execution.
 
 ## Live demo
 
@@ -295,6 +300,8 @@ revenue uplift, predictive accuracy or performance gains.
 - [x] Four deterministic specialists and goal-based Master Orchestrator
 - [x] Account-scoped catalog workflows, sales import and in-app stock alerts
 - [x] Approval, separate execution confirmation and persistent action audit
+- [x] Shared authentication limits and saved merchant-scoped AI Manager activity
+- [x] PostgreSQL migrations and targeted concurrency tests in CI
 - [x] Read-only Shopify cache sync, including optional persistent scheduled refresh
 - [ ] Demand forecasting validated against historical outcomes
 - [ ] Broader Shopify workflows (any write capability requires separate design and approval)
@@ -325,6 +332,7 @@ Contact the maintainer before reusing or redistributing the code.
 | [Deployment](DEPLOYMENT.md) | Environment, migrations, hosting and worker setup |
 | [Demo script](DEMO_SCRIPT.md) | Repeatable seeded workflow and offline integration fixture |
 | [Testing summary](TEST_SUMMARY.md) | Recorded checks and their scope |
+| [Reliability release](docs/RELIABILITY_RELEASE.md) | Migration, shared auth limits, saved activity, verification and remaining milestones |
 | [Plan](PLAN.md) | Project phases and implementation history |
 
 <div align="center">

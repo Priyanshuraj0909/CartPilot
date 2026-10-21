@@ -265,7 +265,7 @@ Do not:
 
 Read:
 
-phases/PHASE_14.md
+phases/PHASE_16.md
 
 Do not move to the next phase until the current phase passes verification.
 
@@ -282,3 +282,10 @@ explicit project-guide request justifies further work.
 The user explicitly requested missing account/store functionality after the audit.
 Current continuation: phases/PHASE_15.md; account/store workflows may be developed
 within that scope. Preserve specialist guardrails and external execution limitations.
+
+## User-authorized reliability release
+
+The user requested future improvements plus GitHub and deployment updates on 21 October
+2026. Current work is phases/PHASE_16.md: auth rate controls, saved orchestration
+history, Shopify continuation verification, PostgreSQL CI and accurate release docs.
+External execution and production action/Shopify API gates remain unchanged.

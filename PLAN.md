@@ -289,3 +289,11 @@ Stop development after this phase unless a real defect or guide request requires
 Account/session authorization, catalog CRUD/archive, sales import, observed-sales
 summaries and in-app stock alerts. See phases/PHASE_15.md and
 [setup/limits](docs/ACCOUNT_STORE_MANAGEMENT.md). Historical Phase 14 evidence is retained.
+
+### Phase 16 — reliability and release continuation
+
+User-authorized security/reliability improvements: shared authentication budgets,
+merchant-scoped saved AI Manager activity, accessible account help, recovery rollback
+and bounded Shopify token-refresh fixes, worker tests and PostgreSQL concurrency CI.
+See [Phase 16](phases/PHASE_16.md) and [release guide](docs/RELIABILITY_RELEASE.md).
+Current release verification and remaining integration milestones are in FINAL_STATUS.md.

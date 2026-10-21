@@ -1,58 +1,49 @@
-# CartPilot final verified status
+# CartPilot current verified status
 
-**READY WITH MINOR LIMITATIONS — trusted local faculty demo, viva and source submission.**
-Final verification: 3 October 2026, Asia/Kolkata. No public hosted release is claimed.
+Updated 21 October 2026 (Asia/Kolkata). This supersedes Phase 14's authentication and
+activity limitations. Historical phase evidence remains in its original documents.
 
-CartPilot is an agentic e-commerce decision-support MVP sitting above store data.
-Four deterministic specialists analyze pricing, inventory, promotions and listing
-quality. A Master Orchestrator coordinates goal-based recommendations and routes
-eligible proposals through policy validation, human approval, separately confirmed
-local/simulated execution and persistent audit logging.
+The merchant MVP is implemented and locally verified. Four deterministic specialists
+and a Master Orchestrator provide explainable advisory plans; merchant approval and
+separate fresh-state validation protect local/simulated execution. No LLM, trained
+forecasting model or autonomous learning is implemented.
 
-**The AI Manager Sitting on Top of Your Inventory**
-Technical subtitle: **A Multi-Agent E-Commerce Decision and Operations Management System**.
-Here “agentic” describes modular decision/coordination roles, not LLM autonomy or learning.
+| Capability | Current boundary |
+| --- | --- |
+| Accounts and store management | Signup/login/logout, hashed revocable sessions, account-scoped catalog CRUD/archive, sales import and in-app stock alerts |
+| Account attempt protection | Atomic database-backed budgets across instances for signup/login/forgotten-email recovery; 429 and Retry-After |
+| Forgotten login email | Store name and password prove ownership; replacement email updates atomically and revokes sessions; no email verification or forgotten-password delivery |
+| Specialists and orchestration | Deterministic guarded pricing/restock/promotion/listing rules, priorities, conflicts, synergies and partial results |
+| Saved Agent Activity | Merchant-scoped orchestration summaries survive sessions; standalone specialist cards remain session-only |
+| Approval and audit | Explicit review, separate confirmation, fresh-state checks, duplicate protection, rollback and persistent action audit |
+| Price/listing execution | Local database only; not synchronized to Shopify |
+| Restock/promotion execution | Simulation only; no stock arrival, supplier orders or campaign launch |
+| Shopify | Read-only sync; static token or cached client credentials; optional scheduled worker code and mocked lifecycle tests |
+| Production permissions | Business APIs require account identity; action writes and Shopify API routes remain blocked |
+| Infrastructure | Migration 16_reliability, frontend API proxy, deployment configuration and GitHub CI including disposable PostgreSQL checks |
 
-| Capability | Classification | Verified boundary |
-| --- | --- | --- |
-| Data layer and migrations | Implemented | Merchant/catalog/orders/inventory/history/actions and integration mappings |
-| Pricing Agent | Implemented | Deterministic bounded recommendation; local price mutation only through executor |
-| Restock Agent | Implemented | Coverage/reorder proposal; no supplier communication |
-| Promotion Agent | Implemented | Trend/stock/margin-protected discount proposal |
-| Listing Agent | Implemented | Grounded factual suggestions; no invented attributes or SEO effectiveness claim |
-| Master Orchestrator | Implemented | Context, six goal strategies, partial failures and bounded advisory planning |
-| Conflicts / synergies / dependencies | Implemented | Explicit typed relationships and blocked/omitted queues |
-| Goal-based priority scoring | Implemented | Heuristic weights, hard inventory overrides and deterministic ordering |
-| Guarded actions, approval and policy validation | Implemented | Human review, separate confirmation and fresh-state validation |
-| Idempotent execution and audit | Implemented | Persisted local results, audit events and rollback |
-| Price / listing execution | Implemented | Local database only; never synchronized to Shopify |
-| Restock execution | Simulated | Records replenishment request; no purchase order or stock arrival |
-| Promotion execution | Simulated | Records proposed campaign; no live launch or base-price mutation |
-| Frontend | Implemented | Nine routes, merchant selection, explainable analyses and error states |
-| Shopify synchronization | Read-Only | Closed GraphQL queries, variants/location stock/orders, idempotent mappings |
-| Persistent AgentRun model | Partially Implemented | Model exists; UI Agent Activity is session history, not persisted runs |
-| Deployment configuration | Implemented | Static build, Python service, migrations, optional Redis and CI configuration |
-| Cloud hosting / live Shopify verification | Not Implemented / Not Verified | No public URL or real-store credentials used |
-| Production authentication | Not Implemented | Merchant scope is validated but not bound to authenticated identity |
-| Autonomous learning / LLM / LangGraph | Not Implemented | Outcomes are recorded; no training, reinforcement learning or LLM calls |
+## Verification
 
-Production mode preserves existing write/integration restrictions. Full workflow demos
-run only in isolated development/test environments with trusted access. Public multi-tenant
-production is not ready. Redis is optional diagnostics; disabled cache does not remove
-any implemented recommendation/execution functionality.
+- Backend: 635 passed; two PostgreSQL checks skipped by default and passed separately.
+- Frontend: 146 passed; TypeScript/Vite production build passed.
+- Fresh SQLite migration upgrade/downgrade retains legacy runs and recommendations.
+- Fresh PostgreSQL migration passed; concurrent auth budget and duplicate execution passed.
+- Release and hosted verification evidence is recorded below after publishing.
 
-## Future work, never represented as current behavior
+See [test evidence](TEST_SUMMARY.md), [release guide](docs/RELIABILITY_RELEASE.md) and
+[Phase 16](phases/PHASE_16.md) for scope and reproduction.
 
-Authenticated merchant identity, provider rate limiting, validated demand forecasting,
-real outcome feedback, supplier adapters, separately approved Shopify write capability,
-additional commerce adapters, promotion optimization and broader multi-store onboarding.
-These require new design/testing; no scientific novelty or measured business uplift is claimed.
+## Remaining work
 
-## Final evidence and submission
+Email verification/password reset delivery, persistent worker hosting, live Shopify
+validation, provider ingress controls, backup restoration, broader load/security/browser
+UAT, measured outcome feedback and validated demand forecasts remain incomplete.
+No measured revenue uplift or full public-production readiness is claimed.
 
-560 backend tests, 76 frontend tests and TypeScript/Vite production build pass.
-See [TEST_SUMMARY.md](TEST_SUMMARY.md), [DEMO_SCRIPT.md](DEMO_SCRIPT.md),
-[VIVA_QA.md](VIVA_QA.md), [report/PPT outline](PROJECT_REPORT_OUTLINE.md),
-[submission checklist](SUBMISSION_CHECKLIST.md) and [screenshots](docs/screenshots/README.md).
-Source is an uncommitted working-tree snapshot on main, not a clean release commit.
-Earlier phases' source is included in packaging; secrets/builds/dependencies are excluded.
+## Deployment preparation
+
+The configured CartPilot Neon database was migrated from 15_accounts to 16_reliability
+on 21 October 2026. Merchant, account, product, order and session row counts were
+unchanged. No seeding, catalog edits or commerce execution occurred. GitHub confirms
+automatic Vercel checks for cart-pilot, backend-cartpilot and cartpilot-backend.
+Release commit and hosted verification results follow after the push.

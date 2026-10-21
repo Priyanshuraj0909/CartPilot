@@ -1,3 +1,26 @@
+# Current test evidence — reliability release
+
+Verified 21 October 2026 (Asia/Kolkata). Current source supersedes the historical Phase
+14 counts below. Production deployment results are maintained in FINAL_STATUS.md.
+
+| Check | Result |
+| --- | --- |
+| Backend: venv/bin/python -m pytest -q | 635 passed; 2 opt-in PostgreSQL tests skipped |
+| Frontend: npm run test:run | 146 passed across 17 files |
+| Frontend: npm run build | TypeScript and Vite production build passed |
+| Disposable PostgreSQL | All migrations through 16_reliability; 2 concurrency tests passed |
+| SQLite migration | Upgrade/downgrade preserves legacy activity and linked recommendations |
+| Added regression scope | Rate budgets/expiry/spoofed headers/storage failure; history ownership/pagination/partial results; recovery rollback/session revocation; Shopify cached credentials/retry limits; worker lifecycle; activity UI states |
+| Live Shopify, worker hosting and production load | Not verified by these tests |
+| Lint | Not configured |
+
+Commands and database isolation requirements are in docs/RELIABILITY_RELEASE.md.
+The PostgreSQL checks are targeted integration tests, not a load/stress benchmark.
+
+---
+
+## Historical Phase 14 evidence (3 October 2026)
+
 # Final test evidence — Phase 14
 
 Verified 3 October 2026 (Asia/Kolkata). Results come from this repository's actual runs,

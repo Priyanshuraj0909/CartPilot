@@ -1,7 +1,8 @@
 # CartPilot: manual Vercel Hobby + Neon Free deployment
 
 Use this runbook for two projects from the same Git repository. The hosted service is
-an **advisory-only synthetic-data demo**. Application authentication is absent.
+an **advisory-only demo**. Account authentication and merchant ownership are required.
+New accounts own empty stores; they do not acquire existing seeded merchants.
 `ENVIRONMENT=production` keeps action creation/review/execution and all Shopify routes
 blocked. The full workflow stays local/private. Do not change environment to bypass gates.
 The Integrations page explains this restriction and disables its Shopify controls when
@@ -23,8 +24,8 @@ Inspect existing resources before creating any. Reuse `cartpilot-backend` in tea
 
 1. Open https://console.neon.tech. Confirm the account's plan is **Free**.
 2. Reuse a clearly identified CartPilot demo project, or create `cartpilot-demo` with
-   **Postgres only**. Select a region near the backend (the existing backend uses `iad1`,
-   so an available US East region is suitable). Keep Free compute/default autosuspend.
+   **Postgres only**. Select a region near the backend (the checked-in backend uses `sin1`,
+   so Singapore is suitable). Keep Free compute/default autosuspend.
 3. On the selected branch, create a dedicated database named `cartpilot_demo_20261003`
    and a dedicated database-owner role. Never reuse a valuable database for this demo.
 4. In Neon SQL Editor select that exact database and check:
@@ -137,7 +138,7 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m app.core.seed
 ```
 
-Stop if migration fails. The migration head is `11shopify_read_only`; the expected seed
+Stop if migration fails. The migration head is `16_reliability`; the expected seed
 creates **1 merchant, 25 products, 110 orders**, inventory and price history. Do not
 replace Alembic with schema guesses. Do not put migrations/seed in function startup,
 Vercel builds or a public endpoint. For another reset use a new disposable database.
@@ -188,6 +189,28 @@ configured, deployed, HTTP-verified and browser-verified steps separately.
 
 ## Current connector limitations
 
+### Deployment repair observed on 2026-10-05
+
+The frontend project `cart-pilot` and its configured API project `backend-cartpilot`
+successfully deployed commit `548e0eb`. A separate project, `cartpilot-backend`
+(`prj_9hgLBdIBD7OroNPtHb0sPPrQbqQy`), failed deployment
+`dpl_7GjiANYBaZWSjMfWgsFrMWgiQiWL` with `FASTAPI_ENTRYPOINT_NOT_FOUND`.
+Its build searched the repository root and found `backend/app/main.py` outside the
+default locations. The connected app accepted a project-settings correction to
+`rootDirectory: backend`. No application-code change is needed for this failure.
+
+The corrected project still needs a fresh deployment to verify the build. Open its
+Deployments page and redeploy the failed deployment using the current project settings,
+or log in to the local Vercel CLI and run:
+
+```bash
+npx vercel redeploy dpl_7GjiANYBaZWSjMfWgsFrMWgiQiWL --scope king-09 --target production
+```
+
+The connected app currently exposes project-settings updates but no deployment-creation
+tool; the local CLI was logged out during this repair. This historical failed check
+does not establish a failure in the frontend's configured `backend-cartpilot` API.
+
 The connected Vercel deployment call returned `Tool deploy_to_vercel not found`, and
 project settings/environment mutation tools were not exposed. Neon project discovery
 and creation were not exposed; inspection requires a project ID. Connections are not
@@ -203,3 +226,14 @@ No successful cloud deployment is claimed by this runbook.
 - https://neon.com/docs/manage/projects
 - https://neon.com/docs/guides/python
 - https://magicstack.github.io/asyncpg/current/api/index.html
+
+## Current reliability rollout
+
+The live frontend cart-pilot-seven.vercel.app proxies /api to backend-cartpilot.vercel.app.
+GitHub also reports a separate cartpilot-backend deployment. Inspect all three commit
+statuses after pushing. Apply migration 16_reliability to every configured target database
+before its backend serves the new code. Existing provider credentials remain private.
+The frontend Vercel build intentionally clears VITE_API_URL; update frontend/vercel.json
+when changing the proxied backend. Earlier anonymous seed/browser steps are historical;
+use a merchant-owned account for protected workflow checks. Current release evidence
+and explicit remaining work are maintained in FINAL_STATUS.md.

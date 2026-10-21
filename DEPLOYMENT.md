@@ -1,9 +1,12 @@
 # CartPilot deployment
 
 This setup is provider-neutral: static frontend hosting, one Python service, managed
-PostgreSQL, and optionally Redis. No cloud account, public URL or live Shopify store
-has been configured. The application is deployable for a protected demo; it has no
-production authentication and must not be exposed as a public multi-tenant service.
+PostgreSQL, and optionally Redis. Existing Vercel projects host the frontend and API.
+Production business APIs require account authentication and bind access to a merchant.
+Shared auth limits and saved plan history require migration 16_reliability before
+serving this release. General public-production readiness still needs security/load
+review, verified email recovery and provider ingress controls. Deployment evidence is
+recorded in FINAL_STATUS.md; the configuration alone does not establish readiness.
 
 ```mermaid
 flowchart TD
@@ -18,7 +21,7 @@ flowchart TD
 
 - `ENVIRONMENT=production`: advisory API runtime; local action creation, approval,
   execution and all Shopify integration routes return 403. This preserves existing
-  safety gates. Reading data still requires a protected network/hosting boundary.
+  safety gates. Business reads require a valid account session.
 - `ENVIRONMENT=development`: trusted private faculty demo using the production
   start command and static frontend build. Existing approval, execution confirmation,
   policy validation, merchant scope and audit controls remain mandatory. Restrict
@@ -26,7 +29,7 @@ flowchart TD
   enabling this mode. It is not a substitute for production authentication.
 - `ENVIRONMENT=test`: isolated tests/offline mocked demo, not a public deployment.
 
-There is no new DEMO_MODE, authentication system or permission bypass. Without a
+There is no DEMO_MODE or permission bypass. Account authentication is implemented. Without a
 protected hosting boundary, use the local demo instead of exposing write routes.
 
 ## Requirements
@@ -40,8 +43,8 @@ Use a dedicated database and limited database role. SQLAlchemy already pools
 connections (`pool_pre_ping`, default QueuePool size 5 / overflow 10 for PostgreSQL).
 One worker can therefore use up to 15 connections; account for concurrent migrations
 and provider limits. Start with one worker. Enable provider backups and verify restores
-before using valuable data. Provider rate limiting and authenticated merchant identity
-remain future public-production hardening.
+before using valuable data. Merchant identity and application auth budgets are
+implemented; provider ingress limits and a broader security review remain necessary.
 
 ## Backend service
 
@@ -169,6 +172,32 @@ Do not publish this development Compose stack unprotected or use its example pas
 for hosting. Standard Docker Compose CLI is required; containers were not executable
 in this development environment because Docker is absent.
 
+### Automatic Shopify cache refresh
+
+Shopify data remains read-only and Shopify remains the source of truth. To refresh the
+CartPilot analysis cache automatically, set these backend-only variables in `.env` or
+the backend's secret environment:
+
+```env
+SHOPIFY_AUTO_SYNC_ENABLED=true
+SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS=900
+```
+
+The worker syncs immediately when it starts, then repeats every 900 seconds (15
+minutes). It runs the existing bounded product, inventory, and recent-order sync;
+the Integrations page's Last Sync summary reports its results. Keep the worker process
+running. In Docker Compose, start it with `docker compose up -d shopify-sync`; it
+restarts if the process exits. For local development, `scripts/dev.sh` starts the
+worker when enabled and stops it with the other local services. If Shopify credentials
+are missing, the worker records a safe warning and retries on its next interval.
+
+The worker must be a persistent process sharing the backend's database and Shopify
+environment settings. Do not run it inside Vercel's request function: serverless
+instances can stop between requests. On Vercel, deploy this worker to a separate
+always-on worker/container host, or configure that host's scheduler to invoke the
+existing authenticated sync API. Scheduled refresh updates only CartPilot's local
+cache; it never approves actions or writes prices/listings/promotions to Shopify.
+
 ## Redis and health
 
 Redis is **optional diagnostics only**, not agent/execution storage. Set `REDIS_URL=`
@@ -208,7 +237,8 @@ VITE_API_URL=https://api.example.test npm run build
 
 The build includes TypeScript checks. Lint is not configured. GitHub Actions runs these
 checks with constrained Python dependencies and npm's lockfile, without real Shopify
-credentials or external database services. The workflow has been added; a remote
+credentials. A separate disposable PostgreSQL service verifies migrations, shared auth
+budgets and concurrent duplicate execution. The workflow has been added; a remote
 GitHub Actions run is not claimed.
 
 For an isolated production service with demo data and
@@ -272,7 +302,7 @@ and actual cloud builds remain pending. Production approval/Shopify gates remain
 
 ### Account migration and authenticated reads
 
-The merchant-workflow continuation adds revision `15_accounts`. Apply migrations before
+The merchant-workflow continuation adds `15_accounts`; reliability adds `16_reliability`. Apply migrations before
 deploying. Production business APIs now require a registered account and bearer session;
 new signup creates an independent empty store rather than claiming seeded merchants.
 Production approval/execution/Shopify restrictions still apply after login. See
@@ -309,3 +339,17 @@ continue to support `VITE_API_URL`. Changing the hosted backend requires updatin
 cache layers; request methods, JSON bodies, bearer authorization and query strings
 must be verified after deployment. This avoids browser CORS preflights and dependence
 on a separate backend-domain connection from the merchant's network.
+
+## Reliability release — 21 October 2026
+
+Follow [the release guide](docs/RELIABILITY_RELEASE.md). Run Alembic upgrade head
+before backend rollout; it adds auth_rate_limits and nullable AgentRun merchant ownership.
+The default limits are 10 attempts per identity and 100 per ASGI peer per route over
+900 seconds. Configure trusted proxy handling at the provider; forwarded headers are
+not accepted by the application as a client-controlled identity. Apply provider ingress
+limits too. No Redis service is required for these application limits.
+
+Saved plan summaries are audit writes performed by the API after validated analysis.
+They never approve or execute recommendations. Legacy runs without ownership stay hidden.
+The read-only Shopify worker must run on a persistent host; Vercel Functions cannot
+keep the polling process alive. Shipping its code does not provision that host.

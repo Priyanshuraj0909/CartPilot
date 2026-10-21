@@ -1,6 +1,7 @@
-"""Verify a synthetic-data production deployment without changing merchant data.
+"""Verify a synthetic-data deployment without changing catalog, inventory or sales.
 
-No credentials, migrations, seeding, approvals or action execution are performed.
+No login, migrations, seeding, approvals or action execution are performed.
+Analysis requests may record a merchant-scoped activity summary.
 Use --check-frontend to also inspect the published SPA and its API build setting.
 """
 import argparse

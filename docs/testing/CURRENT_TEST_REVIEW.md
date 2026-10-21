@@ -1,3 +1,15 @@
+# Current review — 21 October 2026
+
+The reliability release passes 635 backend tests, 146 frontend tests and the production
+build. Two opt-in PostgreSQL tests pass separately against a disposable migrated
+cartpilot_ci database. Shared authentication limits and saved orchestration summaries
+now exist. Account email recovery is password-proven; email verification and forgotten
+password delivery remain absent. Hosted results are in ../../FINAL_STATUS.md and the
+release procedure is in ../RELIABILITY_RELEASE.md. Earlier review entries below are
+historical and do not override these current capabilities.
+
+---
+
 # Current testing review — 4 October 2026
 
 Scope: current local source, isolated automated regression and production frontend

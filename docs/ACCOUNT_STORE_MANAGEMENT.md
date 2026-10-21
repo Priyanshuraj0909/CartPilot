@@ -9,7 +9,8 @@ analysis, filtered merchant listings, authenticated product create/edit/archive,
 price-history preservation, atomic bounded sales import with reference deduplication,
 sales ranking/revenue summaries and on-demand low-stock alerts.
 
-Run migrations before starting: `python -m alembic upgrade head` adds `15_accounts`.
+Run migrations before starting: `python -m alembic upgrade head` applies `15_accounts`
+and `16_reliability` (shared auth limits and saved orchestration ownership).
 Existing seeded merchants cannot be claimed by signing up with their email; signup
 creates a separate new store. Add products through Products, then upload sales CSV.
 Required headers: `reference,product_id,quantity,unit_price,ordered_at`. One product
@@ -25,10 +26,16 @@ frontend stores the session token in sessionStorage and sends Authorization head
 Logout revokes the session server-side. HTTPS is required for hosted deployment.
 
 Production action writes and Shopify routes remain blocked even for logged-in users.
-No supplier orders, Shopify writes, real campaign launches, email provider, password
-recovery, email verification or admin console was added. Low-stock notifications are
-computed on demand, not persistent delivered email. Ingress rate limits and broader
-security/browser/load audits remain necessary before general public launch.
+No supplier orders, Shopify writes, email provider, email verification or admin console
+was added. A forgotten CartPilot login email can be changed using the exact store name,
+account password and a replacement email. The old email is not required. The change is
+immediate, updates the account and merchant contact email together, and revokes all
+existing sessions. CartPilot doesn't verify delivery to the new address, so enter an
+inbox you can access. If both the store name and account password are unavailable,
+there is no automated recovery path. Low-stock notifications are computed on demand,
+not persistent delivered email. Database-backed authentication attempt budgets are
+implemented. Provider ingress limits and broader security/browser/load
+audits remain necessary before general public launch.
 
 Historical report/PPT and Phase 14 results describe the previous verified MVP; this
 continuation supersedes their authentication/product-management limitations only.

@@ -35,8 +35,9 @@ calibrated predictions. Analysis cannot execute or implicitly flush pending chan
 
 Product, Inventory, Order, OrderItem and PriceHistory store analysis data. Existing
 Recommendation, Action, Approval and AuditLog implement guarded local execution.
-AgentRun exists in the data layer; the UI's Agent Activity is browser-session history,
-not fabricated persistent agent runs. ShopifyConnection/ExternalProductMapping/
+AgentRun now stores merchant-scoped orchestration summaries exposed by /agent-runs
+and the Agent Activity page. Standalone specialist cards retain browser-session history;
+legacy AgentRun rows without a merchant are excluded from the historical feed. ShopifyConnection/ExternalProductMapping/
 ExternalOrderMapping hold source identity, location snapshots and last-sync metadata;
 no credentials or unnecessary customer payloads are retained.
 
@@ -46,8 +47,8 @@ The MVP validates merchant-product/recommendation/action ownership. Frontend ana
 calls always send merchant scope. Legacy single-product APIs permit omitted scope
 for compatibility in anonymous development/test demos. Phase 15 binds authenticated
 requests to the session merchant, including these legacy routes, and requires accounts
-for production business APIs. General public readiness still requires rate controls
-and broader security/load review. Action writes and Shopify routes are restricted
+for production business APIs. Database-backed authentication rate limits are shared across instances. General
+public readiness still requires provider ingress controls and broader security/load review. Action writes and Shopify routes are restricted
 to development/test. Sessions use opaque revocable tokens; see the continuation below.
 
 Approval and execution are separate. Atomic claims, PostgreSQL row locks, source-value
@@ -59,8 +60,9 @@ human approval. Simulated replenishment does not satisfy actual stock arrival.
 Shopify is the external source; the local DB is an analysis/cache layer. The fixed
 GraphQL query registry cannot dispatch arbitrary mutations or follow redirects.
 Credentials come only from backend environment settings. Agents never call Shopify.
-Sync is manual and bounded, uses idempotent mappings and independent commits, and
-reports partial failures. Missing cost/stock blocks dependent unsafe recommendations.
+Sync is bounded, uses idempotent mappings and independent commits, and reports partial
+failures. It can run manually or in the optional persistent scheduled worker. Missing
+cost/stock blocks dependent unsafe recommendations.
 Local actions are explicitly not synchronized to Shopify.
 
 No SQL bind values, raw infrastructure exceptions or upstream Shopify payloads are
