@@ -96,3 +96,33 @@ it('unlocks sign in after failure so the merchant can retry',async()=>{
  expect(await screen.findByText('Private workspace')).toBeVisible();
  expect(global.fetch).toHaveBeenCalledTimes(2);
 });
+
+it('recovers a login email and returns to sign in without creating a session',async()=>{
+ vi.stubEnv('VITE_REQUIRE_AUTH','true');
+ global.fetch=vi.fn().mockResolvedValue({ok:true,json:async()=>({message:'Login email updated. Sign in with the new email.'})});
+ render(<AccountGate><p>Private workspace</p></AccountGate>);
+ fireEvent.click(screen.getByRole('button',{name:'Forgot your login email?'}));
+ expect(screen.getByLabelText('Store name')).toHaveAccessibleDescription('Enter the exact store name used when you created your account.');
+ fireEvent.change(screen.getByLabelText('Store name'),{target:{value:'My Store'}});
+ fireEvent.change(screen.getByLabelText('New email you can access'),{target:{value:'new@example.test'}});
+ fireEvent.change(screen.getByLabelText('Account password'),{target:{value:'correct horse battery staple'}});
+ fireEvent.click(screen.getByRole('button',{name:'Update login email'}));
+ expect(await screen.findByRole('status')).toHaveTextContent('Login email updated.');
+ expect(screen.getByRole('heading',{name:'Welcome back.'})).toBeVisible();
+ expect(sessionStorage.getItem('cartpilot-token')).toBeNull();
+ expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/auth/recover-email'),expect.objectContaining({body:JSON.stringify({store_name:'My Store',password:'correct horse battery staple',new_email:'new@example.test'})}));
+});
+
+it.each([[401,'Store name or password could not be verified.'],[429,'Too many requests. Please wait before trying again.']])('shows a safe recovery error for HTTP %s and permits deliberate retry',async(status,message)=>{
+ vi.stubEnv('VITE_REQUIRE_AUTH','true');
+ global.fetch=vi.fn().mockResolvedValue({ok:false,status,json:async()=>({detail:'private-provider-error'})});
+ render(<AccountGate><p>Private workspace</p></AccountGate>);
+ fireEvent.click(screen.getByRole('button',{name:'Forgot your login email?'}));
+ fireEvent.change(screen.getByLabelText('Store name'),{target:{value:'My Store'}});
+ fireEvent.change(screen.getByLabelText('New email you can access'),{target:{value:'new@example.test'}});
+ fireEvent.change(screen.getByLabelText('Account password'),{target:{value:'incorrect long password'}});
+ fireEvent.click(screen.getByRole('button',{name:'Update login email'}));
+ expect(await screen.findByRole('alert')).toHaveTextContent(String(message));
+ expect(screen.getByRole('button',{name:'Update login email'})).toBeEnabled();
+ expect(global.fetch).toHaveBeenCalledTimes(1);
+});

@@ -19,6 +19,13 @@ export type Risk = "low" | "medium" | "high";
 export type AgentName = "pricing" | "restock" | "promotion" | "listing";
 export type Money = number | string;
 export interface Merchant { id: number; name: string; store_name: string }
+export interface AgentRun {
+  id: number; merchant_id: number; agent_name: string; status: "started" | "completed" | "failed";
+  started_at: string; completed_at: string | null;
+  input_summary: { goal: string } | null;
+  output_summary: { summary: string; complete: boolean; products_analyzed: number; recommendations: number; failed_analyses: number } | null;
+  error_message: string | null;
+}
 export interface Inventory { quantity: number; reserved_quantity: number; unavailable_quantity?: number; available_quantity: number; reorder_point: number; reorder_quantity: number }
 export interface Product {
   id: number; merchant_id: number; name: string; sku: string; category: string; description: string | null;

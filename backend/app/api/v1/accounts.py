@@ -7,7 +7,7 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, func
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.deps import get_database_session
@@ -15,6 +15,7 @@ from app.core.config import settings
 from app.models.account import Account, AccountSession
 from app.models.merchant import Merchant
 from app.models.product import Product
+from app.services.auth_limits import limit_auth_attempts
 
 router = APIRouter(prefix='/auth', tags=['Accounts'])
 
@@ -41,6 +42,25 @@ class Signup(Credentials):
     def not_blank(cls, value: str) -> str:
         if not value.strip(): raise ValueError('This field cannot be blank.')
         return value.strip()
+
+class EmailRecovery(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    store_name: str = Field(min_length=1, max_length=255)
+    password: str = Field(min_length=12, max_length=128)
+    new_email: str = Field(max_length=255)
+
+    @field_validator('store_name')
+    @classmethod
+    def normalize_store_name(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError('Enter your store name.')
+        return value
+
+    @field_validator('new_email')
+    @classmethod
+    def normalize_new_email(cls, value: str) -> str:
+        return Credentials.email_format(value)
 
 class Identity(BaseModel):
     id: int
@@ -100,7 +120,7 @@ async def business_access(request: Request, session: AsyncSession = Depends(get_
 async def status() -> dict:
     return {'required':auth_required()}
 
-@router.post('/signup',response_model=LoginResponse,status_code=201)
+@router.post('/signup',response_model=LoginResponse,status_code=201,dependencies=[Depends(limit_auth_attempts)])
 async def signup(body: Signup, session: AsyncSession = Depends(get_database_session)):
     salt=secrets.token_hex(16)
     password_hash = await asyncio.to_thread(hash_password,body.password,salt)
@@ -116,7 +136,7 @@ async def signup(body: Signup, session: AsyncSession = Depends(get_database_sess
         await session.rollback()
         raise HTTPException(409,'Unable to register this email.')
 
-@router.post('/login',response_model=LoginResponse)
+@router.post('/login',response_model=LoginResponse,dependencies=[Depends(limit_auth_attempts)])
 async def login(body: Credentials, session: AsyncSession = Depends(get_database_session)):
     account=await session.scalar(select(Account).where(Account.email==body.email))
     salt,expected = account.password_hash.split(':') if account else ('00'*16,'00'*64)
@@ -124,6 +144,48 @@ async def login(body: Credentials, session: AsyncSession = Depends(get_database_
     if account is None or not hmac.compare_digest(actual,expected):
         raise HTTPException(401,'Email or password is incorrect.')
     return await issue(session,account)
+
+@router.post('/recover-email',dependencies=[Depends(limit_auth_attempts)])
+async def recover_email(body: EmailRecovery, session: AsyncSession = Depends(get_database_session)):
+    """Change a forgotten login email after proving account ownership with its password."""
+    candidates = (await session.execute(
+        select(Account, Merchant)
+        .join(Merchant, Merchant.id == Account.merchant_id)
+        .where(func.lower(Merchant.store_name) == body.store_name.lower())
+        .limit(3)
+        .with_for_update()
+    )).all()
+
+    verified: tuple[Account, Merchant] | None = None
+    for account, merchant in candidates:
+        salt, expected = account.password_hash.split(':', 1)
+        actual = await asyncio.to_thread(hash_password, body.password, salt)
+        if hmac.compare_digest(actual, expected):
+            if verified is not None:
+                # Duplicate store names plus identical passwords are ambiguous.
+                raise HTTPException(401, 'Store name or password could not be verified.')
+            verified = (account, merchant)
+
+    if verified is None or len(candidates) > 2:
+        # Perform comparable password work when the store name does not identify an account.
+        if not candidates:
+            await asyncio.to_thread(hash_password, body.password, '00' * 16)
+        raise HTTPException(401, 'Store name or password could not be verified.')
+
+    account, merchant = verified
+    if body.new_email == account.email:
+        raise HTTPException(409, 'That email is already the login email for this store.')
+
+    try:
+        account.email = body.new_email
+        merchant.email = body.new_email
+        # Recovery invalidates sessions only when the identity update succeeds.
+        await session.execute(delete(AccountSession).where(AccountSession.account_id == account.id))
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(409, 'That email is already in use.') from None
+    return {'email_changed': True, 'message': 'Login email updated. Sign in with the new email.'}
 
 @router.get('/me',response_model=Identity)
 async def me(account: Account = Depends(current_account)):

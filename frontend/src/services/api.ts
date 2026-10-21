@@ -1,4 +1,4 @@
-import type { ShopifyStatus, ShopifySync, GuardedAction, ActionCreate, ActionAudit, ListingRecommendation, PromotionRecommendation, ActionPlan, Catalog, HealthStatus, Merchant, OrchestrationRequest, PricingRecommendation, Product, RestockRecommendation, SavedRecommendation } from "../types";
+import type { AgentRun, ShopifyStatus, ShopifySync, GuardedAction, ActionCreate, ActionAudit, ListingRecommendation, PromotionRecommendation, ActionPlan, Catalog, HealthStatus, Merchant, OrchestrationRequest, PricingRecommendation, Product, RestockRecommendation, SavedRecommendation } from "../types";
 
 const base = (import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "" : "http://localhost:8000")).replace(/\/$/, "");
 export class ApiError extends Error { constructor(message: string, public status: number) { super(message); } }
@@ -31,8 +31,15 @@ export async function request<T>(path: string, signal?: AbortSignal, body?: unkn
         409: "This action changed or is not approved for execution. Refresh the action list.",
         503: "CartPilot could not complete this request. Store data is temporarily unavailable. Please try again.",
         422: "The analysis could not be validated. Check product inventory and your selection.",
+        429: "Too many requests. Please wait before trying again.",
       };
       let message = messages[response.status] || "CartPilot could not complete this request. Please try again.";
+      const accountMessages: Record<string, Record<number, string>> = {
+        "/api/v1/auth/login": { 401: "Email or password is incorrect." },
+        "/api/v1/auth/signup": { 409: "That email is already registered. Sign in or use another email." },
+        "/api/v1/auth/recover-email": { 401: "Store name or password could not be verified.", 409: "That email is already in use or is already your login email." },
+      };
+      message = accountMessages[path]?.[response.status] || message;
       if (response.status === 403) {
         // Recognize only known safe reasons; never display arbitrary server error bodies.
         const payload: unknown = await response.json().catch(() => null);
@@ -72,4 +79,5 @@ export const api = {
   reviewAction: (id: number, merchantId: number, approved: boolean, comment: string, signal?: AbortSignal) => request<GuardedAction>(`/api/v1/actions/${id}/${approved ? "approve" : "reject"}`, signal, { merchant_id: merchantId, actor: "development-merchant", comment }),
   executeAction: (id: number, merchantId: number, signal?: AbortSignal) => request<GuardedAction>(`/api/v1/actions/${id}/execute`, signal, { merchant_id: merchantId, actor: "development-merchant", confirm: true }),
   runOrchestrator: (body: OrchestrationRequest, signal?: AbortSignal) => request<ActionPlan>("/api/v1/orchestrate", signal, body),
+  getAgentRuns: (merchantId: number, signal?: AbortSignal, offset = 0) => request<AgentRun[]>(`/api/v1/agent-runs?merchant_id=${merchantId}&offset=${offset}`, signal),
 };

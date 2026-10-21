@@ -3,7 +3,7 @@
 from datetime import datetime
 from enum import StrEnum
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
-from sqlalchemy import CheckConstraint, DateTime, Integer, JSON, String, Text, func
+from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Integer, JSON, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -31,6 +31,7 @@ class AgentRun(Base):
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    merchant_id: Mapped[int | None] = mapped_column(ForeignKey("merchants.id"), nullable=True, index=True)
     agent_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     status: Mapped[str] = mapped_column(
         String(50),

@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     APP_NAME: str = "CartPilot"
     ENVIRONMENT: Literal["development", "test", "production"] = "development"
     REQUIRE_AUTH: bool = False
+    AUTH_RATE_LIMIT_WINDOW_SECONDS: int = Field(900, ge=60, le=86400)
+    AUTH_RATE_LIMIT_IDENTITY_ATTEMPTS: int = Field(10, ge=1, le=100)
+    AUTH_RATE_LIMIT_PEER_ATTEMPTS: int = Field(100, ge=1, le=10000)
     LOG_LEVEL: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     HOST: str = "0.0.0.0"
     PORT: int = Field(8000, ge=1, le=65535)
@@ -56,12 +59,26 @@ class Settings(BaseSettings):
 
     SHOPIFY_STORE_DOMAIN: str = ""
     SHOPIFY_ACCESS_TOKEN: SecretStr = Field(default=SecretStr(""), repr=False)
+    SHOPIFY_CLIENT_ID: str = Field(default="", repr=False)
+    SHOPIFY_CLIENT_SECRET: SecretStr = Field(default=SecretStr(""), repr=False)
     SHOPIFY_API_VERSION: str = Field("2026-10", pattern=r"^20\d{2}-(01|04|07|10)$")
     SHOPIFY_MERCHANT_ID: int | None = Field(default=None, gt=0)
     SHOPIFY_TIMEOUT_SECONDS: float = Field(30, gt=0, le=60, allow_inf_nan=False)
     SHOPIFY_MAX_RETRIES: int = Field(3, ge=0, le=5)
     SHOPIFY_MAX_PAGES: int = Field(100, ge=1, le=1000)
     SHOPIFY_READ_COSTS: bool = True
+    SHOPIFY_AUTO_SYNC_ENABLED: bool = False
+    SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS: int = Field(900, ge=60, le=86400)
+
+    @property
+    def shopify_auth_configured(self) -> bool:
+        """Whether Shopify has either static-token or client-credentials auth."""
+        has_static_token = bool(self.SHOPIFY_ACCESS_TOKEN.get_secret_value())
+        has_client_id = bool(self.SHOPIFY_CLIENT_ID.strip())
+        has_client_secret = bool(self.SHOPIFY_CLIENT_SECRET.get_secret_value())
+        if has_client_id != has_client_secret:
+            return False
+        return has_static_token or (has_client_id and has_client_secret)
 
     @field_validator("SHOPIFY_MERCHANT_ID", mode="before")
     @classmethod
