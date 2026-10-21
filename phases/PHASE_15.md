@@ -21,6 +21,30 @@ fresh SQLite migrations and whitespace check passed. This is an implemented loca
 continuation, not a cloud release. Provider migration, visual browser verification,
 load testing and email/provider work remain outstanding.
 
+## Scheduled Shopify refresh continuation
+
+An optional persistent worker now runs the existing Shopify read-only sync immediately
+at startup and repeats on `SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS` (default 900 seconds)
+when `SHOPIFY_AUTO_SYNC_ENABLED=true`. It shares the backend's database sync lock and
+summary, uses backend-only credentials, and leaves all guarded merchant actions manual.
+For same-organization Dev Dashboard apps, Shopify Client ID/Secret are exchanged for a
+cached Admin API token, renewed before expiry, and refreshed once after a 401. The
+legacy static access token remains supported. Client credentials do not support stores
+outside the app's Shopify organization.
+Run it locally through `scripts/dev.sh` or with Docker Compose using
+`docker compose up -d shopify-sync`. Serverless Vercel functions cannot host this
+long-lived worker; deploy it separately on a persistent worker/container host.
+
+## CartPilot login email recovery
+
+The login screen offers **Forgot your login email?** A user can identify a store by its
+exact name, prove ownership with the account password, and set a replacement login
+email without access to the old inbox. Account and merchant email update atomically;
+duplicate emails are rejected and existing sessions are revoked. This app has no email
+delivery/verification service, so recovery relies on password knowledge and the user
+must enter an inbox they can access. Losing both the store name and password still
+requires a future support recovery process.
+
 
 ## Local connection and performance repair — 2026-10-04
 

@@ -4,9 +4,11 @@ set -euo pipefail
 project_dir="$(cd "$(dirname "$0")/.." && pwd)"
 backend_pid=""
 frontend_pid=""
+shopify_worker_pid=""
 cleanup() {
   if [ -n "$backend_pid" ]; then kill "$backend_pid" 2>/dev/null || true; fi
   if [ -n "$frontend_pid" ]; then kill "$frontend_pid" 2>/dev/null || true; fi
+  if [ -n "$shopify_worker_pid" ]; then kill "$shopify_worker_pid" 2>/dev/null || true; fi
 }
 trap cleanup EXIT
 trap 'exit 130' INT TERM
@@ -31,15 +33,24 @@ else
   (cd frontend && exec npm run dev -- --host 127.0.0.1 --port 5173 --strictPort) &
   frontend_pid=$!
 fi
+auto_sync_enabled="$(cd backend && venv/bin/python -c 'from app.core.config import settings; print(str(settings.SHOPIFY_AUTO_SYNC_ENABLED).lower())')"
+if [ "$auto_sync_enabled" = "true" ]; then
+  (cd backend && exec env ENVIRONMENT=development DATABASE_POOL_MODE=pooled venv/bin/python -m app.integrations.shopify.worker) &
+  shopify_worker_pid=$!
+fi
 for attempt in {1..30}; do
   if curl --fail --silent --max-time 1 http://127.0.0.1:8000/api/v1/health >/dev/null && curl --fail --silent --max-time 1 http://127.0.0.1:5173/ >/dev/null; then
     echo 'CartPilot is ready: http://127.0.0.1:5173/dashboard'
     echo 'Keep this terminal open. Press Ctrl+C to stop services started here.'
     if command -v open >/dev/null 2>&1; then open http://127.0.0.1:5173/dashboard; fi
+    if [ -n "$shopify_worker_pid" ]; then
+      echo 'Scheduled Shopify sync worker is running; stop it with Ctrl+C.'
+    fi
     if [ -n "$backend_pid" ] && [ -n "$frontend_pid" ]; then
       while kill -0 "$backend_pid" 2>/dev/null && kill -0 "$frontend_pid" 2>/dev/null; do sleep 1; done
     elif [ -n "$backend_pid" ]; then wait "$backend_pid"
     elif [ -n "$frontend_pid" ]; then wait "$frontend_pid"
+    elif [ -n "$shopify_worker_pid" ]; then wait "$shopify_worker_pid"
     fi
     exit 0
   fi

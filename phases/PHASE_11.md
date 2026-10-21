@@ -40,7 +40,9 @@ Backend variables (see `.env.example`):
 | Variable | Meaning |
 | --- | --- |
 | SHOPIFY_STORE_DOMAIN | Bare `store-name.myshopify.com` hostname; no URL/path/port |
-| SHOPIFY_ACCESS_TOKEN | Admin API credential, backend only, masked SecretStr |
+| SHOPIFY_CLIENT_ID | Optional Dev Dashboard app credential; backend only |
+| SHOPIFY_CLIENT_SECRET | Optional Dev Dashboard app secret; backend only, masked SecretStr |
+| SHOPIFY_ACCESS_TOKEN | Optional static Admin API token fallback, backend only, masked SecretStr |
 | SHOPIFY_API_VERSION | Supported quarterly version; default 2026-10 |
 | SHOPIFY_MERCHANT_ID | Existing positive CartPilot merchant ID, explicitly bound |
 | SHOPIFY_TIMEOUT_SECONDS | Per-request timeout, default 30, maximum 60 |
@@ -62,15 +64,20 @@ local approval workflow. Merchant binding is not production authentication.
    store. Follow [Shopify's authentication documentation](https://shopify.dev/docs/apps/build/authentication-authorization).
    For an app and store owned by the same organization, the current
    [client credentials flow](https://shopify.dev/docs/apps/build/authentication-authorization/client-credentials-grant)
-   can obtain an Admin API token. This MVP consumes the token manually; it does not
-   store a client secret or implement token acquisition/refresh. If Shopify issues
-   a short-lived token (for example 24 hours), obtain a fresh one when it expires.
-   Legacy installed custom-app tokens can also be supplied where available.
+   can obtain an Admin API token. Set `SHOPIFY_CLIENT_ID` and
+   `SHOPIFY_CLIENT_SECRET` in the backend environment; CartPilot obtains and caches
+   the token until shortly before its returned expiry, then renews it. Credentials
+   remain backend-only. A static `SHOPIFY_ACCESS_TOKEN` remains supported as a
+   fallback for legacy integrations; if client credentials are configured, they take
+   precedence. The client credentials grant only works for stores in the app's Shopify
+   organization. If Shopify rotates/revokes the app secret, update the backend secret.
 3. Use an existing, preferably dedicated CartPilot merchant (`GET /api/v1/merchants`);
    do not delete or replace seeded demo merchants. This phase adds no merchant
    provisioning or authentication workflow.
-4. Set the backend environment's domain, token and merchant ID. Use `.env` locally
-   or your secret manager; never put a token in frontend/VITE variables or Git.
+4. Set the backend environment's domain, Client ID, Client Secret and merchant ID.
+   Use `.env` locally or your secret manager; never put app credentials or tokens in
+   frontend/VITE variables or Git. A static access token is optional when app
+   credentials are configured.
    Omit SHOPIFY_MERCHANT_ID until ready to configure it; do not set it to an empty string.
 5. Run `cd backend && venv/bin/python -m alembic upgrade head` on your intended
    database, then start backend/frontend using the README's existing commands.
@@ -205,11 +212,14 @@ isolated SQLite databases here; no user database migration was run.
 ## Known limitations / Phase 12 readiness
 
 - Live store connection/sync needs developer credentials; tests use synthetic HTTP.
-- One configured store/merchant per backend process; manual sync only, last-summary
-  metadata rather than full history. API runs synchronously; large stores may outlast
-  reverse-proxy request timeouts. There are no webhooks or unattended workers.
-- No automated token refresh/OAuth, production identity, supplier/purchase integration,
-  Shopify writes, FX conversion or fulfillment delivery inference.
+- One configured store/merchant per backend process; last-summary metadata rather than
+  full history. API sync runs synchronously; large stores may outlast reverse-proxy
+  request timeouts. There are no Shopify webhooks.
+- No general merchant OAuth installation flow, production identity, supplier/purchase
+  integration, Shopify writes, FX conversion or fulfillment delivery inference. For
+  same-organization custom apps, backend Client ID/Secret can obtain and refresh
+  client-credentials tokens automatically; this does not enable third-party merchant
+  installs.
 - Model money is two-decimal Numeric(10,2). Unsupported precision/oversized source
   amounts are reported as invalid records instead of silently truncating monetary facts.
   Approximate discounted unit prices are explicitly rounded as described above.

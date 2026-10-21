@@ -49,9 +49,40 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
       - SHOPIFY_STORE_DOMAIN=${SHOPIFY_STORE_DOMAIN:-}
+      - SHOPIFY_CLIENT_ID=${SHOPIFY_CLIENT_ID:-}
+      - SHOPIFY_CLIENT_SECRET=${SHOPIFY_CLIENT_SECRET:-}
       - SHOPIFY_ACCESS_TOKEN=${SHOPIFY_ACCESS_TOKEN:-}
       - SHOPIFY_API_VERSION=${SHOPIFY_API_VERSION:-2026-10}
       - SHOPIFY_MERCHANT_ID=${SHOPIFY_MERCHANT_ID:-}
+      - SHOPIFY_AUTO_SYNC_ENABLED=${SHOPIFY_AUTO_SYNC_ENABLED:-false}
+      - SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS=${SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS:-900}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  shopify-sync:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cartpilot_shopify_sync
+    restart: unless-stopped
+    command: ["python", "-m", "app.integrations.shopify.worker"]
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-cartpilot}:${POSTGRES_PASSWORD:-cartpilot}@postgres:5432/${POSTGRES_DB:-cartpilot}
+      - SHOPIFY_STORE_DOMAIN=${SHOPIFY_STORE_DOMAIN:-}
+      - SHOPIFY_CLIENT_ID=${SHOPIFY_CLIENT_ID:-}
+      - SHOPIFY_CLIENT_SECRET=${SHOPIFY_CLIENT_SECRET:-}
+      - SHOPIFY_ACCESS_TOKEN=${SHOPIFY_ACCESS_TOKEN:-}
+      - SHOPIFY_API_VERSION=${SHOPIFY_API_VERSION:-2026-10}
+      - SHOPIFY_MERCHANT_ID=${SHOPIFY_MERCHANT_ID:-}
+      - SHOPIFY_TIMEOUT_SECONDS=${SHOPIFY_TIMEOUT_SECONDS:-30}
+      - SHOPIFY_MAX_RETRIES=${SHOPIFY_MAX_RETRIES:-3}
+      - SHOPIFY_MAX_PAGES=${SHOPIFY_MAX_PAGES:-100}
+      - SHOPIFY_READ_COSTS=${SHOPIFY_READ_COSTS:-true}
+      - SHOPIFY_AUTO_SYNC_ENABLED=${SHOPIFY_AUTO_SYNC_ENABLED:-false}
+      - SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS=${SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS:-900}
     depends_on:
       postgres:
         condition: service_healthy

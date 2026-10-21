@@ -25,7 +25,7 @@ async def summary(session: AsyncSession, merchant_id: int):
 
 @router.get('/status', response_model=ConnectionStatus, dependencies=[Depends(local_only)])
 async def status(merchant_id: int = Query(gt=0), session: AsyncSession = Depends(get_database_session)):
-    configured = bool(settings.SHOPIFY_STORE_DOMAIN and settings.SHOPIFY_ACCESS_TOKEN.get_secret_value()
+    configured = bool(settings.SHOPIFY_STORE_DOMAIN and settings.shopify_auth_configured
                       and settings.SHOPIFY_MERCHANT_ID == merchant_id)
     result = ConnectionStatus(configured=configured, connected=False, api_version=settings.SHOPIFY_API_VERSION,
                               message='Shopify is not configured for this merchant. Local/demo data remains available.')
