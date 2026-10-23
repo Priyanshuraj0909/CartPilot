@@ -1,6 +1,15 @@
 # CARTPILOT MASTER PLAN
 
-## Phase 18 — Commerce workflow parity (current)
+## Platform upgrade — audit/planning complete; implementation planned
+
+Current initiative: [upgrade master plan](UPGRADE_MASTER_PLAN.md),
+[target architecture](UPGRADE_ARCHITECTURE.md), [roadmap](UPGRADE_ROADMAP.md),
+[test strategy](UPGRADE_TEST_STRATEGY.md) and [progress](UPGRADE_PROGRESS.md).
+The [audit](REPOSITORY_AUDIT.md) identifies open security/correctness/data gaps.
+Next implementation is [Phase 19](phases/PHASE_19.md), currently planned, not started.
+Existing phases remain historical delivery records; no current feature is removed.
+
+## Phase 18 — Commerce workflow parity (delivered)
 
 User-authorized continuation implements conversational multi-product drafts and saved
 sessions, edits/substitutes/upsells, recovery offers and handoff, payment reconciliation,

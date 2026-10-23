@@ -1,10 +1,20 @@
 # Current test evidence — complete commerce workflows
 
-Verified 23 October 2026 (Asia/Kolkata). Phase 18 supersedes earlier current counts.
+Rechecked 23 October 2026 (Asia/Kolkata) for the platform audit: 738 backend tests,
+174 frontend tests/build and five disposable PostgreSQL checks pass. Backend rerun:
+39.78 seconds; PostgreSQL: 0.45 seconds. No new browser run or hosted migration was
+performed for this docs-only audit. The Phase 18 browser/migration rows below refer to
+the preceding delivery. [Upgrade test strategy](UPGRADE_TEST_STRATEGY.md) defines future gates.
+
+Security scans: 13 npm build/test package entries (2 critical, 6 high, 5 moderate),
+zero production-only npm findings, two pinned Python advisories. These scans identify
+open risks, not a security pass. [Audit and evidence](REPOSITORY_AUDIT.md).
+
+Phase 18 supersedes earlier historical counts.
 
 | Check | Result |
 | --- | --- |
-| Backend `venv/bin/python -m pytest -q` | **738 passed**, five opt-in PostgreSQL checks skipped; 36.58 seconds |
+| Backend `venv/bin/python -m pytest -q` | **738 passed**, five opt-in PostgreSQL checks skipped; 39.78 seconds |
 | Frontend `npm run test:run` | **174 passed**, 21 files |
 | Frontend `npm run build` | TypeScript and Vite production build passed |
 | Disposable PostgreSQL | Migrations through `18_commerce_workflows`; five concurrency tests passed, including refund caps and single-draft recovery acceptance |

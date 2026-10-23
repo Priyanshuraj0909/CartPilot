@@ -1,3 +1,9 @@
+> Platform audit/planning publication (23 October 2026): documentation and evidence
+> only. No migration, seed, dependency/provider setting change or worker provisioning
+> is required. Publish through the existing GitHub/Vercel automation and verify checks.
+> New platform capabilities remain planned; dependency advisories are open. Follow
+> [UPGRADE_PROGRESS.md](UPGRADE_PROGRESS.md) and [REPOSITORY_AUDIT.md](REPOSITORY_AUDIT.md).
+
 # CartPilot deployment
 
 This setup is provider-neutral: static frontend hosting, one Python service, managed

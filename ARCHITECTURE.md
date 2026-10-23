@@ -1,5 +1,13 @@
 # CartPilot Architecture — Verified MVP
 
+## Platform upgrade design boundary
+
+[UPGRADE_ARCHITECTURE.md](UPGRADE_ARCHITECTURE.md) describes the proposed architecture;
+[REPOSITORY_AUDIT.md](REPOSITORY_AUDIT.md) records current gaps and security advisories.
+No reservations, checkout orders, forecasting pipeline, durable graph runtime or image
+retrieval have been added by the audit/planning publication. Existing architecture below
+remains current; [UPGRADE_PROGRESS.md](UPGRADE_PROGRESS.md) separates planned/delivered work.
+
 ## Commerce workflow continuation (Phase 18)
 
 `18_commerce_workflows` adds four independent tables after `17_commerce`:
@@ -89,8 +97,9 @@ stock or fulfill orders. Hash chains detect inconsistent edits but are not signe
 externally anchored or immutable against a privileged database writer.
 
 MCP is a minimal newline JSON-RPC stdio adapter calling the same HTTP contracts.
-It exposes search/product/draft-cart/status/audit tools. It deliberately does not
-expose approval, checkout or merchant mutation tools. See [commerce guide](docs/BUYER_COMMERCE.md).
+The Phase 17 adapter began with search/product/draft-cart/status/audit tools.
+Phase 18 expands it with scoped owner growth tools and browser financial handoffs;
+model tools never authorize checkout, refunds or privileged merchant changes. See [commerce guide](docs/BUYER_COMMERCE.md).
 
 ## Original merchant decision-support architecture
 

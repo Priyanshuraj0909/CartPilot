@@ -1,5 +1,11 @@
 # Current review — 23 October 2026
 
+The platform audit/planning milestone is complete; upgrade phases 19–27 are planned.
+Fresh backend/frontend/build and five PostgreSQL regressions pass. Dependency scans
+find 13 npm build/test package entries and two Python advisories; production-only npm
+finds zero. Open risks and missing coverage are in [the audit](../../REPOSITORY_AUDIT.md).
+The browser evidence below describes the preceding Phase 18 delivery, not a new audit run.
+
 Phase 18 passes 738 backend tests, 174 frontend tests and the production build.
 Five targeted PostgreSQL concurrency checks pass on a disposable migrated database.
 Real Chrome verifies conversational shopping, discounted recovery, separate approval and

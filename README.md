@@ -32,6 +32,21 @@ restocking, promotions and listing recommendations.
 > **test mode only**. Recommendations never implicitly approve actions, charge money,
 > place supplier orders or change Shopify.
 
+## Platform upgrade · audit and planning
+
+The [repository audit](REPOSITORY_AUDIT.md) checks current implementations against code,
+tests and dependency scans. The production-oriented upgrade is planned in dependency
+order; **phases 19–27 are not implemented yet**. Existing Phase 18 features remain intact.
+
+[Master plan](UPGRADE_MASTER_PLAN.md) · [Target architecture](UPGRADE_ARCHITECTURE.md) ·
+[Roadmap and Apple Silicon setup](UPGRADE_ROADMAP.md) ·
+[Test strategy](UPGRADE_TEST_STRATEGY.md) · [Progress](UPGRADE_PROGRESS.md)
+
+Fresh audit verification: 738 backend tests, 174 frontend tests, production build and
+five PostgreSQL concurrency checks pass. Security scans identify 13 npm build/test
+package entries and two Python advisories; production-only npm reports zero findings.
+These remain open remediation work. Deployment success is not a production-readiness claim.
+
 ## Complete commerce workflows · Phase 18
 
 - **Conversational shopping:** multi-product drafts, saved chat/carts, edits, substitutes
@@ -63,7 +78,8 @@ restocking, promotions and listing recommendations.
 - **Mandate audit:** per-cart SHA-256 chain and verification; Razorpay test webhooks
   verify signatures, amounts and references. Hash linking is not external immutability.
 - **MCP adapter:** product search, draft carts, status and audit for compatible clients;
-  merchant writes, approval and checkout are excluded from model tools.
+  current Phase 18 adds scoped owner growth tools and browser financial handoff;
+  models cannot authorize checkout or privileged merchant changes.
 
 <p align="center">
   <img src="docs/screenshots/16_buyer_storefront.png" alt="CartPilot buyer storefront with budget search, product discovery and a guarded shopping bag" width="72%" />
@@ -418,6 +434,12 @@ Contact the maintainer before reusing or redistributing the code.
 
 | Guide | Contents |
 | --- | --- |
+| [Repository audit](REPOSITORY_AUDIT.md) | Code-backed capabilities, gaps, security findings and evidence |
+| [Upgrade master plan](UPGRADE_MASTER_PLAN.md) | Scope, phase gates and architecture decisions |
+| [Upgrade architecture](UPGRADE_ARCHITECTURE.md) | Proposed commerce, ML, orchestration and operations design |
+| [Upgrade roadmap](UPGRADE_ROADMAP.md) | Planned phases 19–27 and Apple Silicon commands |
+| [Upgrade test strategy](UPGRADE_TEST_STRATEGY.md) | Correctness, security, ML and release verification gates |
+| [Upgrade progress](UPGRADE_PROGRESS.md) | Authoritative delivered/planned status for the new initiative |
 | [Commerce workflow parity](docs/COMMERCE_PARITY.md) | Complete shopping/recovery/resolution/rules/MCP guide and limits |
 | [Buyer commerce](docs/BUYER_COMMERCE.md) | Shopping workflow, providers, ranking, MCP, tests and limits |
 | [Phase 17](phases/PHASE_17.md) | Buyer commerce implementation and verification |

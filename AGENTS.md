@@ -11,6 +11,13 @@ current phase document
 
 ---
 
+## Platform upgrade continuation
+
+For upgrade work also read REPOSITORY_AUDIT.md, UPGRADE_MASTER_PLAN.md,
+UPGRADE_ARCHITECTURE.md, UPGRADE_ROADMAP.md, UPGRADE_TEST_STRATEGY.md and
+UPGRADE_PROGRESS.md. Existing Phase 18 is delivered; Phase 19 is planned, not started.
+Do not confuse proposed schema/framework choices with implemented capabilities.
+
 ## Coding Style
 
 Backend:

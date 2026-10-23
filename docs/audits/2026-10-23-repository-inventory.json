@@ -1,0 +1,3210 @@
+{
+  "baseline_commit": "7d19283d3fe8ef76f3f05e0f4f4a90ec3c466a26",
+  "scope": "All tracked files read for inventory/hash; targeted manual source review and execution evidence in REPOSITORY_AUDIT.md. Binary deliverables inventoried, not manually revalidated. Ignored secrets, dependencies and generated builds excluded.",
+  "counts": {
+    "text": 360,
+    "binary": 24
+  },
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "35ef19c29c2aebcebdbcb332338c89208ecc019d174abb865167f4c0b288d7d9",
+      "bytes": 4406,
+      "kind": "text",
+      "lines": 122
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "9f916adca55852a8ede8277b98e3c3de0b1eef61d4718b6e10bbacecfdb77b0d",
+      "bytes": 116,
+      "kind": "text",
+      "lines": 5
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "bc1f2728890be7fa5b1f05881b4e79dc201734e888c7d7b7d04441310d644f50",
+      "bytes": 2114,
+      "kind": "text",
+      "lines": 66
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "6866c1743561fed457490f879a1d4205c1f000fa453644ed4964fd4051315117",
+      "bytes": 1082,
+      "kind": "text",
+      "lines": 99
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "d9119acb9f724d63d86d5e715894536c4bb1cd5ceafbe678305d3a1cb7497194",
+      "bytes": 4925,
+      "kind": "text",
+      "lines": 172,
+      "headings": [
+        "# CARTPILOT AGENT RULES"
+      ]
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "sha256": "71fcee24ec8c4c14a69d6b7174cbb6b0edf60d35680a9a9aa139dd58b775b86e",
+      "bytes": 13973,
+      "kind": "text",
+      "lines": 220,
+      "headings": [
+        "# CartPilot Architecture \u2014 Verified MVP"
+      ]
+    },
+    {
+      "path": "DEMO_SCRIPT.md",
+      "sha256": "644c4f987690cacee171c63d39898e1fc2a59d45057cd9a68d329f4eb3eb9166",
+      "bytes": 8137,
+      "kind": "text",
+      "lines": 124,
+      "headings": [
+        "# CartPilot faculty demo \u2014 approximately 7 minutes",
+        "# New disposable DB for EVERY fresh rehearsal; never reuse the capture helper's mutated DB.",
+        "# Use ordinary npm ci if the dependencies are not cached; prepare before going offline."
+      ]
+    },
+    {
+      "path": "DEPLOYMENT.md",
+      "sha256": "6ab29235932b5534f3f32fcb00f71d9cab76655e949941f80ce59aa9e1dc45b8",
+      "bytes": 21851,
+      "kind": "text",
+      "lines": 393,
+      "headings": [
+        "# CartPilot deployment",
+        "# Release command: run once per deployment, before the serving process.",
+        "# Start command: no reload, no implicit migrations or demo seed."
+      ]
+    },
+    {
+      "path": "FINAL_STATUS.md",
+      "sha256": "21cb475db4dde8a42c4cfbeb40f614c721556fe2281d7aaf454f0c113ada8fb3",
+      "bytes": 6534,
+      "kind": "text",
+      "lines": 98,
+      "headings": [
+        "# CartPilot current verified status",
+        "# Reliability release status"
+      ]
+    },
+    {
+      "path": "MASTER_ORCHESTRATOR.md",
+      "sha256": "a93059878377d5de973df5c24188889e9978cc1d6f025a27b1074ea57c279a35",
+      "bytes": 5590,
+      "kind": "text",
+      "lines": 291,
+      "headings": [
+        "# CARTPILOT MASTER ORCHESTRATOR"
+      ]
+    },
+    {
+      "path": "PLAN.md",
+      "sha256": "62c8b5b27ed13ee13b51623b0ae11f7b7651fc1fb84fa927d200c6c6dd7b7289",
+      "bytes": 9716,
+      "kind": "text",
+      "lines": 317,
+      "headings": [
+        "# CARTPILOT MASTER PLAN"
+      ]
+    },
+    {
+      "path": "PROJECT_REPORT_OUTLINE.md",
+      "sha256": "7fb000dc1459a92ff11037b11a23dc3eebb05705bcace7af399676af86baa87f",
+      "bytes": 11787,
+      "kind": "text",
+      "lines": 195,
+      "headings": [
+        "# CartPilot project report and presentation content"
+      ]
+    },
+    {
+      "path": "README.md",
+      "sha256": "7d27fc19f6bfdd651257a69b3b8e33f911bce5e5822e3071ef6f35cf22498888",
+      "bytes": 25003,
+      "kind": "text",
+      "lines": 440,
+      "headings": [
+        "# CartPilot"
+      ]
+    },
+    {
+      "path": "SUBMISSION_CHECKLIST.md",
+      "sha256": "c1c5d77271b2244fccd1c90babbda0104d9e4554b09571b55af4d10ea8c422b0",
+      "bytes": 3031,
+      "kind": "text",
+      "lines": 48,
+      "headings": [
+        "# Submission and faculty readiness"
+      ]
+    },
+    {
+      "path": "Start CartPilot.command",
+      "sha256": "07826de0d44b72f2e6c28c547bee551f8feb870b855c2edcb06d5a8ddce8dbbe",
+      "bytes": 58,
+      "kind": "text",
+      "lines": 3
+    },
+    {
+      "path": "TEST_SUMMARY.md",
+      "sha256": "ea62f7e5b588d2f3999bb70abab6684e0e4f848a60761e6a4445033cc839ee08",
+      "bytes": 7296,
+      "kind": "text",
+      "lines": 106,
+      "headings": [
+        "# Current test evidence \u2014 complete commerce workflows",
+        "# Reliability release \u2014 21 October 2026",
+        "# Final test evidence \u2014 Phase 14"
+      ]
+    },
+    {
+      "path": "VIVA_QA.md",
+      "sha256": "a24829680e83c33964c1ace80fab548844b4c61398bb9baebd06b808bbe44110",
+      "bytes": 13259,
+      "kind": "text",
+      "lines": 248,
+      "headings": [
+        "# CartPilot viva preparation"
+      ]
+    },
+    {
+      "path": "backend/.dockerignore",
+      "sha256": "d1b2c9bedb7a3328321f7ebfc4d46b6d30dcc0004fab1ebfe8583beb9710b294",
+      "bytes": 172,
+      "kind": "text",
+      "lines": 23
+    },
+    {
+      "path": "backend/.python-version",
+      "sha256": "7b55f8e67b5623c4bef3fa691288da9437d79d3aba156de48d481db32ac7d16d",
+      "bytes": 5,
+      "kind": "text",
+      "lines": 1
+    },
+    {
+      "path": "backend/.vercelignore",
+      "sha256": "072c2c7192425cf1518458144b58d8e7a51f41eca53f38a90659976253bca86f",
+      "bytes": 106,
+      "kind": "text",
+      "lines": 12
+    },
+    {
+      "path": "backend/Dockerfile",
+      "sha256": "a9c00d5cc4526db0ece0a1fdce92db61ec7d49d86c1af6248073b1324c09f9b2",
+      "bytes": 376,
+      "kind": "text",
+      "lines": 12
+    },
+    {
+      "path": "backend/alembic.ini",
+      "sha256": "ff87022c0a58395668ca2bb1f50a607d91ef75ab303d680ed3df6a588871c413",
+      "bytes": 5008,
+      "kind": "text",
+      "lines": 149
+    },
+    {
+      "path": "backend/alembic/README",
+      "sha256": "21256d00ebeabca93fe5384ce62a0913e94c92f7fd21b92715415553fbcf99ae",
+      "bytes": 58,
+      "kind": "text",
+      "lines": 1
+    },
+    {
+      "path": "backend/alembic/env.py",
+      "sha256": "efbf19714cf811605f3ad031c5314257e869668af590b5d57241bb0cb9c472fe",
+      "bytes": 2467,
+      "kind": "text",
+      "lines": 88,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/alembic/script.py.mako",
+      "sha256": "d38920781b4d31ae1c0a71bc09f41c2ade8feab9e5a087e3f30cb4bbf0c1c9d3",
+      "bytes": 704,
+      "kind": "text",
+      "lines": 28
+    },
+    {
+      "path": "backend/alembic/versions/11shopify_read_only.py",
+      "sha256": "751b4121563681c85149318fc61f7dec6302f4cdc648a3b638ebb33eee5bf714",
+      "bytes": 3972,
+      "kind": "text",
+      "lines": 47,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/alembic/versions/15_accounts.py",
+      "sha256": "3fcd5e8fcc112dff5726e068aefae3ecc4205c69bcfae37536be2c71857959f8",
+      "bytes": 939,
+      "kind": "text",
+      "lines": 16,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/alembic/versions/16_reliability.py",
+      "sha256": "1904e6754c923e49f33540eba44012625110c5067abd25467d022de755ad5f99",
+      "bytes": 1161,
+      "kind": "text",
+      "lines": 30,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/alembic/versions/17_commerce.py",
+      "sha256": "74b453ce119f0fc605aa28be3aee1e81c72b267a35e59de6ee1fee60036987c8",
+      "bytes": 640,
+      "kind": "text",
+      "lines": 18,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/alembic/versions/18_commerce_workflows.py",
+      "sha256": "af86184ad9d83a29af23c075cf6535a0514c87bd069ce0c5439ccbf558249d21",
+      "bytes": 2586,
+      "kind": "text",
+      "lines": 40,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/alembic/versions/926d82e261cb_create_phase_2_tables.py",
+      "sha256": "3338f8753d5969d64309357ebd3cf8f67bbbe0249531828017e59e901db11504",
+      "bytes": 16387,
+      "kind": "text",
+      "lines": 254,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/alembic/versions/9a10guarded_actions.py",
+      "sha256": "b88d74e7fecd203a3d89cb57bfd1e1a19082a0688cd6d3ebef3308edfd05cea6",
+      "bytes": 1856,
+      "kind": "text",
+      "lines": 37,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "sha256": "78c92e22d8fbb6a62fa52e06c0f89f0ea92b216d132b5e9eac0d6c61cbd5c848",
+      "bytes": 68,
+      "kind": "text",
+      "lines": 3,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/agents/__init__.py",
+      "sha256": "3c28f10b750e2b74fea7eb88fa8fa76e9a31c4afffef7bdf35572d54af44b062",
+      "bytes": 316,
+      "kind": "text",
+      "lines": 8,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/agents/listing_agent.py",
+      "sha256": "2420ce02b7d263af91b9c807e3f7fd3af2a3e32f41778f6cc2b959855e92f429",
+      "bytes": 1343,
+      "kind": "text",
+      "lines": 28,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/agents/orchestrator.py",
+      "sha256": "c2b754d1278ac2c28a19de5a4bc20ff772290f6993524c4bb3f12c213a826575",
+      "bytes": 9348,
+      "kind": "text",
+      "lines": 144,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/agents/pricing_agent.py",
+      "sha256": "966cd8ecb7175a4dbf40a57605814db8791f46cac799670979a0e78630f8038b",
+      "bytes": 2978,
+      "kind": "text",
+      "lines": 78,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/agents/promotion_agent.py",
+      "sha256": "809c94f01a5708b192c756123d21554ab5edd61350a0058d4be8b382c706dbf4",
+      "bytes": 1864,
+      "kind": "text",
+      "lines": 33,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/agents/restock_agent.py",
+      "sha256": "fcaa6b27b4b4e15695b4a2e2a9207beb76ed2246d109b7b98ebbdaab32434e73",
+      "bytes": 1233,
+      "kind": "text",
+      "lines": 25,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/__init__.py",
+      "sha256": "aee45911426e5cb2fee935cd97199aaf86fdc2bd8db807a1dfc66ab329b886cb",
+      "bytes": 66,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/deps.py",
+      "sha256": "e83810ee85a5e3e6d4c33056e080b10355775d519a07464583a12b2dcb225cbe",
+      "bytes": 1274,
+      "kind": "text",
+      "lines": 31,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/__init__.py",
+      "sha256": "950681bd68570a5dcad55adda256c8c2e88bc0276516c538d57603d0959419bd",
+      "bytes": 29,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/accounts.py",
+      "sha256": "ca38bb7a7f5e79efce9c96137a839e5843267c1e58ac38677ebbee7b252f3741",
+      "bytes": 9198,
+      "kind": "text",
+      "lines": 199,
+      "functions": 15,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/actions.py",
+      "sha256": "d5e993336a6c1e43720def89bedf97a3b43d5fa94ef20adb34e56ded4fbf7145",
+      "bytes": 4653,
+      "kind": "text",
+      "lines": 82,
+      "functions": 10,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/commerce.py",
+      "sha256": "13ce5911407e033e00d65a9ae9114df5523041f6c45ee37c01adb2e510b61678",
+      "bytes": 17856,
+      "kind": "text",
+      "lines": 300,
+      "functions": 20,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/commerce_merchandising.py",
+      "sha256": "ba0cc2165ec70e53668b0cce3a1775a6a617b1769ecefef8318f167e132d5f14",
+      "bytes": 10315,
+      "kind": "text",
+      "lines": 172,
+      "functions": 16,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/commerce_workflows.py",
+      "sha256": "80f0c081fefb7bbd60d3f79308ef238dec1754352f9756f13aecbddc2608dcf3",
+      "bytes": 9592,
+      "kind": "text",
+      "lines": 161,
+      "functions": 14,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/health.py",
+      "sha256": "00c64ffdba5eb30274f563c2d06604f1b125d0b6b99f07a8c9597672ce179887",
+      "bytes": 1382,
+      "kind": "text",
+      "lines": 37,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/listing.py",
+      "sha256": "c65d63c2e904f3e56d5017e3401d5c0f4b15753a28e763921adfbda9bf069535",
+      "bytes": 1393,
+      "kind": "text",
+      "lines": 25,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/management.py",
+      "sha256": "db692dd1a9658ff72a8079f0f85822ac3808078a7e9e8f1e93d682108ec6d82e",
+      "bytes": 8139,
+      "kind": "text",
+      "lines": 136,
+      "functions": 10,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/orchestration.py",
+      "sha256": "37d738238067e478089ca439d0a40d00a32abc70377f5cbb7fd94496fe5c8c85",
+      "bytes": 2266,
+      "kind": "text",
+      "lines": 48,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/pricing.py",
+      "sha256": "d7c10bf855c5068a1f5f67cd8c3d1881c4ab8288977b2dd920e7ce31c059c4b6",
+      "bytes": 1880,
+      "kind": "text",
+      "lines": 49,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/promotion.py",
+      "sha256": "d3ffbcf6bcef7381d17c5a8b79b23084168ba800e9b6d36837051a94d9f43889",
+      "bytes": 1348,
+      "kind": "text",
+      "lines": 25,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/restock.py",
+      "sha256": "3f72b2825cd0fa51c8460f90bd6bb17a77e9c7a74122cc54078a10f9724cbc94",
+      "bytes": 1262,
+      "kind": "text",
+      "lines": 25,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/shopify.py",
+      "sha256": "50f1d39ce081f4a34cd1b342ca39dee0246b988db16b6aa4ed1e0f52a926ecdd",
+      "bytes": 3808,
+      "kind": "text",
+      "lines": 73,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/api/v1/store.py",
+      "sha256": "f8d08c0796473c25c5c6f41dcfdff7863f53a112da26625376cb0cc72795adf3",
+      "bytes": 2209,
+      "kind": "text",
+      "lines": 42,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/core/__init__.py",
+      "sha256": "3d0d8568d833f799d2285294b485db36e98436c0e0974d616714718d303c231d",
+      "bytes": 61,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/core/config.py",
+      "sha256": "20d68fe0cabcbec6ff4cc2753044d820a2c6fa62ef0b0b10ed9eeb2abd3b23ee",
+      "bytes": 9224,
+      "kind": "text",
+      "lines": 185,
+      "functions": 7,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/core/database.py",
+      "sha256": "e4ba4aa6ba506361eb2f64407b85e7f6f966f3558e99985b1c8a3035be728c1b",
+      "bytes": 1834,
+      "kind": "text",
+      "lines": 61,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/core/redis.py",
+      "sha256": "0f87571e626406afc250ca7c44589f8893d53055afc4ca845ab828948ff7d0ef",
+      "bytes": 1274,
+      "kind": "text",
+      "lines": 45,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/core/seed.py",
+      "sha256": "ac68d2e41e336f1209cc2256108437d4e314b5a101840b3627f2c2bdf1cca9ae",
+      "bytes": 11209,
+      "kind": "text",
+      "lines": 214,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/__init__.py",
+      "sha256": "9bdc5b99c2bc1aa9d110f7492f0b7d5bdbd5247f52a9f44b2716dd50bc00d81e",
+      "bytes": 71,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/shopify/__init__.py",
+      "sha256": "bc18ec6f228a7dd120e992126a7af04a99d0364fdf859f7565907396ccd4e0eb",
+      "bytes": 69,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/shopify/client.py",
+      "sha256": "ed6cdcceb89bc7350aeae895d5722f82a9b34cdb308b2568f1804cd9e20021c0",
+      "bytes": 15963,
+      "kind": "text",
+      "lines": 228,
+      "functions": 10,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/shopify/mapper.py",
+      "sha256": "f0aeb798f3033028b90e63b5001c368d452fa558e1ec680c4c47d5739a9d820b",
+      "bytes": 3352,
+      "kind": "text",
+      "lines": 56,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/shopify/queries.py",
+      "sha256": "300cb9c62ef378a03dd4793453cc0e9ae1bf8f74fcabdecc961fccc791dc720d",
+      "bytes": 2040,
+      "kind": "text",
+      "lines": 22,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/shopify/schemas.py",
+      "sha256": "cc9d0bd06790bb3dc5318caa864b4fc2acb27177b2ba9ba8b37426e4dc30ef9e",
+      "bytes": 4240,
+      "kind": "text",
+      "lines": 129,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/shopify/sync.py",
+      "sha256": "95b91f88b56c7ca47c03082d7490c327bd331f39fd182dd73f0c33c587c2036c",
+      "bytes": 16070,
+      "kind": "text",
+      "lines": 215,
+      "functions": 10,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/integrations/shopify/worker.py",
+      "sha256": "19bf6afed7a1dd3318efe5dd38f8ef67ed45e6c8d7bdd6afa35205d0725f195c",
+      "bytes": 3076,
+      "kind": "text",
+      "lines": 83,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/main.py",
+      "sha256": "28048d44f0425c896a91aa4ac89f939bb644e2a1963c2995393d38802a885410",
+      "bytes": 6398,
+      "kind": "text",
+      "lines": 142,
+      "functions": 8,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/__init__.py",
+      "sha256": "cea9dcb12798eaa818f171556de98db527e43c010812c21630dfd4d3355a1aec",
+      "bytes": 1411,
+      "kind": "text",
+      "lines": 41,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/account.py",
+      "sha256": "b634fe4825649b67b8fd54b3ad769267f3a2fcd493373d39c844fbd04c2ddd96",
+      "bytes": 874,
+      "kind": "text",
+      "lines": 18,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/action.py",
+      "sha256": "95befd4ccb71b0204aaf4e1505cb805534294801164e9e2fb1490e78fcb45d3d",
+      "bytes": 2733,
+      "kind": "text",
+      "lines": 67,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/agent_run.py",
+      "sha256": "915016c879fce975f9defe1f1401102ebc95779b76976460d388d32a3cb1f8ee",
+      "bytes": 2180,
+      "kind": "text",
+      "lines": 61,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/approval.py",
+      "sha256": "8561d4b66f6c974808befaf6145967a9710b8c6413ae62c3df43af18b3c594ce",
+      "bytes": 2089,
+      "kind": "text",
+      "lines": 64,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/audit_log.py",
+      "sha256": "8b6632d8b90b8811324c104d5052587a0f66e00b1915b177129672fd3600081a",
+      "bytes": 1775,
+      "kind": "text",
+      "lines": 43,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/auth_rate_limit.py",
+      "sha256": "76d3d41b9ce603ff4badfa3b50c1295dfedfbfce5edd3d14390d4a4094449d4a",
+      "bytes": 502,
+      "kind": "text",
+      "lines": 13,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/base.py",
+      "sha256": "db1e1e815c698a5f2d4f0cae4b38e4a258e46a360fa5cee918fc1f5009efbbde",
+      "bytes": 694,
+      "kind": "text",
+      "lines": 26,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/commerce.py",
+      "sha256": "c547a9e71f2e8fc9d02e5dfd4e9e7a3275d73087bb67f5e174397fd012fe23c1",
+      "bytes": 2912,
+      "kind": "text",
+      "lines": 56,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/commerce_workflows.py",
+      "sha256": "7a304533b8ca6d4bccbe4fbcb438a1005a378e172bc5486b1ce513121da41821",
+      "bytes": 2488,
+      "kind": "text",
+      "lines": 46,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/inventory.py",
+      "sha256": "b1affb66c997575161e9ea303204448e50f19f9ccf398ef86aea577de9977adb",
+      "bytes": 2608,
+      "kind": "text",
+      "lines": 60,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/merchant.py",
+      "sha256": "df968ecf68b7544d97236c394457da611a2222e98121ec59fd56482c1dfe60a8",
+      "bytes": 1698,
+      "kind": "text",
+      "lines": 49,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/order.py",
+      "sha256": "df1ba9b28a22f151edfe88c70bb1e5ff3f02a746fda6f1b67f96d8b38622eefd",
+      "bytes": 2547,
+      "kind": "text",
+      "lines": 75,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/order_item.py",
+      "sha256": "d633ed83e344ba76fff5ae1c05df836b57e24e59d3499f2724c2b3c978abb82f",
+      "bytes": 1823,
+      "kind": "text",
+      "lines": 47,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/price_history.py",
+      "sha256": "7789de860c79c7bd97cb3812c2d3d1656f2278e622c783e5d059f2a31834793e",
+      "bytes": 1440,
+      "kind": "text",
+      "lines": 41,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/product.py",
+      "sha256": "1c384a1900083d96240028f2e1680e72ea580ea579dc1343b3a6f4a686136850",
+      "bytes": 2893,
+      "kind": "text",
+      "lines": 70,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/recommendation.py",
+      "sha256": "245a9beba81d7fe1f5a3f36b2a6ec198a1ff0f70a8617ca7077d98f1ddec4ba1",
+      "bytes": 3500,
+      "kind": "text",
+      "lines": 96,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/models/shopify.py",
+      "sha256": "9b1ccdeba1124d724f27aff5801e7961e8c0d4cfa92c9b153430259c715714cb",
+      "bytes": 2713,
+      "kind": "text",
+      "lines": 38,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/__init__.py",
+      "sha256": "b6e8142144533137c0c0e5ae571b49a62f185fd6c94f76db0e687d169484cd9b",
+      "bytes": 2357,
+      "kind": "text",
+      "lines": 77,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/_time.py",
+      "sha256": "4865c85f64a6156d556d1d525f00f227a1275d20c8f92352914c233b2d63e07e",
+      "bytes": 294,
+      "kind": "text",
+      "lines": 8,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/actions.py",
+      "sha256": "977ca09cc5d752b404f0c9030701a580ff38732d83795ec76ba361a94d4d12ee",
+      "bytes": 5056,
+      "kind": "text",
+      "lines": 145,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/agent_run.py",
+      "sha256": "b958cefae3d1349b353e9a35f5a6daf778ef69cba8ae92056506e878486756a5",
+      "bytes": 969,
+      "kind": "text",
+      "lines": 31,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/audit_log.py",
+      "sha256": "8610b10bbf86f47693323093f5b0f8aef2d04d2e12780bccce1a518522d39f6e",
+      "bytes": 539,
+      "kind": "text",
+      "lines": 19,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/commerce.py",
+      "sha256": "855f8c5ab3065579445a6145cb42cced66f18e54c237c3a6abb827a7554e0d5f",
+      "bytes": 3880,
+      "kind": "text",
+      "lines": 135,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/commerce_workflows.py",
+      "sha256": "5e02c35565ff9eed7e6e1545512a9716c6683688db5c9b6d4ec79e303195f8ce",
+      "bytes": 3683,
+      "kind": "text",
+      "lines": 93,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/health.py",
+      "sha256": "9401a6d6d7ee790dadfc40a581e70db8ba28577e0918668f7e9c14712742c922",
+      "bytes": 769,
+      "kind": "text",
+      "lines": 20,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/inventory.py",
+      "sha256": "c36b923633884fdae98988d05265b471cd7c954516e4dbd79d195140825cf6a8",
+      "bytes": 1430,
+      "kind": "text",
+      "lines": 38,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/listing.py",
+      "sha256": "0c5ce0935c418cdf576d05505935637aef933db4e75b4832f8d84c5161697c98",
+      "bytes": 2352,
+      "kind": "text",
+      "lines": 50,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/merchant.py",
+      "sha256": "919613f7fa5c6242312ab04965b44440b153f12e6398402074a2e4118bae34cc",
+      "bytes": 1148,
+      "kind": "text",
+      "lines": 34,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/orchestration.py",
+      "sha256": "98d82e3258694ff44cd4cc9121b08b21add2d879b4f9bf04e3197f8f97a957c1",
+      "bytes": 9626,
+      "kind": "text",
+      "lines": 235,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/order.py",
+      "sha256": "8652cdd3131022db7fe8bfda8fefed4fba7b1adb3ef788a7083fc3d8a0bb0276",
+      "bytes": 2150,
+      "kind": "text",
+      "lines": 64,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/price_history.py",
+      "sha256": "fae9379fe51f0b386e2909fc6c857b77d020e0bc47aa38e8b64934dd84107765",
+      "bytes": 682,
+      "kind": "text",
+      "lines": 23,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/pricing.py",
+      "sha256": "35760036eec4a6afb2991865f8ce72c9d44b854bf7684cc5130c58ff771622b8",
+      "bytes": 2636,
+      "kind": "text",
+      "lines": 55,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/product.py",
+      "sha256": "520cace6f6c0df008fbf85397acfaa4acfefe41cd189eb920219bca81fc1cc8a",
+      "bytes": 2540,
+      "kind": "text",
+      "lines": 61,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/promotion.py",
+      "sha256": "265fc6cc5e3c083825077b2c9e47310060bbd9034a70bce0960afa244efd7dbc",
+      "bytes": 3630,
+      "kind": "text",
+      "lines": 65,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/recommendation.py",
+      "sha256": "cea41be1312ed59103fad0500bee0e34b1bdcf6d469894f0d9e296af302f245f",
+      "bytes": 1100,
+      "kind": "text",
+      "lines": 34,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/restock.py",
+      "sha256": "77cf8067037f005b80dad1cbbe999ccce49ea37c3eaac5decc6daf130dafc70c",
+      "bytes": 2132,
+      "kind": "text",
+      "lines": 50,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/schemas/store.py",
+      "sha256": "586db884c7394b0e3100b933a32c83d1f98d72e22b04eb243c39d07aac54d734",
+      "bytes": 1517,
+      "kind": "text",
+      "lines": 52,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/__init__.py",
+      "sha256": "021d9ce5e8589de2c6d1084e98c4264c152c557de79ddb1402c39833f9997ba8",
+      "bytes": 63,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/actions/__init__.py",
+      "sha256": "017007f1cade74522501c5ad4de0677b4164ddee428cb133bed76cacbef93add",
+      "bytes": 44,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/actions/state.py",
+      "sha256": "ea47fcb32a3d4446626c9f0319eb948d3aae91f48165cf0dccf0f436af860e0f",
+      "bytes": 911,
+      "kind": "text",
+      "lines": 22,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/actions/workflow.py",
+      "sha256": "8bba77ce0383c46f1e465544bb90dc7924b1d5af60971417cfb6d1cd4ae274ec",
+      "bytes": 18067,
+      "kind": "text",
+      "lines": 278,
+      "functions": 9,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/auth_limits.py",
+      "sha256": "4c18be0b984d0b1ae79bd2b8bdcc7e9ccca1732bb460f881864fb4c906bc76c9",
+      "bytes": 3284,
+      "kind": "text",
+      "lines": 73,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/__init__.py",
+      "sha256": "0b9486c026eb8a1f051a758753bd4dd8d37d7308d3bd34b6e2e605ec0547b81e",
+      "bytes": 86,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/carts.py",
+      "sha256": "81a4582a036aef36ad1f348d213ffb23fd549398cae2bde0e151dcd79f95ef6c",
+      "bytes": 6849,
+      "kind": "text",
+      "lines": 115,
+      "functions": 7,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/catalog.py",
+      "sha256": "1504c86456c793f0fdfbea34df4782b13e55879baee217f9198e0fa0ef026c86",
+      "bytes": 5522,
+      "kind": "text",
+      "lines": 97,
+      "functions": 6,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/conversation.py",
+      "sha256": "85d025c493141546be1ff5e0d7491cd826844c85659851f269ad578fd84ef250",
+      "bytes": 7208,
+      "kind": "text",
+      "lines": 109,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/ingestion.py",
+      "sha256": "a906b455023274a8d28098d924f94344d3232e1a6f49c5c4b2e28bc5e9c35d67",
+      "bytes": 2948,
+      "kind": "text",
+      "lines": 58,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/intent.py",
+      "sha256": "0b8c32c37be18cdc9b7af013d30823778bd67c043d084b133ef71bd0f66dbc89",
+      "bytes": 1026,
+      "kind": "text",
+      "lines": 20,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/learning.py",
+      "sha256": "f0697ded406aebd70833e05990228b60ac172c3829b20d3f758e8e46c4054434",
+      "bytes": 9118,
+      "kind": "text",
+      "lines": 173,
+      "functions": 11,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/ledger.py",
+      "sha256": "e53c532d961f27c8e09311f54d5d15eb055de44ee53e8e684a7d118936e72af7",
+      "bytes": 1811,
+      "kind": "text",
+      "lines": 41,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/merchandising.py",
+      "sha256": "fd97a885a7b6f2d365d0c6ff79b643129b37cafcf1212f8938d6782eebd08246",
+      "bytes": 10806,
+      "kind": "text",
+      "lines": 184,
+      "functions": 9,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/offers.py",
+      "sha256": "2e197370deb4e74bb8460dacab4c0f92b7d0ef0f8055e467ebaf8928adafb860",
+      "bytes": 3838,
+      "kind": "text",
+      "lines": 58,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/onboarding.py",
+      "sha256": "a1e2fd5c577f3a440650bddb130b0d05f179f9a6c5aff413fb59ce9329c4234c",
+      "bytes": 5600,
+      "kind": "text",
+      "lines": 98,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/payments.py",
+      "sha256": "722549e8cf71c69be7a02a64eb3a2dddd18187403f40c08d2b02b26a9b90afc2",
+      "bytes": 4176,
+      "kind": "text",
+      "lines": 74,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/providers.py",
+      "sha256": "4c0df5ea2105302f49df65a08a46b75ff536543786eb4794b42e6db3f4a3bd2d",
+      "bytes": 3326,
+      "kind": "text",
+      "lines": 57,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/resolution.py",
+      "sha256": "9fc49bf89e64461ec69da9ac88e822ac065ce2b5f499c240a2aff3abb71a6bf7",
+      "bytes": 11974,
+      "kind": "text",
+      "lines": 178,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/commerce/worker.py",
+      "sha256": "3acec355f7fe2eba74c8fbaf0e0909b95b5b52eb0d83787bed9b70b72875047b",
+      "bytes": 1298,
+      "kind": "text",
+      "lines": 37,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/listing/__init__.py",
+      "sha256": "08d5cfc499b45643d5c82610c3d84fe543b690595d517106490b145c5960582c",
+      "bytes": 69,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/listing/generator.py",
+      "sha256": "019ad5fb2d8152cbe63ecc6adc5b80f5a657cc87e4a7af9d7c76fa3c228a960f",
+      "bytes": 3968,
+      "kind": "text",
+      "lines": 55,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/listing/persistence.py",
+      "sha256": "e06e4bef3a68c2f3b816454ffadc2ae8112659aa61f28f9e90cb592e9754f2bd",
+      "bytes": 1245,
+      "kind": "text",
+      "lines": 25,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/listing/quality.py",
+      "sha256": "3ba7fa801c5b92d4aea1e7dde6174983d91bb96a951c8f54a0cf7ede20ba81c1",
+      "bytes": 6716,
+      "kind": "text",
+      "lines": 135,
+      "functions": 7,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/listing/signals.py",
+      "sha256": "273cf8b8f4a07382019dbcf4b98076ccad99bf1bbda5416a141d79d8f7dedeeb",
+      "bytes": 1012,
+      "kind": "text",
+      "lines": 26,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/__init__.py",
+      "sha256": "9c59464b802685eaae725e12d4ea538f5e91a11b848840e4c1fb75dce733e35d",
+      "bytes": 54,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/conflicts.py",
+      "sha256": "24dfbf2b92aaed310e1bea2ebdc6c938faf0d15f3703f5d9319061022599af7f",
+      "bytes": 4106,
+      "kind": "text",
+      "lines": 49,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/context.py",
+      "sha256": "ab4bd9d6bd76e17e6382f1237ff803d9e2a98e8397995df08a30ca221fbc9982",
+      "bytes": 5062,
+      "kind": "text",
+      "lines": 95,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/coordinator.py",
+      "sha256": "c5c1c2e7ec9ae57c1930179980ac64357604c78671ec6bbbe0792dc71a24dcfd",
+      "bytes": 5943,
+      "kind": "text",
+      "lines": 74,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/history.py",
+      "sha256": "f1f29b1d6520d458127ca70acfc26db2735c475696f090d09013773757690ee6",
+      "bytes": 1007,
+      "kind": "text",
+      "lines": 26,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/intelligence.py",
+      "sha256": "11106ee997ddfc8d2d3d312728657a586d6f7e82dd0567b36ef9e08c2c90e965",
+      "bytes": 14913,
+      "kind": "text",
+      "lines": 175,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/routing.py",
+      "sha256": "7ba313ea246fda09ea298c6f5e1265fcbfdba65eb22607307ae346a759935f51",
+      "bytes": 1244,
+      "kind": "text",
+      "lines": 26,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/orchestration/strategy.py",
+      "sha256": "7d5d96ab04d48c7ed947f81238df7cc6b2d1b507e4a203f93c428a371df08acf",
+      "bytes": 4229,
+      "kind": "text",
+      "lines": 75,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/policies/__init__.py",
+      "sha256": "e4671cda99bd0b43893744be050913d2ee8fb5def81b1c70b9fd861f33dfaacb",
+      "bytes": 45,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/policies/validator.py",
+      "sha256": "52c463ad54183ce4eeb6b7d2cdb3071c844b04d93c0eafcc0a165b9c32158546",
+      "bytes": 5598,
+      "kind": "text",
+      "lines": 70,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/pricing/__init__.py",
+      "sha256": "f0e48cf5abcc0d76d9eb0a6d08d12f8418b7bf92d7687ca4b1ce8f874fcdccbc",
+      "bytes": 640,
+      "kind": "text",
+      "lines": 20,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/pricing/calculator.py",
+      "sha256": "0729b7ba7b6480e08a46cffd17e88091d6b86e6340de5888ccffa1ea354793c1",
+      "bytes": 6042,
+      "kind": "text",
+      "lines": 136,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/pricing/persistence.py",
+      "sha256": "f0441859896761214ffc88b01729fc0b6d68a34e3d7162190d2445f99f3d4108",
+      "bytes": 1263,
+      "kind": "text",
+      "lines": 25,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/pricing/rules.py",
+      "sha256": "54fa29b21a0c337d1567f698119a584344396bf1837525c84ca6a576958d2a33",
+      "bytes": 4554,
+      "kind": "text",
+      "lines": 129,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/pricing/signals.py",
+      "sha256": "0ce56d130c3311535026f3cfec5a928f88c3c6f16f66745529a4df4f19f5522c",
+      "bytes": 9120,
+      "kind": "text",
+      "lines": 228,
+      "functions": 7,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/promotion/__init__.py",
+      "sha256": "48e24629a5e9d53f7495ea9b0543157b1e85ba2f6a6be2d3c85bb17ab37d293a",
+      "bytes": 49,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/promotion/calculator.py",
+      "sha256": "9dc458502f811eaabdc17d9a7232339fb21a929d7fbab59bd23eb7e5fd5ad09d",
+      "bytes": 4569,
+      "kind": "text",
+      "lines": 61,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/promotion/persistence.py",
+      "sha256": "113491ef5e29b651e2abceabcf6e61ce4d83c856ac3e25f1da76b19437659a09",
+      "bytes": 1265,
+      "kind": "text",
+      "lines": 25,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/promotion/signals.py",
+      "sha256": "13f7280bb63a4c124a45a4907fdbd343092f5eccde5ffde6898b4f924983f265",
+      "bytes": 3100,
+      "kind": "text",
+      "lines": 53,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/restock/__init__.py",
+      "sha256": "87e4695f07e2e3eec3c641053d324c70af2bdacd1b4eca110a945f0b7c95fc46",
+      "bytes": 38,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/restock/calculator.py",
+      "sha256": "bf21f1529aad52a225978633ce988a60170523447de35a97b7e25df83195a5e8",
+      "bytes": 2931,
+      "kind": "text",
+      "lines": 50,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/restock/persistence.py",
+      "sha256": "385ca1789db86fc48accaea0a0c948948ce798e23547d3205051f019d66f5006",
+      "bytes": 1245,
+      "kind": "text",
+      "lines": 25,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/restock/rules.py",
+      "sha256": "e6a1d0a2c325c7f2fd904e7cef04fc3f9010723021c561666dac0b4a72b99aa9",
+      "bytes": 1353,
+      "kind": "text",
+      "lines": 31,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/restock/signals.py",
+      "sha256": "4d02eadc00507598f80822f91253d5b45b57f621b010c18652ca83c6a5e58e69",
+      "bytes": 2517,
+      "kind": "text",
+      "lines": 57,
+      "functions": 4,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/store/__init__.py",
+      "sha256": "b81f88ec5b2d16cfd912b19ed76e965d8408ce82e217192e194f30be4b5e91a4",
+      "bytes": 37,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/services/store/catalog.py",
+      "sha256": "3941437999122a67ff6a8fa766b13fe4b3a48a16ea5bfc233419176e3d8c0b49",
+      "bytes": 6113,
+      "kind": "text",
+      "lines": 93,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/app/start.py",
+      "sha256": "ac6532d8d7dbd689cb14aa5c3d80a94c215a0bd517625f9f2b60748fbaccedc6",
+      "bytes": 301,
+      "kind": "text",
+      "lines": 7,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/mcp_server.py",
+      "sha256": "5769e6aed57b196d24bccfd6e02ba57ceb72305be1797536935d08016fd5ae59",
+      "bytes": 9896,
+      "kind": "text",
+      "lines": 172,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "sha256": "939d8cb9474431e9b486a08e8aef01ef966c51966cf8a774d3838966d1915d8e",
+      "bytes": 214,
+      "kind": "text",
+      "lines": 11
+    },
+    {
+      "path": "backend/requirements-ml.txt",
+      "sha256": "ed436df83dc7ea7f2de3add85612ce4bda37b753ea2d83cdb249d5ea52d06a4e",
+      "bytes": 195,
+      "kind": "text",
+      "lines": 3
+    },
+    {
+      "path": "backend/requirements-vercel.txt",
+      "sha256": "f338e60ca7650a01b11270aea93e343945686b7d789f9a646c4007154927f2b8",
+      "bytes": 226,
+      "kind": "text",
+      "lines": 9
+    },
+    {
+      "path": "backend/requirements.lock.txt",
+      "sha256": "4e9775f9aa1de2c0ccbcc03554ebacda0eb0e9b65d213433010db5cf3dba9ffb",
+      "bytes": 739,
+      "kind": "text",
+      "lines": 39
+    },
+    {
+      "path": "backend/requirements.txt",
+      "sha256": "ae99446c3cf04ea95be08760a98bb0f2aff0425af23b9af84235e3bafd47bafb",
+      "bytes": 247,
+      "kind": "text",
+      "lines": 13
+    },
+    {
+      "path": "backend/scripts/release.sh",
+      "sha256": "5a52ff5b14e4ec3373f6a08cc3f41266c67c9062f615fd349443a5c9d54843d3",
+      "bytes": 78,
+      "kind": "text",
+      "lines": 4
+    },
+    {
+      "path": "backend/scripts/start.sh",
+      "sha256": "0b8d1a714fa17d4f0a54863e3a853bb99784a6b24addf6e8836024c093da5424",
+      "bytes": 67,
+      "kind": "text",
+      "lines": 4
+    },
+    {
+      "path": "backend/tests/__init__.py",
+      "sha256": "a11ef8de4b472dd504a22d4e571bb32b90f5a133b210f3f6bb5f71b13437d234",
+      "bytes": 40,
+      "kind": "text",
+      "lines": 1,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/conftest.py",
+      "sha256": "9b763993df08aa755d66d3e2b140d1767ac523b59b56780d5b5ec4161a82e8f6",
+      "bytes": 3083,
+      "kind": "text",
+      "lines": 83,
+      "functions": 6,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/cross_agent_helpers.py",
+      "sha256": "e888ec4df8baede22cd4f9d7cb3458ba4d57ba66cd13d2d502af20ac832aaa8e",
+      "bytes": 2003,
+      "kind": "text",
+      "lines": 36,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/demo_cross_agent.py",
+      "sha256": "0652cd4759307ec4954496e7f7b291ca5aef32edab72fc01809c3ddfe6de005a",
+      "bytes": 2226,
+      "kind": "text",
+      "lines": 39,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/demo_shopify.py",
+      "sha256": "299c7051d26c654278461c04c7b4e04764465079f09290095486b568ee63a153",
+      "bytes": 2321,
+      "kind": "text",
+      "lines": 40,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/orchestration_helpers.py",
+      "sha256": "d2b50fcccd2091e006fc91ae996b220973ce409ed2c37a021fbb504ce86f5631",
+      "bytes": 1889,
+      "kind": "text",
+      "lines": 35,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/release_checks.py",
+      "sha256": "7108e56acfe847d5729165dcb1ab9eb3eb34042e407fd3a66b38c107add5c248",
+      "bytes": 2966,
+      "kind": "text",
+      "lines": 52,
+      "functions": 3,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/release_demo.py",
+      "sha256": "bd70df011d60976067aae4ef5b44ee970dbb5e45a977216d62a912de0127c5ff",
+      "bytes": 1578,
+      "kind": "text",
+      "lines": 32,
+      "functions": 1,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/shopify_helpers.py",
+      "sha256": "494051430d16521aa81e7723602d3b451364fc95d03463229829029171a4a1de",
+      "bytes": 4764,
+      "kind": "text",
+      "lines": 82,
+      "functions": 10,
+      "test_functions": 0
+    },
+    {
+      "path": "backend/tests/test_accounts_management.py",
+      "sha256": "ac8ec9a5bfabfffd25e33770a8ea6cb856f35acc1fa26bec7c8610d0cc5ffdc3",
+      "bytes": 4938,
+      "kind": "text",
+      "lines": 78,
+      "functions": 8,
+      "test_functions": 5
+    },
+    {
+      "path": "backend/tests/test_actions.py",
+      "sha256": "f9250629e20ad23dd02e5d83590793eb6a72c7d5588a14ed08142885073744ac",
+      "bytes": 12263,
+      "kind": "text",
+      "lines": 199,
+      "functions": 19,
+      "test_functions": 15
+    },
+    {
+      "path": "backend/tests/test_actions_api.py",
+      "sha256": "f576383224396846343eefe34c154f997e040339c227f80bf1da5442799a2551",
+      "bytes": 6427,
+      "kind": "text",
+      "lines": 96,
+      "functions": 9,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_actions_migration.py",
+      "sha256": "933777e7ac133a912ead78ea59318dcdac9c299660934b187895a715f4f9aa44",
+      "bytes": 1644,
+      "kind": "text",
+      "lines": 28,
+      "functions": 2,
+      "test_functions": 1
+    },
+    {
+      "path": "backend/tests/test_auth_limits.py",
+      "sha256": "867725724a4958c6d610b5ad2a991e47bf5d110ad844f35d46559a476183c2b8",
+      "bytes": 4346,
+      "kind": "text",
+      "lines": 87,
+      "functions": 9,
+      "test_functions": 7
+    },
+    {
+      "path": "backend/tests/test_catalog_performance.py",
+      "sha256": "99f1ac8f372b214020380fca5c7d0caacc699ec55d474be4f7cc900b49c837f3",
+      "bytes": 2007,
+      "kind": "text",
+      "lines": 52,
+      "functions": 5,
+      "test_functions": 4
+    },
+    {
+      "path": "backend/tests/test_commerce.py",
+      "sha256": "40c8073b666947c03e14d76f4ec986744607afb9ba11f324633717eae952d3c3",
+      "bytes": 15740,
+      "kind": "text",
+      "lines": 300,
+      "functions": 26,
+      "test_functions": 18
+    },
+    {
+      "path": "backend/tests/test_commerce_learning.py",
+      "sha256": "de3b470c2df7fa58d017e53aae975ac31a58bd9e55f79d3dd7029a8422e61bdf",
+      "bytes": 9189,
+      "kind": "text",
+      "lines": 181,
+      "functions": 21,
+      "test_functions": 14
+    },
+    {
+      "path": "backend/tests/test_commerce_mcp.py",
+      "sha256": "e3546498767dbcfd5cf7c7ea980b13880b3b13080409f943dd1e0c260dc59432",
+      "bytes": 3259,
+      "kind": "text",
+      "lines": 70,
+      "functions": 10,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_commerce_merchandising.py",
+      "sha256": "2f90b6f6383188d92672c4960e7c02dd533fa701b6ab80500275637ff5d18738",
+      "bytes": 17833,
+      "kind": "text",
+      "lines": 309,
+      "functions": 30,
+      "test_functions": 19
+    },
+    {
+      "path": "backend/tests/test_commerce_migration.py",
+      "sha256": "374e5fbc36063e5ab8efd815ac0d2fd0cbebecf2d39a48e930c21b20632e898f",
+      "bytes": 1457,
+      "kind": "text",
+      "lines": 26,
+      "functions": 2,
+      "test_functions": 1
+    },
+    {
+      "path": "backend/tests/test_commerce_workflow_migration.py",
+      "sha256": "6beb5dc1dabf88331dbbf2eebaa32302a36b438daf59963a51cd06ef3ffdbb90",
+      "bytes": 2016,
+      "kind": "text",
+      "lines": 31,
+      "functions": 2,
+      "test_functions": 1
+    },
+    {
+      "path": "backend/tests/test_commerce_workflows.py",
+      "sha256": "23ddb7aeeab26702212b1dd3addfb973dc959f47b86bf1057a9831ae9b6aaecf",
+      "bytes": 9191,
+      "kind": "text",
+      "lines": 165,
+      "functions": 15,
+      "test_functions": 13
+    },
+    {
+      "path": "backend/tests/test_cross_agent.py",
+      "sha256": "58c5e6cfaa2cc5e86cbec901b04aea45f1868742106c01889ff7cae6200bbc86",
+      "bytes": 16102,
+      "kind": "text",
+      "lines": 232,
+      "functions": 26,
+      "test_functions": 19
+    },
+    {
+      "path": "backend/tests/test_data_layer.py",
+      "sha256": "5cdde3ee0c43d3fe99a8d9c92aa2a41e8a8c2979ff17b817dd44878fff3d82d7",
+      "bytes": 14065,
+      "kind": "text",
+      "lines": 376,
+      "functions": 11,
+      "test_functions": 11
+    },
+    {
+      "path": "backend/tests/test_deployment.py",
+      "sha256": "6b2d78406d700c1b89c84fd75fe2e072642082c9831e0cc39d4877a012bed686",
+      "bytes": 4773,
+      "kind": "text",
+      "lines": 103,
+      "functions": 15,
+      "test_functions": 11
+    },
+    {
+      "path": "backend/tests/test_deployment_smoke.py",
+      "sha256": "7498e4f3b73ae451be3fc2e177febc8ce6fe9ca1dee940ae5ce0e9d305b482f7",
+      "bytes": 5772,
+      "kind": "text",
+      "lines": 124,
+      "functions": 12,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_email_recovery.py",
+      "sha256": "12e14a67451b6a8ae0454372c826647cb5c52977e828f8aaa7c5a671ff48fb43",
+      "bytes": 3380,
+      "kind": "text",
+      "lines": 63,
+      "functions": 5,
+      "test_functions": 5
+    },
+    {
+      "path": "backend/tests/test_health.py",
+      "sha256": "e22c47af759bd1c3f74e925071eed37f363eb73c5fe2e9ef2044d1f025e03651",
+      "bytes": 2629,
+      "kind": "text",
+      "lines": 70,
+      "functions": 7,
+      "test_functions": 7
+    },
+    {
+      "path": "backend/tests/test_listing.py",
+      "sha256": "dbba0361151a7808a1656d5ac7b09f5b1a656b2ad117920b72de0cd613d2e7c1",
+      "bytes": 7622,
+      "kind": "text",
+      "lines": 144,
+      "functions": 18,
+      "test_functions": 15
+    },
+    {
+      "path": "backend/tests/test_listing_orchestration.py",
+      "sha256": "885aded3856a15fc247b11fa72206ee4fba7a62800cb6b658ab5aa5c6378e974",
+      "bytes": 5544,
+      "kind": "text",
+      "lines": 90,
+      "functions": 10,
+      "test_functions": 9
+    },
+    {
+      "path": "backend/tests/test_orchestration_api.py",
+      "sha256": "1278a3580a5d555e89ef56b3e1536e02dd0c8ad05815237cad3c43d643ce143f",
+      "bytes": 3485,
+      "kind": "text",
+      "lines": 72,
+      "functions": 7,
+      "test_functions": 5
+    },
+    {
+      "path": "backend/tests/test_orchestration_history.py",
+      "sha256": "c62e36135d89ef225e561abafed48517ec9d6bc6ff55550a090cbc0d7094273c",
+      "bytes": 4006,
+      "kind": "text",
+      "lines": 83,
+      "functions": 8,
+      "test_functions": 5
+    },
+    {
+      "path": "backend/tests/test_orchestration_rules.py",
+      "sha256": "5ec7726df53bc78247168cc0bca5eb7eb00c02630a443048e2f5d398897a6de3",
+      "bytes": 4900,
+      "kind": "text",
+      "lines": 97,
+      "functions": 9,
+      "test_functions": 8
+    },
+    {
+      "path": "backend/tests/test_orchestrator.py",
+      "sha256": "111d97c41766d79a92b81dde4e3019a66d722fd9d4de6814d70e1e1da6617936",
+      "bytes": 9022,
+      "kind": "text",
+      "lines": 190,
+      "functions": 18,
+      "test_functions": 14
+    },
+    {
+      "path": "backend/tests/test_postgres_integration.py",
+      "sha256": "b216f718af10daa9609f0517c6b228b57164b39574e7a91bf8a2edee0ddc604d",
+      "bytes": 8801,
+      "kind": "text",
+      "lines": 164,
+      "functions": 11,
+      "test_functions": 5
+    },
+    {
+      "path": "backend/tests/test_pricing_agent.py",
+      "sha256": "c371ec7a42d7c4452045ace0003774d0668e2f31ecc5384e551b87d74162d37a",
+      "bytes": 17960,
+      "kind": "text",
+      "lines": 454,
+      "functions": 14,
+      "test_functions": 13
+    },
+    {
+      "path": "backend/tests/test_pricing_api.py",
+      "sha256": "b5226abc6f8cd809ab2b9dc9a02d0eed632730264269291b45df1d931df41b92",
+      "bytes": 6390,
+      "kind": "text",
+      "lines": 171,
+      "functions": 8,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_pricing_rules.py",
+      "sha256": "94a0855af1b559da6894ab38401183f4f2a18f40eba908d4116fc24332969332",
+      "bytes": 11437,
+      "kind": "text",
+      "lines": 282,
+      "functions": 18,
+      "test_functions": 17
+    },
+    {
+      "path": "backend/tests/test_promotion.py",
+      "sha256": "6830cda41d265c6ea7a01fa4ad920875fa4dc0b7e5cb2d9dc88ae26a504a937d",
+      "bytes": 9792,
+      "kind": "text",
+      "lines": 147,
+      "functions": 17,
+      "test_functions": 13
+    },
+    {
+      "path": "backend/tests/test_promotion_orchestration.py",
+      "sha256": "8361e2fd9626533354f04cd0f85c57efa4a5fad36c75ee0569451b61ec5b2a7c",
+      "bytes": 5362,
+      "kind": "text",
+      "lines": 71,
+      "functions": 6,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_release_bootstrap.py",
+      "sha256": "9ac2e0b6924756a408dc9608f23e74c1feec29242183be90fc9efca2729e8c36",
+      "bytes": 4824,
+      "kind": "text",
+      "lines": 69,
+      "functions": 2,
+      "test_functions": 1
+    },
+    {
+      "path": "backend/tests/test_release_hardening.py",
+      "sha256": "be9af3392b11c68694658fdcd20b32abf74a67f2f094247b6e9e27cf6088c9e8",
+      "bytes": 7584,
+      "kind": "text",
+      "lines": 141,
+      "functions": 22,
+      "test_functions": 13
+    },
+    {
+      "path": "backend/tests/test_reliability_migration.py",
+      "sha256": "fc210f521315c669f0a27b53555ba46c626f1b924f56bd51934905dd15f66b44",
+      "bytes": 1877,
+      "kind": "text",
+      "lines": 29,
+      "functions": 2,
+      "test_functions": 1
+    },
+    {
+      "path": "backend/tests/test_restock_agent.py",
+      "sha256": "9bb1d6d8c5ef3ab5c18b8be3395c338be9d99f4249d8f8dd37790afc86574686",
+      "bytes": 4934,
+      "kind": "text",
+      "lines": 105,
+      "functions": 7,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_restock_api.py",
+      "sha256": "76acaac32c67c1de1130a4ecd3aa9f0f05405fc86da1c18ed9380f6a6daacf16",
+      "bytes": 4474,
+      "kind": "text",
+      "lines": 99,
+      "functions": 9,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_restock_rules.py",
+      "sha256": "9f8e6b67d9547ca556d9743464f3b06f9deb1e9a94f21162ceabed0ccb9f9e08",
+      "bytes": 5941,
+      "kind": "text",
+      "lines": 140,
+      "functions": 20,
+      "test_functions": 19
+    },
+    {
+      "path": "backend/tests/test_shopify.py",
+      "sha256": "6a5ad2847f5cfb2c6d812b7215dd72777f32ac35a23a8db68ab59912a47e6232",
+      "bytes": 19996,
+      "kind": "text",
+      "lines": 299,
+      "functions": 41,
+      "test_functions": 33
+    },
+    {
+      "path": "backend/tests/test_shopify_api.py",
+      "sha256": "cef606f2356616f134b50b687bc6b359eebd293af365b79cc03e0758aa3ee95a",
+      "bytes": 4213,
+      "kind": "text",
+      "lines": 68,
+      "functions": 8,
+      "test_functions": 6
+    },
+    {
+      "path": "backend/tests/test_shopify_credentials.py",
+      "sha256": "15385ed36be6204af4ac201173655f9bf844fa55200d6a7cd8311254fa4c5029",
+      "bytes": 5059,
+      "kind": "text",
+      "lines": 115,
+      "functions": 15,
+      "test_functions": 8
+    },
+    {
+      "path": "backend/tests/test_shopify_migration.py",
+      "sha256": "1a5d5e010a88c4312610030378573e58e93160af8609ed2318e2e8e0b6bacb48",
+      "bytes": 2351,
+      "kind": "text",
+      "lines": 34,
+      "functions": 2,
+      "test_functions": 1
+    },
+    {
+      "path": "backend/tests/test_shopify_worker.py",
+      "sha256": "fbd25d29dd0be56111bde79efe19060453aa8a42dd7fc84db00720a9ec038457",
+      "bytes": 3096,
+      "kind": "text",
+      "lines": 74,
+      "functions": 8,
+      "test_functions": 5
+    },
+    {
+      "path": "backend/tests/test_store_api.py",
+      "sha256": "538a7ea64f0a121d24e1aaae3cb142ab709119aa3732ac8cedf49ccc6f4b2d83",
+      "bytes": 5690,
+      "kind": "text",
+      "lines": 120,
+      "functions": 11,
+      "test_functions": 9
+    },
+    {
+      "path": "backend/vercel.json",
+      "sha256": "228de1f0c5c5d8fb31c7ae10234fb2a507fb332de2422ae1f37789877f2a4a67",
+      "bytes": 274,
+      "kind": "text",
+      "lines": 13
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "7fbd85bf3c006600c802453a64ab7bd96c3dd28a4a8288f01de8e98b0324ca80",
+      "bytes": 3648,
+      "kind": "text",
+      "lines": 106
+    },
+    {
+      "path": "docs/ACCOUNT_STORE_MANAGEMENT.md",
+      "sha256": "385f95e27cd0cf1066509e89dfdc77213b6eab12907899639c2e6d77141f76dc",
+      "bytes": 8389,
+      "kind": "text",
+      "lines": 127,
+      "headings": [
+        "# Account and store management continuation",
+        "# Dashboard shortcuts"
+      ]
+    },
+    {
+      "path": "docs/ALGORITHMS.md",
+      "sha256": "418575c40f9f430e486b410423ae3e631c3becc8d6617d7b9797b898dcde3bd3",
+      "bytes": 8267,
+      "kind": "text",
+      "lines": 131,
+      "headings": [
+        "# Verified merchant algorithms and formulas"
+      ]
+    },
+    {
+      "path": "docs/API_DATABASE_SECURITY.md",
+      "sha256": "9e0c78c6348e5ec9b08087f1ca10d174bddd2d506d0033ab08d03ff9c6d2862f",
+      "bytes": 5458,
+      "kind": "text",
+      "lines": 84,
+      "headings": [
+        "# API, data model and security reference"
+      ]
+    },
+    {
+      "path": "docs/BUYER_COMMERCE.md",
+      "sha256": "9a6c48a9501168e7a9450c73296ad5c6dc73c535010f117dbdacad9ae7fdb4fd",
+      "bytes": 9538,
+      "kind": "text",
+      "lines": 165,
+      "headings": [
+        "# Buyer commerce \u2014 foundation and current continuation"
+      ]
+    },
+    {
+      "path": "docs/COMMERCE_PARITY.md",
+      "sha256": "c3b57dcac334668bc5ff1603297814e6a5e157e8b4396f08c00c54a7bd0b0f12",
+      "bytes": 11406,
+      "kind": "text",
+      "lines": 176,
+      "headings": [
+        "# Commerce capability parity checklist"
+      ]
+    },
+    {
+      "path": "docs/DEPLOYMENT_HANDOFF.md",
+      "sha256": "975d2789ddc77d96dc4bfb4a8cbfa2d2fc07d61339a1592f6dc0265cffa8d60f",
+      "bytes": 2766,
+      "kind": "text",
+      "lines": 33,
+      "headings": [
+        "# Deployment handoff \u2014 3 October 2026"
+      ]
+    },
+    {
+      "path": "docs/RELIABILITY_RELEASE.md",
+      "sha256": "900012d6f960809bb331a3937c35274ef98a4078075cf652e91aa7ab3517dbcc",
+      "bytes": 5523,
+      "kind": "text",
+      "lines": 92,
+      "headings": [
+        "# Reliability release \u2014 21 October 2026",
+        "# DATABASE_URL must point at the disposable migrated cartpilot_ci database."
+      ]
+    },
+    {
+      "path": "docs/VERCEL_NEON.md",
+      "sha256": "50049c6604ca7a908006fcb7d1c6739dd09110065573cb3aa0199e7a7b4a1928",
+      "bytes": 13050,
+      "kind": "text",
+      "lines": 239,
+      "headings": [
+        "# CartPilot: manual Vercel Hobby + Neon Free deployment",
+        "# Run only after migrations succeed on the selected empty disposable database:",
+        "# Run only after migrations succeed on the selected empty disposable database:"
+      ]
+    },
+    {
+      "path": "docs/deliverables/CartPilot_Final_Presentation.pptx",
+      "sha256": "f8a23a45394c8080d6e3931add3dce144bb116d233a10386a77c87a09b14cbea",
+      "bytes": 932387,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/deliverables/CartPilot_Final_Report.docx",
+      "sha256": "9bb12a71efb93f68889cad6a5558c021f5837eeba0bdce9fba88a8ddd1b2398c",
+      "bytes": 1492460,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/deliverables/CartPilot_Final_Report.pdf",
+      "sha256": "c042203773481604080f471bbcf2c0905eb8ba34be3674a40955469adb008c1f",
+      "bytes": 1649375,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/deliverables/README.md",
+      "sha256": "b1ccf264a88c65b45336a606b62455bba65954bd6d6d4f43b15a6ce476065e5c",
+      "bytes": 1869,
+      "kind": "text",
+      "lines": 23,
+      "headings": [
+        "# Final report and presentation"
+      ]
+    },
+    {
+      "path": "docs/examples/commerce-browser.json",
+      "sha256": "07c31022447ac24103cc49bc15f03336f73af94f3fe23e3d596716c4e2527b27",
+      "bytes": 295,
+      "kind": "text",
+      "lines": 10
+    },
+    {
+      "path": "docs/examples/commerce-catalog.csv",
+      "sha256": "23bfc0a53b51dfab5d76a79a66b01e4fa240dd5c6930040337be9a6632fcdf4a",
+      "bytes": 631,
+      "kind": "text",
+      "lines": 7
+    },
+    {
+      "path": "docs/examples/commerce-migration.json",
+      "sha256": "0af043d39fe1f58eace0204b31abc0cc2438e5df258f76c0390513c0f7e15ede",
+      "bytes": 521,
+      "kind": "text",
+      "lines": 24
+    },
+    {
+      "path": "docs/examples/commerce-workflows-browser.json",
+      "sha256": "2391368e765626aa268e211cf089e2bf7e3b4f0a558ad4e8b2e5a5c6d2fab188",
+      "bytes": 422,
+      "kind": "text",
+      "lines": 12
+    },
+    {
+      "path": "docs/examples/commerce-workflows-migration.json",
+      "sha256": "5027c8d2e0700d28499be06aaea86e0dd872254c3f6a5cefad3968265c02a3e3",
+      "bytes": 648,
+      "kind": "text",
+      "lines": 28
+    },
+    {
+      "path": "docs/examples/cross-agent-demo.json",
+      "sha256": "0ea981f846a3ab43f4fdcc74acbfc2ca64fa45aad5070f6cd6a23e5b6b54d31b",
+      "bytes": 33997,
+      "kind": "text",
+      "lines": 902
+    },
+    {
+      "path": "docs/examples/deployment-browser.json",
+      "sha256": "ae3bac58f48784b18d1339329c382ee66392ad6797d2310b85477198d6f581b1",
+      "bytes": 5341,
+      "kind": "text",
+      "lines": 89
+    },
+    {
+      "path": "docs/examples/deployment-failures.json",
+      "sha256": "b36a1fcad0f8410940976ff58bd05190b89b95571693f7d389864223f0855930",
+      "bytes": 342,
+      "kind": "text",
+      "lines": 15
+    },
+    {
+      "path": "docs/examples/deployment-postgres-demo.json",
+      "sha256": "3f55e4642c8f576ac1f3d3b367292f934fea829efd33c7d47eebb19cbd439234",
+      "bytes": 442,
+      "kind": "text",
+      "lines": 18
+    },
+    {
+      "path": "docs/examples/deployment-production.json",
+      "sha256": "f5d9c234ca3363f7cff8d78dcde31ae5555014b08a978f9087506b7289a3fbb5",
+      "bytes": 393,
+      "kind": "text",
+      "lines": 19
+    },
+    {
+      "path": "docs/examples/final-production-start-check.json",
+      "sha256": "f5d9c234ca3363f7cff8d78dcde31ae5555014b08a978f9087506b7289a3fbb5",
+      "bytes": 393,
+      "kind": "text",
+      "lines": 19
+    },
+    {
+      "path": "docs/examples/guarded-actions-demo.json",
+      "sha256": "39d90aae61efe61a6b3f30ce2427a17407405dc2a50ecd89a7a4357b78e615c6",
+      "bytes": 2568,
+      "kind": "text",
+      "lines": 102
+    },
+    {
+      "path": "docs/examples/listing-demo.json",
+      "sha256": "909b38a4dfb8673b78491a9e1e2a5b035d49863b09f20bd0a287fe094ec35860",
+      "bytes": 6671,
+      "kind": "text",
+      "lines": 196
+    },
+    {
+      "path": "docs/examples/orchestration-demo.json",
+      "sha256": "66d5aa13f8b4d1ac5e7e1ef8371ea09fecd886c4d8f47bf891acaa7ab28a2033",
+      "bytes": 3415,
+      "kind": "text",
+      "lines": 101
+    },
+    {
+      "path": "docs/examples/promotion-demo.json",
+      "sha256": "50f977af272b067b42183ac3dd68a1ee36a2e12287453a881089eaa5de8159bb",
+      "bytes": 9746,
+      "kind": "text",
+      "lines": 276
+    },
+    {
+      "path": "docs/examples/release-browser.json",
+      "sha256": "8f10f513561c4100600711502e255d0ee2a60ded977ecee19093268ae8f337db",
+      "bytes": 5053,
+      "kind": "text",
+      "lines": 80
+    },
+    {
+      "path": "docs/examples/release-performance.json",
+      "sha256": "978cd22cd6b9c4bbb7c58234614e261cac1dac97ec24494f697c0c09d0b8929a",
+      "bytes": 818,
+      "kind": "text",
+      "lines": 48
+    },
+    {
+      "path": "docs/examples/reliability-release.json",
+      "sha256": "a1736d40ccb0eaaaf0c582395e9d7fb7c08a53cd940f7467855c740358b51bda",
+      "bytes": 2876,
+      "kind": "text",
+      "lines": 94
+    },
+    {
+      "path": "docs/examples/shopify-demo.json",
+      "sha256": "f7bee876a2cd6b0ff71bb6c28be374400b2f97f94023c67291e316a2aa66c061",
+      "bytes": 20416,
+      "kind": "text",
+      "lines": 598
+    },
+    {
+      "path": "docs/examples/submission-browser.json",
+      "sha256": "8f3984695a4f78514ac7bfb213e825de3074befe16176bb12344b0e551a300df",
+      "bytes": 5958,
+      "kind": "text",
+      "lines": 113
+    },
+    {
+      "path": "docs/screenshots/01_dashboard.png",
+      "sha256": "17d33917ab011f49755d324b2477ddf52a1824d1aa23e96e1e34230b8953aade",
+      "bytes": 131633,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/02_products.png",
+      "sha256": "90cd7855dc5b263806a388c8b2504988109841a8b649d4db4d1b6952f4fac1e2",
+      "bytes": 122072,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/03_product_detail.png",
+      "sha256": "a569a26dad675b844d032680764e63194d2d038c2f9e7ad952f373f413e613c7",
+      "bytes": 150734,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/04_pricing_agent.png",
+      "sha256": "c206bbeb78fd46dff476cf2bb37aeb651e70d9c861c6081fe9572ffccab02c2c",
+      "bytes": 169181,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/05_restock_agent.png",
+      "sha256": "310bfac06bac9ea0d36e808714cb095a60000832f464b709f14d0b62ad821c9c",
+      "bytes": 163994,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/06_promotion_agent.png",
+      "sha256": "d4253b0fab3fdface3b57b4e605444782975e041a45c6f2d02e68eba1b205134",
+      "bytes": 170742,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/07_listing_agent.png",
+      "sha256": "12a1c4021332550ffbeaac7ed5c70d863b59ddfd4aee676f7f9d42e1e0ea689d",
+      "bytes": 197117,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/08_ai_manager.png",
+      "sha256": "65eafbda71a960adebf11afd7331e12f7b4dec0cee83e79776f979ed00c2d0bc",
+      "bytes": 120484,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/09_priority_plan.png",
+      "sha256": "8b6b37f0007d8ed38975eaafdcbeb312d0d0e10adc00a28e264f34810a0a8fe8",
+      "bytes": 128714,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/10_cross_agent_intelligence.png",
+      "sha256": "7b9a5e9ac922a829d1a96f6a129114cb49fe41c9134f1207d296616ab56e2e14",
+      "bytes": 17403,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/11_approval_workflow.png",
+      "sha256": "18cb89f1cec30505e176585f997c7e403140d429d8259a5e1dd26073630dd5f7",
+      "bytes": 110860,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/12_execution_confirmation.png",
+      "sha256": "7da2cfbb2a45ba883345fa46f2e9804c89f2602d447ef08ae0909b38cb1c95bc",
+      "bytes": 121181,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/13_audit_history.png",
+      "sha256": "fb62d0a043c075c49196dc7a5f345324414292b79038f85865869012261b5540",
+      "bytes": 136479,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/14_policy_block.png",
+      "sha256": "452176ee197292643cc3b7daad42b9e3cc53e345909f883d06df404739de23af",
+      "bytes": 176200,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/15_shopify_read_only_mock.png",
+      "sha256": "6dd4fc861c949b68ef7526df2fe15131aa21e40ab09e2aa6fb2421560837c8b3",
+      "bytes": 108819,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/16_buyer_storefront.png",
+      "sha256": "d008e75a809c9f7b98d062d544f73c51a7a2e46d818cd5985e7455c405b91bd6",
+      "bytes": 145824,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/17_buyer_mobile.png",
+      "sha256": "5939d6453a72495723a155c5c4db7c02a439d20f14fa04f349502506d915ede0",
+      "bytes": 55622,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/18_growth_console.png",
+      "sha256": "7f5779e8dcc885df47a2538e29e80e4e2d1183600048addd20b0f08c0cf48c00",
+      "bytes": 138934,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/19_conversational_shopping.png",
+      "sha256": "f9c695310eceeee615b5c887b1260172cdc199311faac3170ca2de38e8270cdf",
+      "bytes": 122137,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/20_refund_return_review.png",
+      "sha256": "0533a248ad80b3c4377f42123a7e70f7615ae59bd42f3d5d53e0887b5c3b56c8",
+      "bytes": 112019,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/21_commerce_studio.png",
+      "sha256": "575d3f740e615b345f24ba71ec275034ce179f9d956773cdc36fff625f67af10",
+      "bytes": 125306,
+      "kind": "binary"
+    },
+    {
+      "path": "docs/screenshots/README.md",
+      "sha256": "52c5e06dea8c919fb6aed3da78f53c91c936325c0045525d9acd347e71118842",
+      "bytes": 5289,
+      "kind": "text",
+      "lines": 82,
+      "headings": [
+        "# CartPilot screenshots"
+      ]
+    },
+    {
+      "path": "docs/testing/CURRENT_TEST_REVIEW.md",
+      "sha256": "f767a6639d6a73cdcf00b0e6f7a19be0cd6a512619d5f422701ff7535f160a81",
+      "bytes": 4868,
+      "kind": "text",
+      "lines": 84,
+      "headings": [
+        "# Current review \u2014 23 October 2026",
+        "# Current review \u2014 21 October 2026",
+        "# Current testing review \u2014 4 October 2026"
+      ]
+    },
+    {
+      "path": "docs/testing/FUNCTIONAL_CHECKLIST.md",
+      "sha256": "3fe1c3e71b3fca7beb285d928da0934b901753d64a3ee23712eafc7505c54bc3",
+      "bytes": 12449,
+      "kind": "text",
+      "lines": 189,
+      "headings": [
+        "# CartPilot functional acceptance audit"
+      ]
+    },
+    {
+      "path": "docs/testing/MANUAL_TEST_CASES.csv",
+      "sha256": "092d67aed6573767fe220fd98ae8da5e73e8ea1bc6d89192b29fe1b3d8646292",
+      "bytes": 1490,
+      "kind": "text",
+      "lines": 19
+    },
+    {
+      "path": "docs/testing/STEP_BY_STEP_TESTING.md",
+      "sha256": "51b99451a00738747919fec66d44595c2078bba4c5d3dce38d19d9e89e5efe2a",
+      "bytes": 7139,
+      "kind": "text",
+      "lines": 114,
+      "headings": [
+        "# CartPilot testing: nine-step review"
+      ]
+    },
+    {
+      "path": "frontend/.dockerignore",
+      "sha256": "d1b2c9bedb7a3328321f7ebfc4d46b6d30dcc0004fab1ebfe8583beb9710b294",
+      "bytes": 172,
+      "kind": "text",
+      "lines": 23
+    },
+    {
+      "path": "frontend/.vercelignore",
+      "sha256": "613cbc8348c00c5a39111c05a5542994c5080eaba8b5864d9e90908d17b66306",
+      "bytes": 43,
+      "kind": "text",
+      "lines": 5
+    },
+    {
+      "path": "frontend/Dockerfile",
+      "sha256": "c9a4d4c878cd36dcf59a0ba3a7ad5483fc40d3d8325ade5c6ede6c92f6595f74",
+      "bytes": 367,
+      "kind": "text",
+      "lines": 14
+    },
+    {
+      "path": "frontend/index.html",
+      "sha256": "64f2c468e583176a9b81eebeffed391c34437c21a13b4b6cbad1f5e649155c90",
+      "bytes": 431,
+      "kind": "text",
+      "lines": 13
+    },
+    {
+      "path": "frontend/nginx.conf",
+      "sha256": "25dc5def6d6a093efe85ffb4112b61529abc5679f39c80cfa61aedb4f9002cdb",
+      "bytes": 422,
+      "kind": "text",
+      "lines": 17
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "sha256": "030db764550b31974e4cec930e2d030b0f2d4c9aa362a1602f37f0d31297fdf1",
+      "bytes": 140320,
+      "kind": "text",
+      "lines": 4146
+    },
+    {
+      "path": "frontend/package.json",
+      "sha256": "3967dbe5406d6ac87aab3cffac6336543fdfebc9de254dc99da9dda40c78b009",
+      "bytes": 791,
+      "kind": "text",
+      "lines": 33
+    },
+    {
+      "path": "frontend/postcss.config.js",
+      "sha256": "190c877db466995bf1482f4a16abd06e04a89ede3119341e2a86ff96e1737b27",
+      "bytes": 80,
+      "kind": "text",
+      "lines": 6
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "sha256": "43dea36782ed184d15b8a173251418c18adb46e2728abd438a348f984e70bd13",
+      "bytes": 3186,
+      "kind": "text",
+      "lines": 30
+    },
+    {
+      "path": "frontend/src/components/AccountGate.tsx",
+      "sha256": "03e6bd62bffdc79152abe871523cf7bfa99e29eb966706693ddf2045d142c355",
+      "bytes": 9714,
+      "kind": "text",
+      "lines": 73
+    },
+    {
+      "path": "frontend/src/components/ActionCreation.tsx",
+      "sha256": "055903dc83310810c8666b5768e0ca4cc2f5ad507f717fb4445cb1db68a73427",
+      "bytes": 3016,
+      "kind": "text",
+      "lines": 20
+    },
+    {
+      "path": "frontend/src/components/BuyerAssistant.tsx",
+      "sha256": "e63ea0cb1f88573f087617500e4cdf5e178476637363b7515529a878105f3dc2",
+      "bytes": 3102,
+      "kind": "text",
+      "lines": 19
+    },
+    {
+      "path": "frontend/src/components/CartResolution.tsx",
+      "sha256": "872cf324589d32f3e07b52f8e468fa5dc1ca1fe9e5da6acbeb4be3d37732553e",
+      "bytes": 6653,
+      "kind": "text",
+      "lines": 38
+    },
+    {
+      "path": "frontend/src/components/CommerceStudio.tsx",
+      "sha256": "044c0f6d80b7c1f04ccf0d0c6040ad4e14962dc57c2f298cdd0f919b1419b422",
+      "bytes": 14013,
+      "kind": "text",
+      "lines": 40
+    },
+    {
+      "path": "frontend/src/components/ErrorBoundary.tsx",
+      "sha256": "6c36903e54bb24bcfba9447e928aa18f4399fd243fbb1f78c8a38096c3d07989",
+      "bytes": 695,
+      "kind": "text",
+      "lines": 15
+    },
+    {
+      "path": "frontend/src/components/HealthBadge.tsx",
+      "sha256": "9fb70d80eb5fb2a49fea522c5467f5eb892e7c74d3467a4766ddde24e28b33ff",
+      "bytes": 1470,
+      "kind": "text",
+      "lines": 53
+    },
+    {
+      "path": "frontend/src/components/IntelligentPlan.tsx",
+      "sha256": "d895e14f61936e9e471a92a1fcb2010360deb2fdf1557813d2e7faa17a4f930c",
+      "bytes": 6162,
+      "kind": "text",
+      "lines": 23
+    },
+    {
+      "path": "frontend/src/components/MetricCard.tsx",
+      "sha256": "69e6f0e2e54287a8133221beeff7cc5e4eaf53ad7d2840715c43719aa34a8bd0",
+      "bytes": 1818,
+      "kind": "text",
+      "lines": 62
+    },
+    {
+      "path": "frontend/src/components/ProductDrawer.tsx",
+      "sha256": "c6d3ccd7e9f9a8e3e2b2cb31f0e0136fd6b2460efa730ac6b09f4c6e79cbb607",
+      "bytes": 6887,
+      "kind": "text",
+      "lines": 32
+    },
+    {
+      "path": "frontend/src/components/ProductTable.tsx",
+      "sha256": "2580f19e8a6ce6c60e04e485364965cdf6608a5ac21948ac55b55d3bbe843a29",
+      "bytes": 2520,
+      "kind": "text",
+      "lines": 16
+    },
+    {
+      "path": "frontend/src/components/SalesImport.tsx",
+      "sha256": "d827e6e89ced8f4d1ff8f8940e5158161ea3618ce0490481f508aedb4cd71562",
+      "bytes": 8800,
+      "kind": "text",
+      "lines": 112
+    },
+    {
+      "path": "frontend/src/components/StoreManagement.tsx",
+      "sha256": "929d53a832e275581f3017b4b5daf48846708deb9ba7302c9eb3bf0c78e5d42f",
+      "bytes": 7071,
+      "kind": "text",
+      "lines": 68
+    },
+    {
+      "path": "frontend/src/components/common.tsx",
+      "sha256": "9e21b40f68a3596b4815bb995e02f076994b35ca777929581b67a963421aff3c",
+      "bytes": 1195,
+      "kind": "text",
+      "lines": 9
+    },
+    {
+      "path": "frontend/src/components/layout/Shell.tsx",
+      "sha256": "6a568ebd86715a9ba4fd6e13e053c602b13179d4f08513c3b3327192e20aec86",
+      "bytes": 2852,
+      "kind": "text",
+      "lines": 18
+    },
+    {
+      "path": "frontend/src/components/recommendations/RecommendationCards.tsx",
+      "sha256": "de8dc6414e77123e747940fa186adedcc445b2fd5d3d30f9491349cb5c189fa0",
+      "bytes": 8711,
+      "kind": "text",
+      "lines": 25
+    },
+    {
+      "path": "frontend/src/hooks/useStore.tsx",
+      "sha256": "5401b902d5300bf05b7150016da1108515fb24749700839a62629c14f27b1943",
+      "bytes": 5212,
+      "kind": "text",
+      "lines": 70
+    },
+    {
+      "path": "frontend/src/hooks/useTask.ts",
+      "sha256": "1ba4d4f921b197ccc33dca8cd26cfb3d084d29013eb3c8bcbff01cc7bda9bc82",
+      "bytes": 1046,
+      "kind": "text",
+      "lines": 17
+    },
+    {
+      "path": "frontend/src/index.css",
+      "sha256": "ed06590126e5508b5001961acd007b45e97d41a0cdae7eace0fc0286e92c3c62",
+      "bytes": 37506,
+      "kind": "text",
+      "lines": 1484
+    },
+    {
+      "path": "frontend/src/main.tsx",
+      "sha256": "f60c922514fedfad106d8870c6c0d543a7f4354c06b543ac7298cd8b82eb78b9",
+      "bytes": 390,
+      "kind": "text",
+      "lines": 14
+    },
+    {
+      "path": "frontend/src/pages/AIManager.tsx",
+      "sha256": "8c41fc4af3ff6d6002b0747ff33ec126fbbda81ebaf8745c5f0cddad682b422c",
+      "bytes": 5481,
+      "kind": "text",
+      "lines": 26
+    },
+    {
+      "path": "frontend/src/pages/ActionHistory.tsx",
+      "sha256": "abe3071f701d921642fdbaa9a09e305a143098da2cb714828b09f41a85898c2c",
+      "bytes": 2356,
+      "kind": "text",
+      "lines": 13
+    },
+    {
+      "path": "frontend/src/pages/AgentActivity.tsx",
+      "sha256": "a241762948458f81be510202596656be9925a22cc7877a171cd4d2de3d38e593",
+      "bytes": 5461,
+      "kind": "text",
+      "lines": 51
+    },
+    {
+      "path": "frontend/src/pages/Approvals.tsx",
+      "sha256": "a3754e3e0c552de3cb014878e3be1196f771950d35c36f57f8ebab6dbf012ece",
+      "bytes": 8126,
+      "kind": "text",
+      "lines": 32
+    },
+    {
+      "path": "frontend/src/pages/Buyer.tsx",
+      "sha256": "861d7894be1de0ec53db16afe06b61293a39e6db9804a30eb206b057192bb2bf",
+      "bytes": 10609,
+      "kind": "text",
+      "lines": 69
+    },
+    {
+      "path": "frontend/src/pages/Dashboard.tsx",
+      "sha256": "7126bc9601e385c097588ab0d19de6f20aac9cd251af86bd6edffa31d22bba8b",
+      "bytes": 5283,
+      "kind": "text",
+      "lines": 43
+    },
+    {
+      "path": "frontend/src/pages/GrowthConsole.tsx",
+      "sha256": "a29a8f0e42fb8fd608828b59f7e4223530ffc2a70ccbbb4b22a81613abeb51f4",
+      "bytes": 6493,
+      "kind": "text",
+      "lines": 22
+    },
+    {
+      "path": "frontend/src/pages/Integrations.tsx",
+      "sha256": "c9989c146c8740e3ffe4e604d6496217c1623b281e6e52f8f5335467871debfd",
+      "bytes": 3482,
+      "kind": "text",
+      "lines": 33
+    },
+    {
+      "path": "frontend/src/pages/Inventory.tsx",
+      "sha256": "856a5e651b42ed1798efce40be3aa05e61b5f5c21a2cf3d8a854af913f2f62da",
+      "bytes": 2113,
+      "kind": "text",
+      "lines": 9
+    },
+    {
+      "path": "frontend/src/pages/Products.tsx",
+      "sha256": "ba42639c10728a45a779b31608bdf20acfcbe7324993c3cbdab42da353222e2f",
+      "bytes": 1004,
+      "kind": "text",
+      "lines": 8
+    },
+    {
+      "path": "frontend/src/pages/Recommendations.tsx",
+      "sha256": "b59bce84a9438a2227b674ec532d2a02d0c7982a6ab9b9c74bd10978177a6ce6",
+      "bytes": 5358,
+      "kind": "text",
+      "lines": 22
+    },
+    {
+      "path": "frontend/src/services/api.ts",
+      "sha256": "b0555deac80835145082d68672dadc0afd45626dd4445e65cc5c9d56428330e5",
+      "bytes": 7739,
+      "kind": "text",
+      "lines": 83
+    },
+    {
+      "path": "frontend/src/services/commerce.ts",
+      "sha256": "bc115e9f5c4a47edcd6764563d2d3dc0e1c0db870877952ab237892b0f0e1374",
+      "bytes": 6159,
+      "kind": "text",
+      "lines": 64
+    },
+    {
+      "path": "frontend/src/services/format.ts",
+      "sha256": "c1ab694e48ab26c7663f9ffaaff1710f49d144524fea067f3f95f1c636df237f",
+      "bytes": 625,
+      "kind": "text",
+      "lines": 6
+    },
+    {
+      "path": "frontend/src/services/salesCsv.ts",
+      "sha256": "48e9c3443a77bd609b143731b55b666b0514f8ff9395af8d510531c86b2fd19a",
+      "bytes": 2470,
+      "kind": "text",
+      "lines": 29
+    },
+    {
+      "path": "frontend/src/services/workflows.ts",
+      "sha256": "f10bd0e5471483cf0001d32fdee055e237f589de2f9e11f36a68df289d04e7be",
+      "bytes": 5967,
+      "kind": "text",
+      "lines": 40
+    },
+    {
+      "path": "frontend/src/types/index.ts",
+      "sha256": "7a0a399d4498a2eb57669b4b705322864c8413721aecbcb1c76becf62bbdd7fd",
+      "bytes": 10846,
+      "kind": "text",
+      "lines": 139
+    },
+    {
+      "path": "frontend/src/vite-env.d.ts",
+      "sha256": "a542a6aa4d3cf02ca0fd4060e8faff17b0ea0d21dad3f23b652bc77fffa9f090",
+      "bytes": 193,
+      "kind": "text",
+      "lines": 10
+    },
+    {
+      "path": "frontend/tailwind.config.js",
+      "sha256": "e002988846af7d8e80ea0020103377425be593db2088bba10f7af50713c1aa34",
+      "bytes": 393,
+      "kind": "text",
+      "lines": 22
+    },
+    {
+      "path": "frontend/tests/Accounts.test.tsx",
+      "sha256": "125cbffe0136b5df3fd213450d25c3f8dd0720b2c8f5de6717817044039edbe1",
+      "bytes": 8767,
+      "kind": "text",
+      "lines": 128
+    },
+    {
+      "path": "frontend/tests/Actions.test.tsx",
+      "sha256": "fa0ca3e9b4ed2e5a6e7a4f02d7152f3978b814210bc0f8815d9a39de0f9fd80f",
+      "bytes": 6388,
+      "kind": "text",
+      "lines": 20
+    },
+    {
+      "path": "frontend/tests/AgentActivity.test.tsx",
+      "sha256": "4070916179932eec65f08dc47f6b5a960495c1485d14ad53ef3071a59818ed51",
+      "bytes": 4079,
+      "kind": "text",
+      "lines": 73
+    },
+    {
+      "path": "frontend/tests/ApiErrors.test.ts",
+      "sha256": "71975fb79f9a64e14840d98418b6ddc7beda240a2d09b3e817cb14a4d5ca13fe",
+      "bytes": 4406,
+      "kind": "text",
+      "lines": 79
+    },
+    {
+      "path": "frontend/tests/Buyer.test.tsx",
+      "sha256": "2d626bedc76cd00043b44118536affdfaffe01390b3d2948e41c8504bb922f02",
+      "bytes": 6095,
+      "kind": "text",
+      "lines": 96
+    },
+    {
+      "path": "frontend/tests/CommerceWorkflows.test.tsx",
+      "sha256": "68c2ded224a1ab603137b29be36aab0e66b304012c65d69b71a6e1826b3b82f2",
+      "bytes": 8513,
+      "kind": "text",
+      "lines": 130
+    },
+    {
+      "path": "frontend/tests/CrossAgent.test.tsx",
+      "sha256": "22b6c1c451910d91cf9e885a4a5a584b720444f9fa29c836d535f4df96a3b5c9",
+      "bytes": 8506,
+      "kind": "text",
+      "lines": 36
+    },
+    {
+      "path": "frontend/tests/Dashboard.test.tsx",
+      "sha256": "5df9c398b734931b2a68d71197f6d835c6538c68e09222373752a1e90609bda9",
+      "bytes": 3739,
+      "kind": "text",
+      "lines": 54
+    },
+    {
+      "path": "frontend/tests/Deployment.test.tsx",
+      "sha256": "3080088f51bc797dc6b47d3fbcd5b77f0f52dd4187e98f4f0e8b66f208f0b818",
+      "bytes": 2456,
+      "kind": "text",
+      "lines": 50
+    },
+    {
+      "path": "frontend/tests/GrowthConsole.test.tsx",
+      "sha256": "aff32b08a92fcaaf8063cd906bcb44db43e47b4087eeded07964e3ae13681631",
+      "bytes": 2818,
+      "kind": "text",
+      "lines": 47
+    },
+    {
+      "path": "frontend/tests/Integrations.test.tsx",
+      "sha256": "0f94eac2ad5671cfa22d172fc17af10085c3f8163b5f0c2ef12e73ed34ceae39",
+      "bytes": 6741,
+      "kind": "text",
+      "lines": 75
+    },
+    {
+      "path": "frontend/tests/Listing.test.tsx",
+      "sha256": "6db7666b12c9e145e65fde226089fe294c5e8a2be319a25c858c51e8f91590f2",
+      "bytes": 5443,
+      "kind": "text",
+      "lines": 56
+    },
+    {
+      "path": "frontend/tests/ProductSearch.test.tsx",
+      "sha256": "9cf3097b20c2b6dc42b7abd08a898ac1e041efabd66f04f8b2791abefcc452e3",
+      "bytes": 1655,
+      "kind": "text",
+      "lines": 27
+    },
+    {
+      "path": "frontend/tests/Promotion.test.tsx",
+      "sha256": "e3ed668bc68b474213e70033f03eb4877341b687824c6d1ba3a6e4dc8e270000",
+      "bytes": 5445,
+      "kind": "text",
+      "lines": 54
+    },
+    {
+      "path": "frontend/tests/Recommendations.test.tsx",
+      "sha256": "023595315f42451aeadf93cd3d595cc584cbe7e5a877ecd8e0d889301bca641e",
+      "bytes": 9649,
+      "kind": "text",
+      "lines": 105
+    },
+    {
+      "path": "frontend/tests/Release.test.tsx",
+      "sha256": "ce4c1f23ccb39119fc99af11f6624eba0598c2b52aa404d58dd1d5fbcb01644c",
+      "bytes": 1141,
+      "kind": "text",
+      "lines": 17
+    },
+    {
+      "path": "frontend/tests/SalesCsv.test.ts",
+      "sha256": "080a7af6e0c559769d06719af21fd4a8447790ba0f2f49ea1a29db057bc1076d",
+      "bytes": 1623,
+      "kind": "text",
+      "lines": 24
+    },
+    {
+      "path": "frontend/tests/SalesImport.test.tsx",
+      "sha256": "9f6e47f2e092b58942da5aaac5480248ae249094e7d0cc9790a56d1a96f9ee8d",
+      "bytes": 7156,
+      "kind": "text",
+      "lines": 112
+    },
+    {
+      "path": "frontend/tests/ShopperSession.test.ts",
+      "sha256": "e682e9f605ff4f960ed8242001f75ed39f5de85b9e66a108580e875aa45a2a4a",
+      "bytes": 2162,
+      "kind": "text",
+      "lines": 39
+    },
+    {
+      "path": "frontend/tests/StoreManagement.test.tsx",
+      "sha256": "54412c443f871188a10fcd7853f6797b4448c9947ddf202b804d545d9b6276e6",
+      "bytes": 3023,
+      "kind": "text",
+      "lines": 46
+    },
+    {
+      "path": "frontend/tests/StoreRefresh.test.tsx",
+      "sha256": "f3384aeef8df19b2bec24a43fa19d1fd3a705542ee9c8157a80f13136fc1dab8",
+      "bytes": 2381,
+      "kind": "text",
+      "lines": 43
+    },
+    {
+      "path": "frontend/tests/fixtures.ts",
+      "sha256": "ae810029cbddd94d22d1e9d56ce8daa9574c7274b8e0d2903173ac6836f7b1a9",
+      "bytes": 3485,
+      "kind": "text",
+      "lines": 11
+    },
+    {
+      "path": "frontend/tests/setup.ts",
+      "sha256": "b04111a3d68b6b574b3f96056e41e58c5cd70606e59e0b9eeeb13a75f7ece9cf",
+      "bytes": 210,
+      "kind": "text",
+      "lines": 6
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "sha256": "9e0eedc9b1584deb808a97dc587593de6abbc5db9e5a712a5922719389aa25e7",
+      "bytes": 520,
+      "kind": "text",
+      "lines": 23
+    },
+    {
+      "path": "frontend/tsconfig.node.json",
+      "sha256": "9e2abb169ea87b7190613a1d4da57ca608463a453bd4231fa3aeee5e308370dd",
+      "bytes": 213,
+      "kind": "text",
+      "lines": 10
+    },
+    {
+      "path": "frontend/vercel.json",
+      "sha256": "d115b9d177571bdb83e299975cef9eae1b25a68f14a8744832d393768fd56519",
+      "bytes": 778,
+      "kind": "text",
+      "lines": 36
+    },
+    {
+      "path": "frontend/vite.config.ts",
+      "sha256": "c48baeac13f6e22805c2aaf843ba156dd98d70c3b7a0d64849d66b2d20d9e23f",
+      "bytes": 461,
+      "kind": "text",
+      "lines": 19
+    },
+    {
+      "path": "phases/PHASE_01_FOUNDATION.md",
+      "sha256": "83547e04c1ab9cca4474c37e1b5aa6845e9170117b899e12c2ec5f7439e2e31d",
+      "bytes": 803,
+      "kind": "text",
+      "lines": 102,
+      "headings": [
+        "# PHASE 01 \u2014 FOUNDATION"
+      ]
+    },
+    {
+      "path": "phases/PHASE_02.md",
+      "sha256": "f4b57fa8dc110559c77d68b632cff7edd44d7cf5a6b2ca149005763909f56fb5",
+      "bytes": 715,
+      "kind": "text",
+      "lines": 79,
+      "headings": [
+        "# PHASE 02 \u2014 DATA LAYER"
+      ]
+    },
+    {
+      "path": "phases/PHASE_03.md",
+      "sha256": "c09fa1546294a7a9b0f376cd4decea8e4be214f9892c0ec28cec98eb1e80222d",
+      "bytes": 6046,
+      "kind": "text",
+      "lines": 176,
+      "headings": [
+        "# PHASE 03 \u2014 PRICING AGENT"
+      ]
+    },
+    {
+      "path": "phases/PHASE_04.md",
+      "sha256": "ebfdcd26078ce6d929521f561b72783f6afd00c91d0ec77c9285819e932f1d00",
+      "bytes": 7675,
+      "kind": "text",
+      "lines": 203,
+      "headings": [
+        "# PHASE 04 \u2014 RESTOCK AGENT"
+      ]
+    },
+    {
+      "path": "phases/PHASE_05.md",
+      "sha256": "426932530a638cce806c8891838dc8d7b8a5cc15bb4efc7b581cdf0193ada90b",
+      "bytes": 10192,
+      "kind": "text",
+      "lines": 256,
+      "headings": [
+        "# PHASE 05 \u2014 MASTER ORCHESTRATOR"
+      ]
+    },
+    {
+      "path": "phases/PHASE_06.md",
+      "sha256": "89df5079dca1cab3d577045c24224f18a00e324bad0ce060c3ee9648a7bab940",
+      "bytes": 6329,
+      "kind": "text",
+      "lines": 107,
+      "headings": [
+        "# PHASE 06 \u2014 FRONTEND DASHBOARD & RECOMMENDATION EXPERIENCE"
+      ]
+    },
+    {
+      "path": "phases/PHASE_07.md",
+      "sha256": "934d4290026e3d4ef3f91b81763b8e78f93e573fc7431b14a568fcd61ea62854",
+      "bytes": 11319,
+      "kind": "text",
+      "lines": 209,
+      "headings": [
+        "# PHASE 07 \u2014 PROMOTION AGENT"
+      ]
+    },
+    {
+      "path": "phases/PHASE_08.md",
+      "sha256": "8025abcfbe26194142127801bb753b942ca2e068326de9ee630508295050745f",
+      "bytes": 12616,
+      "kind": "text",
+      "lines": 237,
+      "headings": [
+        "# PHASE 08 \u2014 LISTING AGENT"
+      ]
+    },
+    {
+      "path": "phases/PHASE_09.md",
+      "sha256": "adac0d7e015e49ed0a3a4814f2d933682a73acc6afe970cd1381cc2602ac9e74",
+      "bytes": 8771,
+      "kind": "text",
+      "lines": 163,
+      "headings": [
+        "# PHASE 09 \u2014 GUARDED ACTIONS"
+      ]
+    },
+    {
+      "path": "phases/PHASE_10.md",
+      "sha256": "e4846752decbd92f421a9a5a95bc9758731806db6235f04d7e3fd2c2303f5b06",
+      "bytes": 13704,
+      "kind": "text",
+      "lines": 238,
+      "headings": [
+        "# PHASE 10 \u2014 CROSS-AGENT INTELLIGENCE"
+      ]
+    },
+    {
+      "path": "phases/PHASE_11.md",
+      "sha256": "1376cc4e9556a98d46a2afbb26df29b8c8bf1200d432b826c054d944ef45934e",
+      "bytes": 15988,
+      "kind": "text",
+      "lines": 247,
+      "headings": [
+        "# Phase 11 \u2014 Shopify Read-Only Integration"
+      ]
+    },
+    {
+      "path": "phases/PHASE_12.md",
+      "sha256": "a29df0430ddfee3ab4c5f206892e5a44b7ec6e9313bae5d0161ba2adff26b651",
+      "bytes": 16741,
+      "kind": "text",
+      "lines": 202,
+      "headings": [
+        "# Phase 12 \u2014 Final Testing, Security Hardening & Release Readiness",
+        "# From backend, after installing documented dependencies:",
+        "# From frontend:"
+      ]
+    },
+    {
+      "path": "phases/PHASE_13.md",
+      "sha256": "b15fe0ef7ff78e8f7f99fd333e605fe3737c5335611441b123a654ea7d7e32e3",
+      "bytes": 7985,
+      "kind": "text",
+      "lines": 107,
+      "headings": [
+        "# Phase 13 \u2014 Deployment & Production-Style Environment Setup"
+      ]
+    },
+    {
+      "path": "phases/PHASE_14.md",
+      "sha256": "8444d64b27875b0404fd5a11236de8f22a5b0dc47be3002331979a212d551674",
+      "bytes": 4669,
+      "kind": "text",
+      "lines": 69,
+      "headings": [
+        "# Phase 14 \u2014 Final Demo, Documentation, Viva & Submission Packaging"
+      ]
+    },
+    {
+      "path": "phases/PHASE_15.md",
+      "sha256": "05d180830e2cc321684e689d3c70083c9d38605abab9e7cc68bef5aed58be734",
+      "bytes": 6763,
+      "kind": "text",
+      "lines": 104,
+      "headings": [
+        "# Phase 15 \u2014 Account and merchant workflow continuation"
+      ]
+    },
+    {
+      "path": "phases/PHASE_16.md",
+      "sha256": "be35570304d56f305fe0d1698cbc925727dd2058368e352c87a66e4943067b9b",
+      "bytes": 2172,
+      "kind": "text",
+      "lines": 34,
+      "headings": [
+        "# Phase 16 \u2014 Merchant reliability and release"
+      ]
+    },
+    {
+      "path": "phases/PHASE_17.md",
+      "sha256": "d8330ce7a67b6f19f2efcf6b29945b5b44a2d47fbba5fd0f2e20c973cd58de3f",
+      "bytes": 2226,
+      "kind": "text",
+      "lines": 33,
+      "headings": [
+        "# Phase 17 \u2014 Buyer commerce extension"
+      ]
+    },
+    {
+      "path": "phases/PHASE_18.md",
+      "sha256": "e96a280455de6a8e0f91329d03cbc5068abd069194e268d8f66a7a94936b9d17",
+      "bytes": 2175,
+      "kind": "text",
+      "lines": 33,
+      "headings": [
+        "# Phase 18 \u2014 Commerce workflow parity"
+      ]
+    },
+    {
+      "path": "scripts/commerce_browser.py",
+      "sha256": "d359cc1039a096a293b6e79da405a550c2fbf336fdbfd0a81a8478cb2a81e665",
+      "bytes": 5374,
+      "kind": "text",
+      "lines": 68,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "scripts/commerce_workflows_browser.py",
+      "sha256": "1c687e9c5f7380d3232266cf3c896aa035ef6a7500a27a893f39957327880fc2",
+      "bytes": 8084,
+      "kind": "text",
+      "lines": 110,
+      "functions": 7,
+      "test_functions": 0
+    },
+    {
+      "path": "scripts/demo_policy_block.py",
+      "sha256": "4ff6f42e6db5191279abe5021144ad0935cf1068b2c349f9527d24c30cdf7d78",
+      "bytes": 1620,
+      "kind": "text",
+      "lines": 33,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "scripts/deployment_smoke.py",
+      "sha256": "513c4d45c376fe372bc8ddd62f40ff273a7bc56a2c685fa204b5c757d49da29b",
+      "bytes": 9134,
+      "kind": "text",
+      "lines": 171,
+      "functions": 6,
+      "test_functions": 0
+    },
+    {
+      "path": "scripts/dev.sh",
+      "sha256": "23e34310ee332eb548feb9f920d819216c697035f6de6e7d834a4d0004fc33c6",
+      "bytes": 2852,
+      "kind": "text",
+      "lines": 60
+    },
+    {
+      "path": "scripts/generate_academic_documents.py",
+      "sha256": "62e9461c3c269e369e37a231b5063e761d0771c416511d81ab6c510a6cc9746d",
+      "bytes": 17959,
+      "kind": "text",
+      "lines": 128,
+      "functions": 5,
+      "test_functions": 0
+    },
+    {
+      "path": "scripts/package_submission.py",
+      "sha256": "b5562c40a026e064125176a384511e131f2a553a5195f42822977fb601385714",
+      "bytes": 3907,
+      "kind": "text",
+      "lines": 73,
+      "functions": 2,
+      "test_functions": 0
+    },
+    {
+      "path": "scripts/release_browser.mjs",
+      "sha256": "8697cb5ff26aaeb099bf444eb1dd777cd7a902dd9ee9c75eeda3b3d3a34b9889",
+      "bytes": 7839,
+      "kind": "text",
+      "lines": 71
+    },
+    {
+      "path": "scripts/seed_data.py",
+      "sha256": "188ee7b45e336f282378a005ce8c9b395a96a4f9a5bdedb64db1f50f29025fbe",
+      "bytes": 475,
+      "kind": "text",
+      "lines": 18,
+      "functions": 0,
+      "test_functions": 0
+    },
+    {
+      "path": "scripts/submission_browser.mjs",
+      "sha256": "bce96667d96d727dc110996d71d3342586c13bc7555533cb312c02ff07b2f718",
+      "bytes": 11308,
+      "kind": "text",
+      "lines": 83
+    },
+    {
+      "path": "scripts/verify_foundation.sh",
+      "sha256": "77cc23e7d1ffec6aac55df19f8c6c256be60d8a38e4301974d06d0bc2c4a26fa",
+      "bytes": 711,
+      "kind": "text",
+      "lines": 28
+    }
+  ]
+}

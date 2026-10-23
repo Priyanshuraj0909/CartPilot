@@ -265,7 +265,11 @@ Do not:
 
 Read:
 
-phases/PHASE_18.md
+UPGRADE_PROGRESS.md
+phases/PHASE_19.md (planned; implementation not started)
+
+The audit/planning milestone is complete. Read all five UPGRADE documents and
+REPOSITORY_AUDIT.md before implementing the next phase. Existing Phase 18 stays intact.
 
 Do not move to the next phase until the current phase passes verification.
 
@@ -289,3 +293,11 @@ The user requested future improvements plus GitHub and deployment updates on 21 
 2026. Current work is phases/PHASE_16.md: auth rate controls, saved orchestration
 history, Shopify continuation verification, PostgreSQL CI and accurate release docs.
 External execution and production action/Shopify API gates remain unchanged.
+
+## User-authorized platform upgrade
+
+The 23 October 2026 request begins with a complete repository engineering audit and
+five planning documents, published through the existing GitHub/hosting path. This
+milestone changes documentation only. Phases 19–27 are proposed incremental work;
+UPGRADE_PROGRESS.md is authoritative for their actual status. No framework migration,
+live payments or model-authorized financial changes are enabled by this plan.

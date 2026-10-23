@@ -1,6 +1,14 @@
 # CartPilot current verified status
 
-Updated 23 October 2026 (Asia/Kolkata). Phase 18 extends the buyer-commerce foundation
+Updated 23 October 2026 (Asia/Kolkata). New platform audit/planning is complete:
+[repository findings](REPOSITORY_AUDIT.md) and [upgrade progress](UPGRADE_PROGRESS.md).
+Phases 19–27 remain planned. Fresh regression confirms the counts below; advisory scans
+find 13 npm build/test package entries and two Python advisories. Production-only npm
+finds zero. These are open remediation work; no platform implementation or database
+migration occurs in the audit/planning release. Browser/migration evidence below belongs
+to the earlier Phase 18 delivery, not a fresh audit walkthrough.
+
+Phase 18 extends the buyer-commerce foundation
 with saved conversations, multi-item chat drafts, cart revisions, upsells, recovery offers,
 short-lived browser handoffs, guarded cancellation/refunds/reconciliation and return review.
 Merchant Commerce Studio adds category compatibility, seasonal/campaign rules, scheduling,
