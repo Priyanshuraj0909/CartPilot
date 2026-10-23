@@ -1,4 +1,8 @@
-# Verified algorithms and formulas
+# Verified merchant algorithms and formulas
+
+Phase 17 buyer ranking, Item2Vec and optional semantic-provider behavior are documented
+separately in [Buyer commerce](BUYER_COMMERCE.md). The formulas below describe the
+original merchant specialists.
 
 These are deterministic business rules, not trained forecasting models. Source of
 truth: `backend/app/services/{pricing,restock,promotion,listing,orchestration,policies}`.

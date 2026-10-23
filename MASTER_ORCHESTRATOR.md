@@ -265,7 +265,7 @@ Do not:
 
 Read:
 
-phases/PHASE_16.md
+phases/PHASE_17.md
 
 Do not move to the next phase until the current phase passes verification.
 

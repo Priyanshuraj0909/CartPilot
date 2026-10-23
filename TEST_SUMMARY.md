@@ -1,4 +1,33 @@
-# Current test evidence — reliability release
+# Current test evidence — buyer commerce extension
+
+Verified 23 October 2026 (Asia/Kolkata). Phase 17 supersedes earlier current counts;
+historical evidence is retained below.
+
+| Check | Result |
+| --- | --- |
+| Backend `venv/bin/python -m pytest -q` | **688 passed**, 3 opt-in PostgreSQL checks skipped; 31.98 seconds |
+| Frontend `npm run test:run` | **158 passed**, 19 files |
+| Frontend `npm run build` | TypeScript and Vite production build passed |
+| Disposable PostgreSQL | All migrations through `17_commerce`; 3 concurrent auth/execution/checkout tests passed |
+| SQLite migrations | Phase 17 upgrade/downgrade/re-upgrade preserves existing merchant rows; earlier migration tests also pass |
+| Chrome desktop/mobile | Six-product storefront, quantity selection, review, approval, simulation, verified audit, growth console; 390px without horizontal overflow; no captured runtime exceptions |
+| Configured hosted database | `16_reliability` → `17_commerce`; existing merchant/account/product/order/session counts preserved |
+| Optional providers | Structured Gemini success/failure, semantic freshness/failure, Razorpay HTTP contract, test-only gate, signed/idempotent webhooks and ambiguous checkout tested with mocks |
+| MCP | Initialize, discovery, schema validation, search and sanitized provider errors tested; desktop-client interoperability unverified |
+| Live providers / load / real payments | Not verified; no live charges or fulfillment implemented |
+
+Evidence: [browser](docs/examples/commerce-browser.json),
+[migration](docs/examples/commerce-migration.json),
+[guide](docs/BUYER_COMMERCE.md), [screenshots](docs/screenshots/README.md).
+No measured recommendation lift or incremental revenue is inferred from these checks.
+Current remote CI and hosting status are available in GitHub Actions/commit deployment
+checks; local verification alone does not establish a hosted release.
+
+---
+
+## Historical reliability release evidence
+
+# Reliability release — 21 October 2026
 
 Verified 21 October 2026 (Asia/Kolkata). Current source supersedes the historical Phase
 14 counts below. Production deployment results are maintained in FINAL_STATUS.md.

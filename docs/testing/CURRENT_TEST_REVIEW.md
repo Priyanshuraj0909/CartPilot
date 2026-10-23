@@ -1,3 +1,17 @@
+# Current review — 23 October 2026
+
+Phase 17 passes 688 backend tests, 158 frontend tests and the production build.
+Three targeted PostgreSQL concurrency checks pass separately on a disposable migrated
+`cartpilot_ci` database. Real Chrome verifies storefront review/approval/simulation,
+cart audit, growth console and a 390px mobile layout. Configured hosted migration to
+`17_commerce` preserves existing row counts. Provider paths are mocked; external
+MCP-client/live-payment/model validation and public-production readiness are not claimed.
+See [test summary](../../TEST_SUMMARY.md) and [buyer guide](../BUYER_COMMERCE.md).
+
+---
+
+## Historical reviews
+
 # Current review — 21 October 2026
 
 The reliability release passes 635 backend tests, 146 frontend tests and the production

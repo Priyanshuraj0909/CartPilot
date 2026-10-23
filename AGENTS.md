@@ -115,8 +115,10 @@ Never say "done" until:
 ## Final verified agent guide (Phase 14)
 
 The rules above remain repository instructions. The following describes implemented
-product agents, not instructions to spawn coding assistants. All algorithms are
-deterministic; see [formulas](docs/ALGORITHMS.md) for exact thresholds/rounding.
+product agents, not instructions to spawn coding assistants. The original merchant
+specialist algorithms are deterministic; see [formulas](docs/ALGORITHMS.md) for exact
+thresholds/rounding. Phase 17 separately adds optional buyer intent/semantic providers
+and explicit experimental co-purchase training; see docs/BUYER_COMMERCE.md.
 
 ### Pricing Agent
 

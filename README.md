@@ -2,12 +2,13 @@
 
 # CartPilot
 
-### Smarter commerce decisions. One merchant-controlled plan.
+### Explainable shopping. Merchant-controlled decisions.
 
-CartPilot is a full-stack e-commerce decision-support system. Four deterministic
-specialists review pricing, replenishment, promotions and product listings; a Master
-Orchestrator combines their findings into a prioritized plan with visible conflicts,
-policy checks and approval steps.
+CartPilot combines a buyer shopping experience with a merchant decision-support
+workspace. Shoppers discover products, build budget-checked carts and explicitly
+approve test checkout. Merchants control public storefronts, recommendation boosts
+and category policies, while four deterministic specialists coordinate pricing,
+restocking, promotions and listing recommendations.
 
 [![React](https://img.shields.io/badge/React-18-149eca?logo=react&logoColor=white)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -25,12 +26,36 @@ policy checks and approval steps.
 
 </div>
 
-> **Project boundary:** “Multi-agent” means focused deterministic business-rule modules
-> coordinated by application code. CartPilot does not currently use an LLM, trained
-> machine-learning model, predictive forecast or autonomous learning. Recommendations
-> do not modify merchant data by themselves.
+> **Current boundary:** Merchant specialists remain deterministic. Buyer search optionally
+> uses Gemini structured intent, explicit experimental Item2Vec training and indexed
+> semantic embeddings, with local fallbacks. Checkout is offline simulation or Razorpay
+> **test mode only**. Recommendations never implicitly approve actions, charge money,
+> place supplier orders or change Shopify.
 
-## See CartPilot
+## Buyer commerce · new in Phase 17
+
+- **Buyer Storefront:** natural-language discovery, INR budgets, transparent suggestions
+  and server-priced carts with separate approval and checkout confirmation.
+- **Hybrid ranking:** category relevance, completed-order co-purchases/optional trained
+  Item2Vec, lexical/optional semantic similarity, and stock/budget/merchant controls.
+- **Growth Console:** opt-in public catalog, spend caps, blocked categories, featured
+  products, CSV onboarding, model controls and clearly labeled test activity.
+- **Mandate audit:** per-cart SHA-256 chain and verification; Razorpay test webhooks
+  verify signatures, amounts and references. Hash linking is not external immutability.
+- **MCP adapter:** product search, draft carts, status and audit for compatible clients;
+  merchant writes, approval and checkout are excluded from model tools.
+
+<p align="center">
+  <img src="docs/screenshots/16_buyer_storefront.png" alt="CartPilot buyer storefront with budget search, product discovery and a guarded shopping bag" width="72%" />
+  <img src="docs/screenshots/17_buyer_mobile.png" alt="CartPilot buyer storefront at mobile width" width="25%" />
+</p>
+
+These are real Chrome captures using synthetic local data. See the
+[complete buyer guide](docs/BUYER_COMMERCE.md) for setup, provider keys, algorithms,
+MCP configuration and precise limitations. This extension is an original implementation
+within CartPilot, not a copy of another repository.
+
+## See the merchant workspace
 
 The repository includes real browser captures of the seeded Four-product Demo. They use
 synthetic data; the Shopify screen uses a mocked offline integration, not a live store.
@@ -44,7 +69,7 @@ synthetic data; the Shopify screen uses a mocked offline integration, not a live
   <img src="docs/screenshots/11_approval_workflow.png" alt="Merchant action approval workflow" width="48%" />
 </p>
 
-[Browse all 15 screenshots and reproduction notes](docs/screenshots/README.md).
+[Browse all 18 screenshots and reproduction notes](docs/screenshots/README.md).
 
 ## Why CartPilot?
 
@@ -61,6 +86,10 @@ dependencies and partial failures. Review, approval and execution are distinct s
 
 | Area | Current behavior |
 | --- | --- |
+| Buyer commerce | Private account preview and opt-in public storefront, scoped expiring shopper sessions, guarded carts and test checkout |
+| Discovery models | Optional structured Gemini intent, bounded explicit Item2Vec training and fingerprinted Gemini semantic indexing |
+| Growth controls | Merchant spend/category/featured-product policies, CSV catalog import, idle-cart insights and separate test metrics |
+| Shopping MCP | Minimal stdio adapter for search/product/draft-cart/status/audit; no autonomous checkout |
 | Merchant workspace | Sign up, sign in, recover login email using store name and password, and access account-scoped store data |
 | Catalog and inventory | Create, edit and archive local products; view physical, reserved and available stock and price history |
 | Sales and insights | Import bounded, idempotent CSV sales; view recorded revenue, product rankings and in-app low-stock alerts |
@@ -81,6 +110,12 @@ to Shopify.
 
 ```mermaid
 flowchart TD
+    B[Shopper] --> SHOPUI[Buyer storefront]
+    SHOPUI --> CAP[Scoped shopper capability]
+    CAP --> REC[Hybrid discovery and server-priced cart]
+    REC --> APPROVE[Approval and separate checkout confirmation]
+    APPROVE --> TEST[Simulation or Razorpay test link]
+    TEST --> CHAIN[Verified hash-linked cart audit]
     M[Merchant] --> UI[React and TypeScript dashboard]
     UI --> API[FastAPI typed REST API]
     API --> AUTH[Account identity and merchant scope]
@@ -132,6 +167,9 @@ No execution changes Shopify.
 | API | Python 3.12+, FastAPI, Pydantic, Uvicorn |
 | Data | PostgreSQL, async SQLAlchemy, Alembic; SQLite for isolated tests and demos |
 | Shopify | Read-only Admin GraphQL integration; optional persistent sync worker |
+| Buyer AI | Optional Gemini REST structured intent and embeddings via existing httpx; local fallback |
+| Co-purchase model | Bounded 16-dimensional Item2Vec skip-gram training using the Python standard library |
+| Checkout | Offline simulation or optional Razorpay test payment links and signed webhooks |
 | Tests | pytest, pytest-asyncio, httpx, Vitest, React Testing Library |
 | Delivery | Docker Compose configuration; GitHub Actions tests and frontend build |
 | Optional diagnostics | Redis; business recommendations and actions do not depend on it |
@@ -211,6 +249,18 @@ and `DATABASE_URL=sqlite+aiosqlite:////absolute/path/to/disposable-demo.sqlite` 
 running migrations. Use a new disposable database for a fresh seed/demo. The exact
 four-product walkthrough and offline Shopify mock are in [DEMO_SCRIPT.md](DEMO_SCRIPT.md).
 
+## Try buyer shopping
+
+After starting the app, sign up/sign in and open **Growth Console** (`/growth`). Import
+[the six-product demo CSV](docs/examples/commerce-catalog.csv), or create your catalog
+in Manage Store. Open **Buyer Storefront** (`/buyer`) for a private preview. To share
+`/shop/YOUR_MERCHANT_ID`, explicitly publish the storefront and save the policy.
+
+Search, select quantities, review the server-priced cart, approve it, then separately
+confirm a simulation. No API key is needed. Optional Gemini and Razorpay test keys stay
+backend-side; see [provider setup](docs/BUYER_COMMERCE.md). Existing merchant catalogs
+must represent INR before being published; no currency conversion is performed.
+
 ## Configuration
 
 See [.env.example](.env.example) for the complete list. Important settings:
@@ -224,6 +274,8 @@ See [.env.example](.env.example) for the complete list. Important settings:
 | `REDIS_URL` | Backend only | Optional diagnostics; empty disables Redis |
 | `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_CLIENT_ID`, `SHOPIFY_CLIENT_SECRET` | Backend secrets | Optional read-only Shopify connection; a legacy access token is also supported |
 | `SHOPIFY_AUTO_SYNC_ENABLED`, `SHOPIFY_AUTO_SYNC_INTERVAL_SECONDS` | Backend only | Optional persistent worker refresh; default interval is 900 seconds |
+| `BUYER_AI_ENABLED`, `BUYER_SEMANTIC_ENABLED`, `GEMINI_API_KEY` | Backend only | Optional structured intent/semantic providers; disabled by default |
+| `BUYER_RAZORPAY_TEST_ENABLED`, `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET` | Backend secrets | Optional test payment links; live keys rejected |
 | `VITE_API_URL`, `VITE_CURRENCY`, `VITE_REQUIRE_AUTH` | Frontend build | Public build-time API/display/auth settings; rebuild after changes |
 
 Never put database credentials, session tokens or Shopify secrets in `VITE_` variables.
@@ -237,6 +289,9 @@ OpenAPI and interactive Swagger UI: `/docs` (for the local setup,
 
 | Category | Example routes |
 | --- | --- |
+| Buyer discovery | `GET /api/v1/commerce/storefront/{merchant_id}`, `POST /commerce/sessions`, `POST /commerce/search` (all under `/api/v1`) |
+| Guarded carts | `POST /api/v1/commerce/carts`, `/carts/{id}/approve`, `/checkout`, `/audit` under the commerce prefix |
+| Merchant commerce | `/api/v1/commerce/policy`, `/growth`, `/catalog/import`, `/models/train`, `/models/index` |
 | Accounts | `POST /api/v1/auth/signup`, `POST /api/v1/auth/login`, `GET /api/v1/auth/me` |
 | Catalog and sales | `GET /api/v1/products`, `POST /api/v1/products`, `POST /api/v1/sales/import` |
 | Specialists | `POST /api/v1/pricing/recommend`, `/restock/recommend`, `/promotion/recommend`, `/listing/recommend` |
@@ -254,11 +309,14 @@ cd backend && venv/bin/python -m pytest -q
 cd ../frontend && npm run test:run && npm run build
 ```
 
-The 21 October 2026 reliability release passes **635 backend tests** and **146 frontend
-tests**, plus the TypeScript/Vite production build. Two opt-in PostgreSQL tests are
-skipped in the default suite and pass separately against a disposable migrated database. These are
-local results. The release also passed the remote backend, frontend and PostgreSQL
-jobs ([recorded run](https://github.com/Priyanshuraj0909/CartPilot/actions/runs/39615089349)). CI is configured
+Phase 17 passes **688 backend tests**, **158 frontend tests**, the production build
+and **three disposable PostgreSQL concurrency checks**. Local verification is recorded
+in [TEST_SUMMARY.md](TEST_SUMMARY.md), including
+backend/frontend tests, the TypeScript/Vite build, SQLite migration round trips,
+disposable PostgreSQL concurrency and a real Chrome desktop/mobile shopping walkthrough.
+Gemini and Razorpay paths are tested using mock transports; live provider operation
+and external MCP-client compatibility remain unverified. The previous reliability
+release passed remote CI ([historical run](https://github.com/Priyanshuraj0909/CartPilot/actions/runs/39615089349)). CI is configured
 for pushes and pull requests in [`.github/workflows/ci.yml`](.github/workflows/ci.yml);
 it runs backend pytest, frontend Vitest, the frontend build and a PostgreSQL migration/
 concurrency job. Live Shopify, cloud
@@ -300,6 +358,17 @@ revenue uplift, predictive accuracy or performance gains.
 
 ## Current limitations and roadmap
 
+Buyer checkout does not reserve/decrement stock, create real sales or fulfill orders.
+Shopper sessions are memory-held in the browser; refresh does not restore old carts.
+Recovery insights do not send messages. There is no refund integration, automatic
+payment reconciliation or measured ranking/revenue lift. Merchant specialists do not
+use the buyer model to change prices, create promotions or place supplier orders.
+
+
+- [x] Buyer storefront, budget search and scoped shopper capabilities
+- [x] Hybrid discovery, explicit experimental Item2Vec and optional semantic indexing
+- [x] Cart approval, separate test checkout and verifiable hash-linked audit
+- [x] Growth policies, CSV catalog onboarding and draft-shopping MCP tools
 - [x] Four deterministic specialists and goal-based Master Orchestrator
 - [x] Account-scoped catalog workflows, sales import and in-app stock alerts
 - [x] Approval, separate execution confirmation and persistent action audit
@@ -328,6 +397,8 @@ Contact the maintainer before reusing or redistributing the code.
 
 | Guide | Contents |
 | --- | --- |
+| [Buyer commerce](docs/BUYER_COMMERCE.md) | Shopping workflow, providers, ranking, MCP, tests and limits |
+| [Phase 17](phases/PHASE_17.md) | Buyer commerce implementation and verification |
 | [Architecture](ARCHITECTURE.md) | Application structure and data boundaries |
 | [Master Orchestrator](MASTER_ORCHESTRATOR.md) | Orchestrator goals and operating rules |
 | [Algorithms](docs/ALGORITHMS.md) | Deterministic rules, thresholds and rounding |

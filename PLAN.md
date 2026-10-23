@@ -1,5 +1,14 @@
 # CARTPILOT MASTER PLAN
 
+## Phase 17 — Buyer commerce extension (current)
+
+User-authorized shopping/storefront extension on 23 October 2026. Adds isolated
+shopper capabilities, optional structured Gemini intent, hybrid discovery, bounded
+experimental Item2Vec training and semantic indexing, guarded carts/test checkout,
+hash-linked audit, CSV onboarding, growth controls and MCP draft-shopping tools.
+Existing merchant specialists remain deterministic. See [Phase 17](phases/PHASE_17.md)
+and [commerce guide](docs/BUYER_COMMERCE.md) for verification and limits.
+
 ## Phase 1 — Foundation
 
 Goal:

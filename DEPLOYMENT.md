@@ -3,7 +3,7 @@
 This setup is provider-neutral: static frontend hosting, one Python service, managed
 PostgreSQL, and optionally Redis. Existing Vercel projects host the frontend and API.
 Production business APIs require account authentication and bind access to a merchant.
-Shared auth limits and saved plan history require migration 16_reliability before
+Buyer commerce requires migration `17_commerce` (following `16_reliability`) before
 serving this release. General public-production readiness still needs security/load
 review, verified email recovery and provider ingress controls. Deployment evidence is
 recorded in FINAL_STATUS.md; the configuration alone does not establish readiness.
@@ -16,6 +16,26 @@ flowchart TD
     Backend -. optional diagnostics .-> Redis[(Redis)]
     Backend -->|READ ONLY; protected demo only| Shopify[Shopify Admin API]
 ```
+
+## Buyer commerce deployment
+
+The configured database was migrated to `17_commerce` on 23 October 2026, preserving
+existing merchant/account/product/order/session counts. See
+[migration evidence](docs/examples/commerce-migration.json). For another environment,
+run the release migration before serving the new frontend/backend.
+
+Commerce management requires an account in every environment. Public shopper access
+requires explicit per-merchant publication in Growth Console; it grants no account or
+analytics access. New storefronts default private. `/shop/{merchant_id}`, `/buyer` and
+`/growth` use the existing SPA fallback; commerce APIs use the same `/api/v1` proxy.
+
+Optional model and payment variables are backend secrets/settings in `.env.example`.
+Keep provider flags disabled until owner credentials and test-provider behavior are
+verified. Razorpay live keys are rejected. The checkout path uses simulation/test
+payments only, independent of the existing development-only merchant action gate.
+Review [buyer guide](docs/BUYER_COMMERCE.md) before publishing catalogs, enabling paid
+model calls, or configuring test webhooks. No default public-store publication,
+provider enablement, production fulfillment or automatic stock updates occur.
 
 ## Runtime and access modes
 

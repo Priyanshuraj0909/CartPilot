@@ -1,0 +1,10 @@
+{
+  "storefront_products": 6,
+  "simulation_flow": "passed",
+  "audit_chain": "verified",
+  "mobile_width": 390,
+  "mobile_horizontal_overflow": false,
+  "growth_console": "passed",
+  "runtime_exceptions": [],
+  "data": "disposable synthetic SQLite account and catalog; no external providers"
+}

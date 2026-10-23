@@ -1,5 +1,59 @@
 # CartPilot Architecture — Verified MVP
 
+## Buyer commerce extension (Phase 17)
+
+The merchant architecture below remains intact. `/shop/{merchant_id}` is an opt-in
+public storefront; `/buyer` previews the signed-in merchant's catalog and `/growth`
+manages commerce policies, catalog CSV onboarding and recommendation models.
+
+```mermaid
+flowchart LR
+    Shopper[Public storefront / MCP draft tools] --> Capability[Expiring scoped shopper capability]
+    Capability --> Search[Optional structured Gemini intent / local fallback]
+    Search --> Rank[Category + co-purchase / Item2Vec + lexical / semantic + business gates]
+    Rank --> Cart[Application-priced draft cart]
+    Cart --> Review[Explicit approval and fresh-state validation]
+    Review --> Confirm[Separate checkout confirmation]
+    Confirm --> Sim[Offline simulation]
+    Confirm --> Test[Razorpay test link / signed webhook]
+    Cart --> Ledger[Per-cart SHA-256 audit chain]
+    Test --> Ledger
+    Sim --> Ledger
+```
+
+Shopper tokens are random, stored hashed, valid for one hour, and grant access only
+to their own carts in one store. Public sessions require merchant publication;
+private previews require existing account identity. Public projections omit costs,
+account emails and analytics. Commerce responses are non-cacheable. Database-backed
+peer and shopper request budgets constrain session creation/search/cart/model work.
+
+The new CommercePolicy, ShopperSession, ShoppingCart, CommerceEvent and CommerceModel
+tables are added by `17_commerce`, after `16_reliability`. No existing sales/catalog
+data is replaced. Each cart lasts 15 minutes, uses integer INR paise, caps quantities
+and lines, and rejects supplied prices/duplicate lines. Prices, product status,
+category restrictions, stock, caps and audit integrity are rechecked before approval
+and checkout. PostgreSQL row locks and atomic state claims serialize duplicate checkout.
+
+Optional AI receives untrusted search text and returns a Pydantic-validated intent;
+it receives no mutation tools or database connection. Provider failure uses local
+search. Merchant-triggered semantic indexing fingerprints catalog text; changed
+documents are excluded until reindexed. Item2Vec training is bounded, experimental,
+merchant-scoped and explicit; no background retraining or calibrated lift is claimed.
+
+Checkout is offline simulation or explicitly configured Razorpay **test** mode.
+Live keys are rejected. An external request claim is committed before the call;
+ambiguous failures remain pending and need manual provider reconciliation, avoiding
+blind repeat calls. Signed paid-link webhooks check provider ID, reference, currency,
+amount and state. Simulations/test payments never create sales, reserve/decrement
+stock or fulfill orders. Hash chains detect inconsistent edits but are not signed,
+externally anchored or immutable against a privileged database writer.
+
+MCP is a minimal newline JSON-RPC stdio adapter calling the same HTTP contracts.
+It exposes search/product/draft-cart/status/audit tools. It deliberately does not
+expose approval, checkout or merchant mutation tools. See [commerce guide](docs/BUYER_COMMERCE.md).
+
+## Original merchant decision-support architecture
+
 ```mermaid
 flowchart TD
     Demo[Seeded demo data] --> Data[(Existing data layer)]
@@ -29,8 +83,8 @@ on Redis availability. Health explicitly reports configured disconnected compone
 REDIS_URL disables Redis diagnostics; database-only health can remain ok.
 
 All four specialists and the orchestrator use deterministic Python rules and Decimal
-money calculations. No LLM, LangGraph runtime, automatic learning or external execution
-is implemented. Confidence/quality/priority scores are documented heuristics, not
+money calculations. These merchant modules do not use an LLM, LangGraph runtime or automatic learning.
+Phase 17 buyer capabilities are described separately above. Confidence/quality/priority scores are documented heuristics, not
 calibrated predictions. Analysis cannot execute or implicitly flush pending changes.
 
 Product, Inventory, Order, OrderItem and PriceHistory store analysis data. Existing

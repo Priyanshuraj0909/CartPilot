@@ -1,4 +1,20 @@
-# Final screenshot pack
+# CartPilot screenshots
+
+Phase 17 adds three real Chrome captures on 23 October 2026:
+
+| File | Caption |
+| --- | --- |
+| [16_buyer_storefront.png](16_buyer_storefront.png) | Six-product synthetic public storefront with INR budget search and shopping bag |
+| [17_buyer_mobile.png](17_buyer_mobile.png) | Storefront at 390px, no horizontal overflow |
+| [18_growth_console.png](18_growth_console.png) | Authenticated merchant publication/policy controls and labeled simulation metrics |
+
+Reproduce against a disposable test-mode SQLite backend on 8017, frontend on 5177,
+and isolated Chrome debugging port 9227 with `backend/venv/bin/python scripts/commerce_browser.py`.
+The helper creates only synthetic demo data, checks test mode, runs cart approval and
+simulation, and records [structured evidence](../examples/commerce-browser.json).
+It uses the existing development `websockets` dependency through Uvicorn's standard extras.
+
+## Original merchant pack (historical)
 
 15 actual Chrome screenshots of the built React frontend, captured 3 October 2026.
 Synthetic seeded data only; the primary merchant is **Four-product Demo**. Shopify
