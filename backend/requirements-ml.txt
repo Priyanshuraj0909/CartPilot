@@ -1,0 +1,3 @@
+# Optional local MiniLM semantic backend; install separately from the lightweight API.
+# Existing runtime dependencies remain sufficient for local/Gemini discovery.
+sentence-transformers>=3.0,<6

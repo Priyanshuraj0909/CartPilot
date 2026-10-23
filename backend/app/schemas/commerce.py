@@ -98,7 +98,7 @@ class RankedProduct(StoreProduct):
 class SearchResponse(Contract):
     products: list[RankedProduct]
     message: str
-    intent_source: Literal["local", "gemini", "local_fallback"]
+    intent_source: Literal["local", "gemini", "openai", "local_fallback"]
     budget_paise: int | None
     truncated: bool
 

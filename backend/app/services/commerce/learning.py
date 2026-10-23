@@ -4,6 +4,7 @@ Item2Vec uses a small reproducible skip-gram/negative-sampling model, implemente
 with the standard library. It is an experimental ranking signal, not proven lift.
 """
 import asyncio
+import threading
 import hashlib
 import math
 import random
@@ -18,7 +19,7 @@ from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.schemas.commerce import StoreProduct
 
-DIMENSIONS = 16
+DIMENSIONS = 64
 MIN_ORDERS = 30
 
 
@@ -85,8 +86,33 @@ def fingerprint(product: StoreProduct) -> str:
     return hashlib.sha256(f"{product.name}\n{product.category}\n{product.description}".encode()).hexdigest()
 
 
+_LOCAL_MODEL = None
+_LOCAL_MODEL_LOCK = threading.Lock()
+
+
+def local_embedding(text: str) -> list[float]:
+    global _LOCAL_MODEL
+    try:
+        from sentence_transformers import SentenceTransformer
+        with _LOCAL_MODEL_LOCK:
+            if _LOCAL_MODEL is None:
+                _LOCAL_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+        vector = _LOCAL_MODEL.encode(text[:10000], normalize_embeddings=True).tolist()
+        if len(vector) != 384 or any(not math.isfinite(value) for value in vector):
+            raise ValueError("Invalid local embedding")
+        return vector
+    except (ImportError, OSError, RuntimeError):
+        raise ValueError("Local MiniLM is unavailable; check optional dependencies and model installation.") from None
+
+
+def embedding_identity() -> str:
+    return "local/all-MiniLM-L6-v2" if settings.BUYER_LOCAL_EMBEDDINGS else settings.BUYER_EMBEDDING_MODEL
+
+
 async def embed(text: str, task: str) -> list[float]:
-    if not settings.BUYER_SEMANTIC_ENABLED or not settings.GEMINI_API_KEY:
+    if settings.BUYER_LOCAL_EMBEDDINGS:
+        return await asyncio.to_thread(local_embedding, text)
+    if not settings.BUYER_SEMANTIC_ENABLED or (not settings.GEMINI_API_KEY and not settings.BUYER_LOCAL_EMBEDDINGS):
         raise ValueError("Semantic provider is not configured.")
     async with httpx.AsyncClient(timeout=12, follow_redirects=False) as client:
         response = await client.post(f"https://generativelanguage.googleapis.com/v1beta/models/{settings.BUYER_EMBEDDING_MODEL}:embedContent",
@@ -101,12 +127,12 @@ async def embed(text: str, task: str) -> list[float]:
 
 
 async def index_catalog(session: AsyncSession, merchant_id: int, products: list[StoreProduct]) -> dict:
-    if not settings.BUYER_SEMANTIC_ENABLED or not settings.GEMINI_API_KEY:
+    if not settings.BUYER_SEMANTIC_ENABLED or (not settings.GEMINI_API_KEY and not settings.BUYER_LOCAL_EMBEDDINGS):
         raise HTTPException(503, "Enable the semantic provider before indexing.")
     # Explicit merchant operation: at most 50 documents per request, shared concurrency 4.
     # Existing valid vectors are reused. Repeated calls progress through the catalog.
     model = await session.get(CommerceModel, (merchant_id, "semantic"))
-    data = model.data if model and model.data.get("model") == settings.BUYER_EMBEDDING_MODEL else {}
+    data = model.data if model and model.data.get("model") == embedding_identity() else {}
     vectors = dict(data.get("vectors", {}))
     hashes = dict(data.get("fingerprints", {}))
     pending = [p for p in products if hashes.get(str(p.id)) != fingerprint(p)]
@@ -122,10 +148,10 @@ async def index_catalog(session: AsyncSession, merchant_id: int, products: list[
         vectors[str(product.id)] = vector
         hashes[str(product.id)] = fingerprint(product)
     active = {str(p.id) for p in products}
-    await save_model(session, merchant_id, "semantic", {"model": settings.BUYER_EMBEDDING_MODEL,
+    await save_model(session, merchant_id, "semantic", {"model": embedding_identity(),
         "vectors": {key: value for key, value in vectors.items() if key in active},
         "fingerprints": {key: value for key, value in hashes.items() if key in active}})
-    return {"indexed": len(results), "remaining": max(0, len(pending) - 50), "model": settings.BUYER_EMBEDDING_MODEL}
+    return {"indexed": len(results), "remaining": max(0, len(pending) - 50), "model": embedding_identity()}
 
 
 async def learned_scores(session: AsyncSession, merchant_id: int, query: str, products: list[StoreProduct], anchor: int | None) -> tuple[dict[int, float], dict[int, float]]:
@@ -137,7 +163,7 @@ async def learned_scores(session: AsyncSession, merchant_id: int, query: str, pr
         source = vectors.get(str(anchor), [])
         behavioral = {p.id: max(0.0, cosine(source, vectors.get(str(p.id), []))) for p in products}
     index = await session.get(CommerceModel, (merchant_id, "semantic"))
-    if index and index.data.get("model") == settings.BUYER_EMBEDDING_MODEL and settings.BUYER_SEMANTIC_ENABLED:
+    if index and index.data.get("model") == embedding_identity() and settings.BUYER_SEMANTIC_ENABLED:
         try:
             query_vector = await embed(query, "RETRIEVAL_QUERY")
             semantic = {p.id: max(0.0, cosine(query_vector, index.data["vectors"].get(str(p.id), [])))

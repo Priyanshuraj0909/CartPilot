@@ -38,3 +38,4 @@ from app.models.shopify import ShopifyConnection, ExternalProductMapping, Extern
 from app.models.account import Account, AccountSession
 from app.models.auth_rate_limit import AuthRateLimit
 from app.models.commerce import CommercePolicy, ShopperSession, ShoppingCart, CommerceEvent, CommerceModel
+from app.models.commerce_workflows import ShoppingConversation, CommerceOperation, CommerceRules, ShopperHandoff

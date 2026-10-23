@@ -80,7 +80,7 @@ def test_training_minimum_determinism_and_finite_vectors():
     result = learning.train([[1, 2], [1, 3]] * 15)
     assert result == learning.train([[1, 2], [1, 3]] * 15)
     assert result["orders"] == 30
-    assert result["dimensions"] == 16
+    assert result["dimensions"] == 64
     assert all(math.isfinite(x) for vector in result["vectors"].values() for x in vector)
     assert learning.cosine([1, 0], [1, 0]) == 1
     assert learning.cosine([], []) == 0

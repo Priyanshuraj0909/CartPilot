@@ -31,6 +31,12 @@ class Settings(BaseSettings):
 
     GEMINI_API_KEY: str = Field("", repr=False)
     BUYER_AI_ENABLED: bool = False
+    OPENAI_API_KEY: SecretStr = Field(default=SecretStr(""), repr=False)
+    BUYER_OPENAI_MODEL: str = Field("gpt-4.1-mini", pattern=r"^[a-zA-Z0-9.-]{1,80}$")
+    BUYER_AI_PRIMARY: Literal["gemini", "openai"] = "gemini"
+    BUYER_LOCAL_EMBEDDINGS: bool = False
+    COMMERCE_CATALOG_API_URL: str = Field("", repr=False)
+    COMMERCE_CATALOG_API_TOKEN: SecretStr = Field(default=SecretStr(""), repr=False)
     BUYER_SEMANTIC_ENABLED: bool = False
     BUYER_EMBEDDING_MODEL: str = Field("gemini-embedding-001", pattern=r"^[a-zA-Z0-9.-]{1,80}$")
     BUYER_GEMINI_MODEL: str = Field("gemini-2.5-flash", pattern=r"^[a-zA-Z0-9.-]{1,80}$")
@@ -38,6 +44,9 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_SECRET: SecretStr = Field(default=SecretStr(""), repr=False)
     RAZORPAY_WEBHOOK_SECRET: SecretStr = Field(default=SecretStr(""), repr=False)
     BUYER_RAZORPAY_TEST_ENABLED: bool = False
+    COMMERCE_WEATHER_ENABLED: bool = False
+    COMMERCE_WEATHER_LATITUDE: float = Field(12.97, ge=-90, le=90, allow_inf_nan=False)
+    COMMERCE_WEATHER_LONGITUDE: float = Field(77.59, ge=-180, le=180, allow_inf_nan=False)
     JWT_SECRET: str = "dev-secret-key-change-in-production"
 
     # Pricing Agent Settings (Phase 3)

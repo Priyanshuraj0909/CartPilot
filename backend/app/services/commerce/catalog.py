@@ -56,7 +56,8 @@ async def co_purchases(session: AsyncSession, merchant_id: int, anchor: int | No
 
 def rank(products: list[StoreProduct], intent: ShoppingIntent, policy: CommercePolicy,
          pairs: Counter[int], anchor: StoreProduct | None = None,
-         behavioral: dict[int, float] | None = None, semantic: dict[int, float] | None = None) -> list[RankedProduct]:
+         behavioral: dict[int, float] | None = None, semantic: dict[int, float] | None = None,
+         compatibility: dict[int, float] | None = None) -> list[RankedProduct]:
     terms = tokens(" ".join(intent.terms))
     blocked = set(policy.blocked_categories)
     ranked: list[RankedProduct] = []
@@ -71,9 +72,10 @@ def rank(products: list[StoreProduct], intent: ShoppingIntent, policy: CommerceP
         related = pairs.get(product.id, 0)
         behavior_score = (behavioral or {}).get(product.id, 0)
         semantic_score = (semantic or {}).get(product.id, 0)
-        if terms and not overlap and not category_match and not related and behavior_score < .5 and semantic_score < .5:
+        compatibility_score = (compatibility or {}).get(product.id, 0)
+        if terms and not overlap and not category_match and not related and behavior_score < .5 and semantic_score < .5 and not compatibility_score:
             continue
-        score = overlap * 4 + int(category_match) + min(related, 10) * .2 + behavior_score + semantic_score * 2
+        score = overlap * 4 + int(category_match) + min(related, 10) * .2 + behavior_score + semantic_score * 2 + compatibility_score
         reasons = []
         if overlap:
             reasons.append("Matches your search terms")
@@ -81,6 +83,8 @@ def rank(products: list[StoreProduct], intent: ShoppingIntent, policy: CommerceP
             reasons.append("Relevant category")
         if related:
             reasons.append(f"Appears in {related} completed-order co-purchase lines")
+        if compatibility_score:
+            reasons.append("Merchant-reviewed category compatibility")
         if behavior_score >= .5:
             reasons.append("Related by experimental trained co-purchase model")
         if semantic_score >= .5:

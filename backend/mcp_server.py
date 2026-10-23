@@ -12,7 +12,8 @@ from urllib.parse import urlparse
 from uuid import UUID
 import httpx
 from pydantic import Field, ValidationError
-from app.schemas.commerce import Contract, CartRequest, SearchRequest
+from app.schemas.commerce import Contract, CartRequest, SearchRequest, Confirmation
+from app.schemas.commerce_workflows import ChatRequest, AddCartItem
 
 
 class Empty(Contract):
@@ -27,10 +28,24 @@ class CartId(Contract):
     cart_id: UUID
 
 
+class CartAddition(AddCartItem):
+    cart_id: UUID
+
+
 TOOLS = {
     "search_catalog": (SearchRequest, "Search products using budget, category, learned and semantic signals; results never execute actions."),
     "get_product": (ProductRequest, "Read a product from this store's bounded public catalog."),
     "propose_cart": (CartRequest, "Create a server-priced draft cart. Does not approve, charge, reserve stock or place an order."),
+    "get_upsell_suggestions": (CartId, "Read budget-checked upsells and substitutes for an owned cart."),
+    "add_item_to_cart": (CartAddition, "Create a revised draft with an item; resets approval and never charges."),
+    "check_recovery_offer": (CartId, "Read a margin/stock-checked recovery offer; does not apply it."),
+    "checkout": (CartId, "Hand the cart to the browser for human review and separate checkout confirmation. This tool never authorizes payment."),
+    "cancel_order": (CartId, "Show cancellation/refund eligibility and a browser handoff for explicit human confirmation."),
+    "check_payment_status": (CartId, "Read recorded cart and operation status; no new payment is submitted."),
+    "orchestrate_buyer_journey": (ChatRequest, "Run grounded conversational discovery and draft building; financial actions remain human-confirmed."),
+    "get_growth_opportunities": (Empty, "Read authenticated merchant growth opportunities. Requires owner account environment credential."),
+    "get_growth_metrics": (Empty, "Read merchant-scoped test activity metrics, separately labeled from real revenue."),
+    "execute_growth_action": (Confirmation, "Apply at most two ranking features from the merchant's saved growth rules. No price changes or financial operations."),
     "get_cart": (CartId, "Read the current state of a cart owned by this shopper session."),
     "get_order_audit_trail": (CartId, "Verify and read the shopper's cart mandate chain. Test activity is not a real order."),
 }
@@ -66,6 +81,9 @@ class Adapter:
             raise ValueError("Unknown tool.")
         contract, _ = TOOLS[name]
         body = contract.model_validate(arguments).model_dump(mode="json")
+        if name in {"get_growth_opportunities", "get_growth_metrics", "execute_growth_action"}:
+            paths = {"get_growth_opportunities": "/merchant/opportunities", "get_growth_metrics": "/growth", "execute_growth_action": "/merchant/growth-cycle"}
+            return await self.api(paths[name], body if name == "execute_growth_action" else None)
         if name == "get_product":
             store = await self.api(f"/storefront/{self.merchant}")
             product = next((p for p in store["products"] if p["id"] == body["product_id"]), None)
@@ -75,7 +93,7 @@ class Adapter:
         if not self.token or self.expires_at <= time.time():
             # Never silently replace an expired session when accessing an existing
             # cart: its capability must not be confused with a new shopper identity.
-            if name in {"get_cart", "get_order_audit_trail"}:
+            if name not in {"search_catalog", "propose_cart", "orchestrate_buyer_journey"}:
                 raise ValueError("This adapter has no active cart session. Start with search or propose_cart.")
             identity = await self.api("/sessions", {"merchant_id": self.merchant})
             self.token, self.expires_at = identity["token"], identity["expires_at"]
@@ -83,6 +101,19 @@ class Adapter:
             return await self.api("/search", body)
         if name == "propose_cart":
             return await self.api("/carts", body)
+        if name == "orchestrate_buyer_journey":
+            return await self.api("/chat", body)
+        cart_id = body["cart_id"]
+        if name == "add_item_to_cart":
+            return await self.api(f"/carts/{cart_id}/add-item", {key: value for key, value in body.items() if key != "cart_id"})
+        if name in {"checkout", "cancel_order"}:
+            status = await self.api(f"/carts/{cart_id}/resolution")
+            handoff = await self.api(f"/carts/{cart_id}/handoff", {"confirm": True})
+            return {"status": status, "review_path": handoff["path"], "requires_human_confirmation": True,
+                "message": "Open this path in the storefront browser. No payment, cancellation or refund was executed by this tool."}
+        paths = {"get_upsell_suggestions": "suggestions", "check_recovery_offer": "offer", "check_payment_status": "resolution"}
+        if name in paths:
+            return await self.api(f"/carts/{cart_id}/{paths[name]}")
         suffix = "/audit" if name == "get_order_audit_trail" else ""
         return await self.api(f"/carts/{body['cart_id']}{suffix}")
 
@@ -98,12 +129,12 @@ async def dispatch(adapter: Adapter, message: dict) -> dict | None:
     if method == "initialize":
         return {**reply, "result": {"protocolVersion": "2025-06-18", "capabilities": {"tools": {}},
             "serverInfo": {"name": "cartpilot-shopping", "version": "1.0.0"},
-            "instructions": "Shopping tools create drafts only. A human must review/approve and separately confirm checkout through the application. Never claim test carts are real purchases."}}
+            "instructions": "Shopping tools create drafts and browser handoffs. A human reviews and confirms financial operations in the application. Merchant ranking changes require saved merchant rules. Never claim test activity is real revenue."}}
     if method == "ping":
         return {**reply, "result": {}}
     if method == "tools/list":
         return {**reply, "result": {"tools": [{"name": name, "description": description,
-            "inputSchema": model.model_json_schema(), "annotations": {"readOnlyHint": name != "propose_cart",
+            "inputSchema": model.model_json_schema(), "annotations": {"readOnlyHint": name in {"search_catalog", "get_product", "get_cart", "get_order_audit_trail", "get_upsell_suggestions", "check_recovery_offer", "check_payment_status", "get_growth_opportunities", "get_growth_metrics"},
             "destructiveHint": False, "openWorldHint": False}} for name, (model, description) in TOOLS.items()]}}
     if method != "tools/call":
         return {**reply, "error": {"code": -32601, "message": "Method not found"}}

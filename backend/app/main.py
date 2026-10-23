@@ -9,6 +9,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.management import router as management_router
 from app.api.v1.commerce import router as commerce_router
+from app.api.v1.commerce_workflows import router as commerce_workflows_router
+from app.api.v1.commerce_merchandising import router as commerce_merchandising_router
 from app.api.v1.accounts import router as accounts_router, business_access
 from app.api.v1.shopify import router as shopify_router
 from app.api.v1.health import router as health_router
@@ -76,6 +78,8 @@ async def root_health() -> HealthResponse:
 # Mount API routers
 app.include_router(accounts_router, prefix="/api/v1")
 app.include_router(commerce_router, prefix="/api/v1")
+app.include_router(commerce_workflows_router, prefix="/api/v1")
+app.include_router(commerce_merchandising_router, prefix="/api/v1")
 app.include_router(management_router, prefix="/api/v1")
 app.include_router(shopify_router, prefix="/api/v1", dependencies=[Depends(business_access)])
 app.include_router(health_router, prefix="/api/v1")
@@ -86,6 +90,20 @@ app.include_router(store_router, prefix="/api/v1", dependencies=[Depends(busines
 app.include_router(promotion_router, prefix="/api/v1", dependencies=[Depends(business_access)])
 app.include_router(listing_router, prefix="/api/v1", dependencies=[Depends(business_access)])
 app.include_router(actions_router, prefix="/api/v1", dependencies=[Depends(business_access)])
+
+
+@app.get("/llms.txt", tags=["Agent discovery"])
+async def agent_discovery():
+    from fastapi.responses import PlainTextResponse
+    return PlainTextResponse("CartPilot commerce tools\nAPI schema: /openapi.json\nShopping API: /api/v1/commerce\nMCP stdio: backend/mcp_server.py\nDiscover products and build drafts. Human browser review and separate confirmation are required for financial operations. Payments and refunds are simulations or Razorpay tests.\n")
+
+
+@app.get("/.well-known/ucp", tags=["Agent discovery"])
+async def commerce_profile():
+    return {"name": "CartPilot", "profile": "cartpilot-test-commerce", "api_schema": "/openapi.json",
+        "capabilities": ["catalog", "draft_cart", "browser_handoff", "test_checkout", "test_refund", "audit"],
+        "human_confirmation_required": True, "live_payments": False,
+        "note": "Discovery metadata; no external UCP conformance certification is claimed."}
 
 
 @app.get("/", tags=["Root"])

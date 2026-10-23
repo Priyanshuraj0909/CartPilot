@@ -12,7 +12,7 @@ async def test_initialization_and_tool_discovery():
     names = {tool["name"] for tool in listing["result"]["tools"]}
     assert "propose_cart" in names
     assert "approve_cart" not in names
-    assert "checkout" not in names
+    assert "checkout" in names
     assert await dispatch(adapter, {"jsonrpc": "2.0", "method": "notifications/initialized"}) is None
 
 
@@ -43,3 +43,28 @@ def test_remote_http_rejected(monkeypatch):
     monkeypatch.setenv("CARTPILOT_API_URL", "http://remote.example.test")
     with pytest.raises(ValueError):
         Adapter()
+
+
+async def test_checkout_tool_only_hands_off_and_never_calls_payment_api(monkeypatch):
+    adapter = Adapter()
+    adapter.token, adapter.expires_at = "fixture", 9999999999
+    calls = []
+    async def api(path, body=None):
+        calls.append(path)
+        return {"path": "/shop/1#handoff=fixture"} if path.endswith("handoff") else {"status": "draft"}
+    monkeypatch.setattr(adapter, "api", api)
+    result = await adapter.call("checkout", {"cart_id": "00000000-0000-0000-0000-000000000001"})
+    assert result["requires_human_confirmation"]
+    assert all(not path.endswith("checkout") for path in calls)
+    assert calls[-1].endswith("handoff")
+
+
+async def test_growth_tools_do_not_create_shopper_sessions(monkeypatch):
+    adapter = Adapter()
+    calls = []
+    async def api(path, body=None):
+        calls.append(path)
+        return {"opportunities": []}
+    monkeypatch.setattr(adapter, "api", api)
+    await adapter.call("get_growth_opportunities", {})
+    assert calls == ["/merchant/opportunities"]

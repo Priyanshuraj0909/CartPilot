@@ -118,8 +118,23 @@ async def search(body: SearchRequest, identity: ShopperSession = Depends(shopper
     if body.anchor_product_id and anchor is None:
         raise HTTPException(404, "Product not found.")
     pairs = await co_purchases(session, identity.merchant_id, body.anchor_product_id)
+    compatibility = {}
+    if anchor:
+        from app.services.commerce.merchandising import rules_for
+        rules = await rules_for(session, identity.merchant_id)
+        compatible = {}
+        for pair in rules.compatibility:
+            a, b = pair["category_a"], pair["category_b"]
+            if anchor.category.casefold() == a:
+                compatible[b] = pair["weight"]
+            elif anchor.category.casefold() == b:
+                compatible[a] = pair["weight"]
+        for product in products:
+            weight = compatible.get(product.category.casefold(), 0)
+            if weight > 0:
+                compatibility[product.id] = weight
     behavioral, semantic = await learning.learned_scores(session, identity.merchant_id, body.query, products, body.anchor_product_id)
-    ranked = rank(products, intent, policy, pairs, anchor, behavioral, semantic)
+    ranked = rank(products, intent, policy, pairs, anchor, behavioral, semantic, compatibility)
     return SearchResponse(products=ranked, message="Choose products to build a cart. Approval is required before checkout." if ranked else "No in-stock products match this request and budget. Try another search or increase your budget.",
         intent_source=source, budget_paise=intent.budget_paise, truncated=truncated)
 
