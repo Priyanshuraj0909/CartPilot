@@ -37,3 +37,4 @@ __all__ = [
 from app.models.shopify import ShopifyConnection, ExternalProductMapping, ExternalOrderMapping
 from app.models.account import Account, AccountSession
 from app.models.auth_rate_limit import AuthRateLimit
+from app.models.commerce import CommercePolicy, ShopperSession, ShoppingCart, CommerceEvent, CommerceModel

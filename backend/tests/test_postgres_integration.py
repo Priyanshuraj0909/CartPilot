@@ -32,7 +32,7 @@ async def postgres_factory():
     engine = create_async_engine(url, hide_parameters=True)
     try:
         async with engine.begin() as connection:
-            assert await connection.scalar(text("SELECT version_num FROM alembic_version")) == "16_reliability"
+            assert await connection.scalar(text("SELECT version_num FROM alembic_version")) == "17_commerce"
             # The accepted database is explicitly disposable; retain its migrated schema.
             for table in reversed(Base.metadata.sorted_tables):
                 await connection.execute(table.delete())
@@ -67,3 +67,29 @@ async def test_concurrent_execution_changes_price_once(postgres_factory):
         assert await session.scalar(select(func.count(PriceHistory.id)).where(PriceHistory.product_id == product_id)) == 1
         assert await session.scalar(select(func.count(AuditLog.id)).where(AuditLog.entity_type == "action", AuditLog.entity_id == str(created.id), AuditLog.event_type == "execution_completed")) == 1
         assert str(await session.scalar(select(Product.selling_price).where(Product.id == product_id))) == "1048.95"
+
+
+async def test_concurrent_cart_checkout_records_one_simulation(postgres_factory):
+    import time
+    from app.api.v1.commerce import approve, checkout
+    from app.models.commerce import ShopperSession, CommerceEvent
+    from app.schemas.commerce import CartRequest, Confirmation, CheckoutRequest
+    from app.services.commerce import carts
+    async with postgres_factory() as session:
+        scope, product_id, _, _, _ = await setup_action(session)
+        merchant_id = scope["merchant"]
+        shopper = ShopperSession(token_hash="a" * 64, merchant_id=merchant_id, expires_at=int(time.time()) + 3600)
+        session.add(shopper)
+        await session.commit()
+        cart = await carts.create(session, shopper, CartRequest(budget_paise=10000000, items=[{"product_id": product_id, "quantity": 1}]))
+        await approve(cart.id, Confirmation(confirm=True), shopper, session)
+        cart_id = cart.id
+    async def simulate():
+        async with postgres_factory() as session:
+            identity = await session.get(ShopperSession, "a" * 64)
+            return await checkout(cart_id, CheckoutRequest(confirm=True), identity, session)
+    results = await asyncio.gather(simulate(), simulate())
+    assert all(row.status == "simulated" for row in results)
+    async with postgres_factory() as session:
+        assert await session.scalar(select(func.count(CommerceEvent.id)).where(
+            CommerceEvent.cart_id == cart_id, CommerceEvent.event == "payment_simulated")) == 1

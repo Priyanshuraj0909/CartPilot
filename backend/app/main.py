@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.management import router as management_router
+from app.api.v1.commerce import router as commerce_router
 from app.api.v1.accounts import router as accounts_router, business_access
 from app.api.v1.shopify import router as shopify_router
 from app.api.v1.health import router as health_router
@@ -74,6 +75,7 @@ async def root_health() -> HealthResponse:
 
 # Mount API routers
 app.include_router(accounts_router, prefix="/api/v1")
+app.include_router(commerce_router, prefix="/api/v1")
 app.include_router(management_router, prefix="/api/v1")
 app.include_router(shopify_router, prefix="/api/v1", dependencies=[Depends(business_access)])
 app.include_router(health_router, prefix="/api/v1")
@@ -111,7 +113,11 @@ async def unexpected_failure(request: Request, exc: Exception) -> JSONResponse:
 async def safe_error_boundary(request: Request, call_next):
     # Prevent server middleware from re-raising unexpected exceptions into raw logs.
     try:
-        return await call_next(request)
+        response = await call_next(request)
+        if request.url.path.startswith("/api/v1/commerce"):
+            response.headers["Cache-Control"] = "no-store"
+            response.headers["Vary"] = "Authorization, X-CartPilot-Buyer"
+        return response
     except (SQLAlchemyError, ConnectionError) as exc:
         return await storage_failure(request, exc)
     except Exception as exc:

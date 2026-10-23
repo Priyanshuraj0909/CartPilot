@@ -29,7 +29,15 @@ class Settings(BaseSettings):
     REDIS_URL: str = Field(default="redis://localhost:6379/0", repr=False)
     DATABASE_POOL_MODE: Literal["pooled", "null"] = "pooled"
 
-    GEMINI_API_KEY: str = ""
+    GEMINI_API_KEY: str = Field("", repr=False)
+    BUYER_AI_ENABLED: bool = False
+    BUYER_SEMANTIC_ENABLED: bool = False
+    BUYER_EMBEDDING_MODEL: str = Field("gemini-embedding-001", pattern=r"^[a-zA-Z0-9.-]{1,80}$")
+    BUYER_GEMINI_MODEL: str = Field("gemini-2.5-flash", pattern=r"^[a-zA-Z0-9.-]{1,80}$")
+    RAZORPAY_KEY_ID: str = Field("", repr=False)
+    RAZORPAY_KEY_SECRET: SecretStr = Field(default=SecretStr(""), repr=False)
+    RAZORPAY_WEBHOOK_SECRET: SecretStr = Field(default=SecretStr(""), repr=False)
+    BUYER_RAZORPAY_TEST_ENABLED: bool = False
     JWT_SECRET: str = "dev-secret-key-change-in-production"
 
     # Pricing Agent Settings (Phase 3)

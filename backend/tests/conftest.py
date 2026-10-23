@@ -13,6 +13,13 @@ os.environ["SHOPIFY_ACCESS_TOKEN"] = ""
 os.environ["SHOPIFY_CLIENT_ID"] = ""
 os.environ["SHOPIFY_CLIENT_SECRET"] = ""
 os.environ["SHOPIFY_AUTO_SYNC_ENABLED"] = "false"
+os.environ["BUYER_AI_ENABLED"] = "false"
+os.environ["BUYER_SEMANTIC_ENABLED"] = "false"
+os.environ["BUYER_RAZORPAY_TEST_ENABLED"] = "false"
+os.environ["GEMINI_API_KEY"] = ""
+os.environ["RAZORPAY_KEY_ID"] = ""
+os.environ["RAZORPAY_KEY_SECRET"] = ""
+os.environ["RAZORPAY_WEBHOOK_SECRET"] = ""
 os.environ.pop("SHOPIFY_MERCHANT_ID", None)
 
 from typing import AsyncGenerator
