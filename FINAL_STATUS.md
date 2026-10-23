@@ -1,40 +1,32 @@
 # CartPilot current verified status
 
-Updated 23 October 2026 (Asia/Kolkata). The original merchant decision-support system
-now includes a buyer-commerce extension. Earlier release evidence below is historical.
+Updated 23 October 2026 (Asia/Kolkata). Phase 18 extends the buyer-commerce foundation
+with saved conversations, multi-item chat drafts, cart revisions, upsells, recovery offers,
+short-lived browser handoffs, guarded cancellation/refunds/reconciliation and return review.
+Merchant Commerce Studio adds category compatibility, seasonal/campaign rules, scheduling,
+ranking comparisons, association lift, attribution, audit and demo/provider catalog imports.
+Optional structured Gemini/OpenAI failover and local MiniLM embeddings have deterministic
+fallbacks. Expanded MCP tools hand financial actions to explicit browser confirmation.
 
-Implemented and locally verified:
+Verification: **738 backend tests, 174 frontend tests, production build, five disposable
+PostgreSQL concurrency tests, SQLite migration preservation and real Chrome desktop/mobile
+workflows passed**. Chrome covers chat, recovery discount, separate approval/simulation,
+partial refund, return review, session restoration and merchant ranking/audit views.
 
-- Opt-in public storefront and private merchant preview; expiring scoped shopper capabilities.
-- Natural-language local search with optional structured Gemini intent/fallback.
-- Hybrid category/co-purchase/text/business ranking, explicit experimental Item2Vec
-  training and optional fingerprinted Gemini semantic indexing.
-- Server-priced bounded carts, merchant/category/budget/stock gates, fresh approval
-  checks, separate checkout confirmation and hash-linked cart audit verification.
-- Offline simulation or configured Razorpay test links; signed, amount/reference-bound,
-  idempotent test settlement; pending claims prevent blind duplicate link requests.
-- Merchant growth policies, transparent ranking boosts, idle-cart insights, separate
-  test metrics and atomic CSV catalog onboarding.
-- MCP stdio adapter for search, products, draft carts, status and audit; no approval,
-  checkout or merchant mutation tools.
-- Existing deterministic merchant specialists, orchestration, accounts and Shopify
-  read-only boundaries are preserved.
+Checkout does not reserve stock, fulfill orders or create real sales. Refunds are simulated
+or Razorpay test-only. Live provider calls, downloaded embedding weights, external MCP-client
+interoperability and persistent worker hosting are unverified. Optional providers require
+owner configuration. Association lift and attribution do not establish incremental revenue.
+No full public-production readiness is claimed.
 
-Verification: **688 backend tests, 158 frontend tests, production build, three disposable
-PostgreSQL concurrency tests, SQLite migration round trips and a real Chrome desktop/
-mobile shopping walkthrough passed**. Optional provider calls are mocked. The configured
-hosted database was upgraded to `17_commerce`; existing row counts were preserved.
+See [feature parity](docs/COMMERCE_PARITY.md), [Phase 18](phases/PHASE_18.md),
+[test evidence](TEST_SUMMARY.md), [browser evidence](docs/examples/commerce-workflows-browser.json)
+and [migration evidence](docs/examples/commerce-workflows-migration.json).
+The configured hosted database was upgraded from `17_commerce` to
+`18_commerce_workflows`; all existing row counts were preserved. No seeding or
+external provider calls occurred.
 
-Checkout does not create real sales, reserve stock, fulfill orders or support refunds.
-Browser refresh does not restore a shopper's old carts. Idle-cart insights do not
-send messages. Semantic/intent providers require owner credentials/enablement. No
-real provider validation, external MCP-client interoperability, automatic payment
-reconciliation, measured business lift or full production readiness is claimed.
-
-See [buyer guide](docs/BUYER_COMMERCE.md), [Phase 17](phases/PHASE_17.md),
-[test evidence](TEST_SUMMARY.md), [browser evidence](docs/examples/commerce-browser.json)
-and [migration evidence](docs/examples/commerce-migration.json).
-Current publication status is available in the repository
+Publication status is available in repository
 [Actions](https://github.com/Priyanshuraj0909/CartPilot/actions) and commit deployment checks.
 
 ---

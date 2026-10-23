@@ -1,5 +1,45 @@
 # CartPilot Architecture — Verified MVP
 
+## Commerce workflow continuation (Phase 18)
+
+`18_commerce_workflows` adds four independent tables after `17_commerce`:
+ShoppingConversation (bounded messages/context per scoped shopper capability),
+CommerceOperation (unique cart/request-key claims and financial/recovery state),
+CommerceRules (merchant-controlled compatibility, growth rules and scheduler state),
+ShopperHandoff (five-minute, single-use, source-owner-bound browser transfer).
+Existing catalog, accounts, carts and sales are retained.
+
+Conversation can suggest products and construct/revise typed drafts; financial intents
+only expose deterministic eligibility. Cart edits, substitutions and offers create
+fresh drafts requiring approval. Recovery-offer prices use current product cost,
+stock/reorder protection, discount caps and a ceiling-rounded retained-margin floor;
+they do not modify catalog prices. Discount metadata is bound into the cart hash chain
+and revalidated before approval/checkout. Concurrent offer acceptance serializes under
+the original cart lock and creates one draft per idempotency key.
+
+Resolution checks hash integrity and cart ownership, serializes request-key claims
+under a cart row lock, and accounts only confirmed successful refunds against the
+captured balance. Claims are committed before remote mutations. Unknown results remain
+pending; reconciliation reads provider state rather than blindly repeating requests.
+Test link/payment/reference/amount/currency and refund balances are checked. Simulated
+refunds are explicitly marked. Return review/approval/receipt is separate from refund
+authorization and never changes physical stock or represents real fulfillment.
+
+Shopper capabilities are stored in browser sessionStorage for reload restoration,
+with concurrent creation deduplicated. One-hour expiry still applies. MCP financial
+tools return single-use browser handoffs; model tool arguments cannot authorize a
+payment/refund. Redeeming a handoff invalidates other grants bound to the old owner;
+approval is reset for an approved cart. Merchant resolution requires account scope.
+
+Explicit merchant rules select at most two in-stock ranking features per cycle.
+Scheduled claims use the database and run only in an opt-in persistent worker;
+serverless web handlers do not spawn a background loop. Weather is an optional fixed
+Open-Meteo read; seasonal tags are heuristics, campaign/festival dates are merchant
+inputs. Ranking comparisons and observed co-purchase lift are descriptive, not proof
+of conversion uplift or incremental revenue. Optional OpenAI/Gemini failover emits
+validated intent/category suggestions. Local MiniLM is separately installable and is
+not bundled into the lightweight hosted API. See [capability guide](docs/COMMERCE_PARITY.md).
+
 ## Buyer commerce extension (Phase 17)
 
 The merchant architecture below remains intact. `/shop/{merchant_id}` is an opt-in

@@ -1,5 +1,19 @@
 # CartPilot screenshots
 
+Phase 18 adds three real synthetic-data Chrome captures:
+
+| File | Caption |
+| --- | --- |
+| [19_conversational_shopping.png](19_conversational_shopping.png) | Multi-product chat and draft review |
+| [20_refund_return_review.png](20_refund_return_review.png) | Margin-safe offer, separate simulation, partial refund and independent return review |
+| [21_commerce_studio.png](21_commerce_studio.png) | Merchant growth rules, category compatibility and ranking preview |
+
+Reproduce with `backend/venv/bin/python scripts/commerce_workflows_browser.py` using
+a disposable test backend on 8017, frontend on 5177 and isolated Chrome on 9227.
+[Evidence](../examples/commerce-workflows-browser.json) also verifies session restore
+and 390px mobile layout. No live provider or real merchant data is used.
+
+
 Phase 17 adds three real Chrome captures on 23 October 2026:
 
 | File | Caption |

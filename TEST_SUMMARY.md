@@ -1,27 +1,24 @@
-# Current test evidence — buyer commerce extension
+# Current test evidence — complete commerce workflows
 
-Verified 23 October 2026 (Asia/Kolkata). Phase 17 supersedes earlier current counts;
-historical evidence is retained below.
+Verified 23 October 2026 (Asia/Kolkata). Phase 18 supersedes earlier current counts.
 
 | Check | Result |
 | --- | --- |
-| Backend `venv/bin/python -m pytest -q` | **688 passed**, 3 opt-in PostgreSQL checks skipped; 31.98 seconds |
-| Frontend `npm run test:run` | **158 passed**, 19 files |
+| Backend `venv/bin/python -m pytest -q` | **738 passed**, five opt-in PostgreSQL checks skipped; 36.58 seconds |
+| Frontend `npm run test:run` | **174 passed**, 21 files |
 | Frontend `npm run build` | TypeScript and Vite production build passed |
-| Disposable PostgreSQL | All migrations through `17_commerce`; 3 concurrent auth/execution/checkout tests passed |
-| SQLite migrations | Phase 17 upgrade/downgrade/re-upgrade preserves existing merchant rows; earlier migration tests also pass |
-| Chrome desktop/mobile | Six-product storefront, quantity selection, review, approval, simulation, verified audit, growth console; 390px without horizontal overflow; no captured runtime exceptions |
-| Configured hosted database | `16_reliability` → `17_commerce`; existing merchant/account/product/order/session counts preserved |
-| Optional providers | Structured Gemini success/failure, semantic freshness/failure, Razorpay HTTP contract, test-only gate, signed/idempotent webhooks and ambiguous checkout tested with mocks |
-| MCP | Initialize, discovery, schema validation, search and sanitized provider errors tested; desktop-client interoperability unverified |
-| Live providers / load / real payments | Not verified; no live charges or fulfillment implemented |
+| Disposable PostgreSQL | Migrations through `18_commerce_workflows`; five concurrency tests passed, including refund caps and single-draft recovery acceptance |
+| SQLite migration | Existing Phase 17 shopper/cart records survive upgrade/downgrade; prior migration tests pass |
+| Real Chrome | Multi-item chat, recovery discount, separate approval/simulation, partial refund, return review, reload restoration and merchant ranking/ledger passed; 390px without horizontal overflow; no captured runtime exceptions |
+| Hosted migration | `17_commerce` → `18_commerce_workflows`; all existing row counts preserved |
+| Provider paths | Structured failover, optional embedding backend, weather failure, refund processing/reconciliation and ambiguous outcomes exercised with mocks |
+| Worker | Due claims, scheduling and recoverable tick failures tested; persistent hosting not provisioned |
+| Live providers / payments / external MCP clients | Not verified; no live charges or fulfillment implemented |
 
-Evidence: [browser](docs/examples/commerce-browser.json),
-[migration](docs/examples/commerce-migration.json),
-[guide](docs/BUYER_COMMERCE.md), [screenshots](docs/screenshots/README.md).
-No measured recommendation lift or incremental revenue is inferred from these checks.
-Current remote CI and hosting status are available in GitHub Actions/commit deployment
-checks; local verification alone does not establish a hosted release.
+Evidence: [browser](docs/examples/commerce-workflows-browser.json),
+[migration](docs/examples/commerce-workflows-migration.json),
+[parity guide](docs/COMMERCE_PARITY.md), [screenshots](docs/screenshots/README.md).
+No measured incremental revenue is inferred. Remote release results are in FINAL_STATUS.md.
 
 ---
 

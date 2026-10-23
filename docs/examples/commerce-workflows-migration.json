@@ -1,0 +1,28 @@
+{
+  "before": {
+    "revision": "17_commerce",
+    "existing_row_counts": {
+      "merchants": 3,
+      "accounts": 2,
+      "products": 34,
+      "orders": 115,
+      "account_sessions": 22,
+      "shopper_sessions": 0,
+      "shopping_carts": 0
+    }
+  },
+  "after": {
+    "revision": "18_commerce_workflows",
+    "existing_row_counts": {
+      "merchants": 3,
+      "accounts": 2,
+      "products": 34,
+      "orders": 115,
+      "account_sessions": 22,
+      "shopper_sessions": 0,
+      "shopping_carts": 0
+    }
+  },
+  "existing_counts_preserved": true,
+  "operation": "add four workflow tables; no seed, catalog changes or provider calls"
+}

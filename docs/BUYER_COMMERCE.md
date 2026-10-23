@@ -1,4 +1,7 @@
-# Buyer commerce — Phase 17
+# Buyer commerce — foundation and current continuation
+
+Phase 18 adds the complete workflow continuation described in
+[Commerce capability guide](COMMERCE_PARITY.md). The setup below remains supported.
 
 CartPilot now combines its merchant decision-support workspace with a buyer shopping
 experience. This is an original implementation in the existing stack. It does not
@@ -27,10 +30,9 @@ currency metadata; publish only catalogs whose numeric prices represent INR. No 
 conversion is performed. The storefront uses neutral illustrations because the
 existing product schema does not contain verified product image URLs.
 
-Shopper sessions expire after one hour; carts after 15 minutes. The browser holds
-the shopper capability in component memory, so refreshing starts a new shopper
-session and does not recover old carts. This currently limits recovery to the active
-session. Unpublishing stops new public sessions; existing capabilities remain valid
+Shopper sessions expire after one hour; carts after 15 minutes. The browser retains
+the shopper capability in sessionStorage, so reload can restore saved chat and carts
+within the one-hour capability window. This is not a permanent buyer account. Unpublishing stops new public sessions; existing capabilities remain valid
 until expiry. Growth insights list at most 50 active draft/approved carts idle for
 five minutes. No recovery email/SMS or automatic discount is sent.
 
@@ -52,7 +54,7 @@ precede merchant boosts or learned similarity. Search budget is the minimum of t
 explicit UI amount, parsed request budget and merchant cap. A model never supplies
 prices or quantities to the cart.
 
-Item2Vec uses 16-dimensional skip-gram with two negative samples and three epochs,
+Item2Vec uses 64-dimensional skip-gram with two negative samples and three epochs,
 seed 17, learning rate .035. It requires 30 completed multi-product orders and bounds
 input to 500 recent completed orders, 20 distinct items/order, 500 products and 20,000
 training pairs. It runs in a worker thread after an explicit merchant click; no new
@@ -70,7 +72,8 @@ BUYER_SEMANTIC_ENABLED=true
 BUYER_EMBEDDING_MODEL=gemini-embedding-001
 ```
 
-Structured intent has a 12-second timeout and validates the returned JSON. An explicit
+Structured intent has an eight-second timeout per configured provider and validates
+the returned JSON. Phase 18 supports Gemini/OpenAI failover. An explicit
 locally parsed budget overrides the model budget. Model/provider errors use local
 search. Search sends the shopper's query to Gemini only when enabled. No account
 email, cart identity or cost data is sent for intent extraction.
@@ -108,10 +111,10 @@ Verified payments are labeled `test_paid` and stay outside merchant sales/revenu
 
 `checkout_pending` means a request was claimed before contacting the provider. A
 timeout may have created a link; retries do not create another. Review the test
-dashboard using the cart UUID. There is no automatic reconciliation UI yet, and a
-webhook arriving before the link ID is persisted requires provider retry. Provider availability/validation can still reject a request; review the first
-request before building a fresh cart. Refunds, live charges, stock reservations and fulfillment are not
-implemented. Real credentials/provider calls were not used in local verification.
+dashboard using the cart UUID. The workflow panel can explicitly reconcile provider status; a
+webhook arriving before the link ID is persisted may require retry/reconciliation. Provider availability/validation can still reject a request; review the first
+request before building a fresh cart. Phase 18 adds guarded full/partial test refunds and return review. Live charges,
+stock reservations and physical fulfillment remain unimplemented. Real credentials/provider calls were not used in local verification.
 
 ## MCP stdio
 
@@ -136,10 +139,10 @@ existing HTTP API. In a compatible desktop client's MCP configuration:
 The store must be published. A private owner preview may additionally supply a
 short-lived `CARTPILOT_ACCOUNT_TOKEN` through the owner's local environment; never
 commit tokens/configurations containing them. Remote URLs require HTTPS. The adapter
-starts an isolated shopper session and exposes `search_catalog`, `get_product`,
-`propose_cart`, `get_cart`, `get_order_audit_trail`. It has no direct database access
-and no approve/checkout tools; it cannot autonomously purchase. Adapter-created draft
-carts are not currently handed off to the browser's independent session. Protocol
+starts an isolated shopper session and exposes expanded discovery, draft, status,
+audit and merchant-growth tools. Checkout/cancellation tools return a single-use
+browser handoff for explicit human review; they cannot autonomously purchase. See
+[the current MCP guide](COMMERCE_PARITY.md#mcp-and-discovery) for the full boundary. Protocol
 unit tests pass; Claude Desktop/Cursor interoperability remains unverified.
 
 ## Verification and boundaries
@@ -151,8 +154,8 @@ No live merchant data, payment provider or model API is needed for the default t
 
 The per-cart audit is SHA-256 linked, not signed or externally anchored. It detects
 inconsistent edits but does not prevent a privileged writer from replacing a chain.
-Public ingress, broader load/abuse testing, data retention/cleanup, durable shopper
-identity/recovery, real provider validation and production payment lifecycle design
+Public ingress, broader load/abuse testing, data retention/cleanup, permanent buyer
+identity, real provider validation and production payment lifecycle design
 remain future work. No revenue attribution, A/B lift or production readiness is claimed.
 
 Provider references: [Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output),

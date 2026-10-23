@@ -1,12 +1,13 @@
 # Current review — 23 October 2026
 
-Phase 17 passes 688 backend tests, 158 frontend tests and the production build.
-Three targeted PostgreSQL concurrency checks pass separately on a disposable migrated
-`cartpilot_ci` database. Real Chrome verifies storefront review/approval/simulation,
-cart audit, growth console and a 390px mobile layout. Configured hosted migration to
-`17_commerce` preserves existing row counts. Provider paths are mocked; external
-MCP-client/live-payment/model validation and public-production readiness are not claimed.
-See [test summary](../../TEST_SUMMARY.md) and [buyer guide](../BUYER_COMMERCE.md).
+Phase 18 passes 738 backend tests, 174 frontend tests and the production build.
+Five targeted PostgreSQL concurrency checks pass on a disposable migrated database.
+Real Chrome verifies conversational shopping, discounted recovery, separate approval and
+simulation, partial refund, return review, saved-session reload and merchant ranking/audit.
+The 390px mobile layout has no horizontal overflow or captured runtime exceptions.
+Provider paths use mocks; downloaded model weights, live providers, external MCP clients,
+persistent worker hosting and full production readiness are not verified.
+See [test summary](../../TEST_SUMMARY.md) and [parity guide](../COMMERCE_PARITY.md).
 
 ---
 

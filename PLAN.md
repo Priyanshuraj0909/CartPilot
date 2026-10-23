@@ -1,6 +1,15 @@
 # CARTPILOT MASTER PLAN
 
-## Phase 17 — Buyer commerce extension (current)
+## Phase 18 — Commerce workflow parity (current)
+
+User-authorized continuation implements conversational multi-product drafts and saved
+sessions, edits/substitutes/upsells, recovery offers and handoff, payment reconciliation,
+test cancellation/full/partial refunds and merchant return reviews. Adds compatibility
+generation/overrides, growth rules/scheduler, ranking/lift previews, context, API/demo
+onboarding, provider failover, optional MiniLM and expanded MCP tools. See
+[Phase 18](phases/PHASE_18.md) and [capability guide](docs/COMMERCE_PARITY.md).
+
+## Phase 17 — Buyer commerce extension
 
 User-authorized shopping/storefront extension on 23 October 2026. Adds isolated
 shopper capabilities, optional structured Gemini intent, hybrid discovery, bounded

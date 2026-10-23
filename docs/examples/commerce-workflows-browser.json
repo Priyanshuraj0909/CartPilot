@@ -1,0 +1,12 @@
+{
+  "multi_item_chat": "passed",
+  "recovery_discount": "passed",
+  "separate_approval_and_simulation": "passed",
+  "partial_refund": "passed",
+  "return_review_without_automatic_refund": "passed",
+  "session_restore": "passed",
+  "mobile_horizontal_overflow": false,
+  "merchant_ranking_preview_and_ledger": "passed",
+  "runtime_exceptions": [],
+  "data": "synthetic test database; no external providers or real money"
+}

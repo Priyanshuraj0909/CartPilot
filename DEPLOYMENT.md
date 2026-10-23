@@ -3,7 +3,7 @@
 This setup is provider-neutral: static frontend hosting, one Python service, managed
 PostgreSQL, and optionally Redis. Existing Vercel projects host the frontend and API.
 Production business APIs require account authentication and bind access to a merchant.
-Buyer commerce requires migration `17_commerce` (following `16_reliability`) before
+Commerce workflows require migration `18_commerce_workflows` (following `17_commerce`) before
 serving this release. General public-production readiness still needs security/load
 review, verified email recovery and provider ingress controls. Deployment evidence is
 recorded in FINAL_STATUS.md; the configuration alone does not establish readiness.
@@ -17,7 +17,24 @@ flowchart TD
     Backend -->|READ ONLY; protected demo only| Shopify[Shopify Admin API]
 ```
 
-## Buyer commerce deployment
+## Phase 18 workflow release
+
+Run `alembic upgrade head` before serving the workflow release. The additive
+`18_commerce_workflows` migration creates conversations, operations, merchant rules
+and handoff capabilities without replacing existing catalog/accounts/carts/sales.
+Provider flags remain off by default; OpenAI, Gemini, supplier and Razorpay secrets
+stay backend-side. Optional MiniLM dependencies are separate from the serverless
+runtime. See [workflow guide](docs/COMMERCE_PARITY.md).
+
+Scheduled ranking/insight rules require an explicitly hosted persistent process:
+`python -m app.services.commerce.worker`. The existing Vercel API cannot retain this
+loop between requests. Enabling a merchant's scheduler control does not provision a
+worker or authorize financial operations. Refunds remain test/simulation-only and
+need explicit confirmation; pending operations must be reconciled rather than retried
+with new keys. Shopify writes and existing production merchant-action restrictions
+remain unchanged.
+
+## Buyer commerce foundation deployment
 
 The configured database was migrated to `17_commerce` on 23 October 2026, preserving
 existing merchant/account/product/order/session counts. See

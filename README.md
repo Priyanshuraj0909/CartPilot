@@ -32,7 +32,27 @@ restocking, promotions and listing recommendations.
 > **test mode only**. Recommendations never implicitly approve actions, charge money,
 > place supplier orders or change Shopify.
 
-## Buyer commerce · new in Phase 17
+## Complete commerce workflows · Phase 18
+
+- **Conversational shopping:** multi-product drafts, saved chat/carts, edits, substitutes
+  and upsells, with explicit review before checkout.
+- **Recovery and resolution:** margin-safe recovery offers, single-use browser handoff,
+  provider reconciliation, cancellation, full/partial test refunds and return review.
+- **Commerce Studio:** category compatibility suggestions/overrides, growth rules,
+  ranking comparisons, observed co-purchase lift, audit and selection metrics.
+- **Onboarding and providers:** CSV/API/demo catalogs, OpenAI/Gemini failover,
+  64-dimensional Item2Vec and optional local MiniLM semantic indexing.
+- **Scheduled controls:** opt-in persistent ranking/insight worker, seasonal/campaign
+  windows and optional weather context. Financial actions remain human-confirmed.
+
+[Capability parity, setup and precise boundaries](docs/COMMERCE_PARITY.md).
+
+<p align="center">
+  <img src="docs/screenshots/19_conversational_shopping.png" alt="Real CartPilot multi-product shopping conversation and draft review" width="48%" />
+  <img src="docs/screenshots/21_commerce_studio.png" alt="Real CartPilot merchant growth rules and ranking comparison controls" width="48%" />
+</p>
+
+## Buyer commerce foundation · Phase 17
 
 - **Buyer Storefront:** natural-language discovery, INR budgets, transparent suggestions
   and server-priced carts with separate approval and checkout confirmation.
@@ -69,7 +89,7 @@ synthetic data; the Shopify screen uses a mocked offline integration, not a live
   <img src="docs/screenshots/11_approval_workflow.png" alt="Merchant action approval workflow" width="48%" />
 </p>
 
-[Browse all 18 screenshots and reproduction notes](docs/screenshots/README.md).
+[Browse all 21 screenshots and reproduction notes](docs/screenshots/README.md).
 
 ## Why CartPilot?
 
@@ -89,7 +109,7 @@ dependencies and partial failures. Review, approval and execution are distinct s
 | Buyer commerce | Private account preview and opt-in public storefront, scoped expiring shopper sessions, guarded carts and test checkout |
 | Discovery models | Optional structured Gemini intent, bounded explicit Item2Vec training and fingerprinted Gemini semantic indexing |
 | Growth controls | Merchant spend/category/featured-product policies, CSV catalog import, idle-cart insights and separate test metrics |
-| Shopping MCP | Minimal stdio adapter for search/product/draft-cart/status/audit; no autonomous checkout |
+| Shopping MCP | Expanded discovery/draft/status/merchant tools and browser checkout/cancellation handoff; no autonomous financial authorization |
 | Merchant workspace | Sign up, sign in, recover login email using store name and password, and access account-scoped store data |
 | Catalog and inventory | Create, edit and archive local products; view physical, reserved and available stock and price history |
 | Sales and insights | Import bounded, idempotent CSV sales; view recorded revenue, product rankings and in-app low-stock alerts |
@@ -168,7 +188,7 @@ No execution changes Shopify.
 | Data | PostgreSQL, async SQLAlchemy, Alembic; SQLite for isolated tests and demos |
 | Shopify | Read-only Admin GraphQL integration; optional persistent sync worker |
 | Buyer AI | Optional Gemini REST structured intent and embeddings via existing httpx; local fallback |
-| Co-purchase model | Bounded 16-dimensional Item2Vec skip-gram training using the Python standard library |
+| Co-purchase model | Bounded 64-dimensional Item2Vec skip-gram training using the Python standard library |
 | Checkout | Offline simulation or optional Razorpay test payment links and signed webhooks |
 | Tests | pytest, pytest-asyncio, httpx, Vitest, React Testing Library |
 | Delivery | Docker Compose configuration; GitHub Actions tests and frontend build |
@@ -309,8 +329,8 @@ cd backend && venv/bin/python -m pytest -q
 cd ../frontend && npm run test:run && npm run build
 ```
 
-Phase 17 passes **688 backend tests**, **158 frontend tests**, the production build
-and **three disposable PostgreSQL concurrency checks**. Local verification is recorded
+Phase 18 passes **738 backend tests**, **174 frontend tests**, the production build
+and **five disposable PostgreSQL concurrency checks**. Local verification is recorded
 in [TEST_SUMMARY.md](TEST_SUMMARY.md), including
 backend/frontend tests, the TypeScript/Vite build, SQLite migration round trips,
 disposable PostgreSQL concurrency and a real Chrome desktop/mobile shopping walkthrough.
@@ -359,9 +379,10 @@ revenue uplift, predictive accuracy or performance gains.
 ## Current limitations and roadmap
 
 Buyer checkout does not reserve/decrement stock, create real sales or fulfill orders.
-Shopper sessions are memory-held in the browser; refresh does not restore old carts.
-Recovery insights do not send messages. There is no refund integration, automatic
-payment reconciliation or measured ranking/revenue lift. Merchant specialists do not
+Shopper capabilities persist in sessionStorage within their one-hour lifetime; chat and
+carts restore on reload. Recovery links require explicit sharing. Refunds use simulation
+or configured Razorpay test mode, with explicit reconciliation after uncertain results.
+There is no automatic financial reconciliation or measured ranking/revenue lift. Merchant specialists do not
 use the buyer model to change prices, create promotions or place supplier orders.
 
 
@@ -397,6 +418,7 @@ Contact the maintainer before reusing or redistributing the code.
 
 | Guide | Contents |
 | --- | --- |
+| [Commerce workflow parity](docs/COMMERCE_PARITY.md) | Complete shopping/recovery/resolution/rules/MCP guide and limits |
 | [Buyer commerce](docs/BUYER_COMMERCE.md) | Shopping workflow, providers, ranking, MCP, tests and limits |
 | [Phase 17](phases/PHASE_17.md) | Buyer commerce implementation and verification |
 | [Architecture](ARCHITECTURE.md) | Application structure and data boundaries |
