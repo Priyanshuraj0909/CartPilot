@@ -9,8 +9,9 @@ export interface Audit { valid: boolean; events: { sequence: number; event: stri
 export interface CommercePolicy { published: boolean; max_spend_paise: number; blocked_categories: string[]; boosted_product_ids: number[] }
 export interface Growth { counts: Record<string, number>; test_paid_value_paise: number; real_revenue_paise: number; recovery: { cart_id: string; total_paise: number; advice: string; expires_at: number }[]; recommendation_method: string; limitations: string }
 const base = (import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "" : "http://localhost:8000")).replace(/\/$/, "");
+const pendingShopperSessions = new Map<number, Promise<{ token: string; expires_at: number }>>();
 const messages: Record<number, string> = { 401: "Your session expired. Start a new shopping session or sign in to preview a private store.", 404: "This store, product or cart is unavailable.", 409: "The cart changed, expired or needs approval. Build a fresh cart if its stock or prices changed.", 422: "Check your budget, quantities and store category restrictions.", 429: "Too many requests. Please wait a minute.", 503: "Checkout or store data is temporarily unavailable. If checkout was requested, review its status before trying again." };
-export async function buyerRequest<T>(path: string, token?: string, body?: unknown): Promise<T> {
+export async function buyerRequest<T>(path: string, token?: string, body?: unknown, method?: string): Promise<T> {
   const account = sessionStorage.getItem("cartpilot-token");
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 30000);
@@ -18,7 +19,7 @@ export async function buyerRequest<T>(path: string, token?: string, body?: unkno
     const response = await fetch(`${base}/api/v1/commerce${path}`, { signal: controller.signal, headers: {
       ...(account ? { Authorization: `Bearer ${account}` } : {}), ...(token ? { "X-CartPilot-Buyer": token } : {}),
       ...(body === undefined ? {} : { "Content-Type": "application/json" }),
-    }, ...(body === undefined ? {} : { method: "POST", body: JSON.stringify(body) }) });
+    }, ...(method ? { method } : {}), ...(body === undefined ? {} : { method: method || "POST", body: JSON.stringify(body) }) });
     if (!response.ok) throw new Error(messages[response.status] || "CartPilot could not complete this request.");
     return await response.json() as T;
   } catch (error) {
@@ -28,7 +29,20 @@ export async function buyerRequest<T>(path: string, token?: string, body?: unkno
 }
 export const commerce = {
   store: (id: number) => buyerRequest<Storefront>(`/storefront/${id}`),
-  session: (id: number) => buyerRequest<{ token: string; expires_at: number }>("/sessions", undefined, { merchant_id: id }),
+  session: async (id: number) => {
+    const key = `cartpilot-shopper-${id}`;
+    try {
+      const stored: unknown = JSON.parse(sessionStorage.getItem(key) || "null");
+      if (stored && typeof stored === "object" && "token" in stored && "expires_at" in stored && typeof stored.token === "string" && typeof stored.expires_at === "number" && stored.expires_at * 1000 > Date.now()) return { token: stored.token, expires_at: stored.expires_at };
+    } catch { sessionStorage.removeItem(key); }
+    const existing = pendingShopperSessions.get(id);
+    if (existing) return existing;
+    const pending = buyerRequest<{ token: string; expires_at: number }>("/sessions", undefined, { merchant_id: id })
+      .then(identity => { sessionStorage.setItem(key, JSON.stringify(identity)); return identity; })
+      .finally(() => pendingShopperSessions.delete(id));
+    pendingShopperSessions.set(id, pending);
+    return pending;
+  },
   search: (token: string, query: string, budget_paise: number, anchor_product_id?: number) => buyerRequest<SearchResult>("/search", token, { query, budget_paise, anchor_product_id }),
   cart: (token: string, budget_paise: number, items: { product_id: number; quantity: number }[]) => buyerRequest<ShoppingCart>("/carts", token, { budget_paise, items }),
   approve: (token: string, id: string) => buyerRequest<ShoppingCart>(`/carts/${id}/approve`, token, { confirm: true }),
