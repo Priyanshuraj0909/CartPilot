@@ -93,6 +93,12 @@ within CartPilot, not a copy of another repository.
 
 ## See the merchant workspace
 
+The responsive merchant shell now includes an **Inventory Intelligence** workspace at
+`/margin-analysis`: select up to four products, compare current and recorded gross
+margins, search the catalog, print the view and export the selected data. Calculations
+use merchant-scoped catalog values and explicitly surface missing cost data. See the
+[margin analysis guide](docs/MARGIN_ANALYSIS.md) for formulas and limitations.
+
 The repository includes real browser captures of the seeded Four-product Demo. They use
 synthetic data; the Shopify screen uses a mocked offline integration, not a live store.
 
